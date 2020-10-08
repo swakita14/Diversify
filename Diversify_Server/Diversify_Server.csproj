@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>153c63c4-7745-4c4b-9653-cd016b24b31c</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interface\" />
+  </ItemGroup>
 
 </Project>
