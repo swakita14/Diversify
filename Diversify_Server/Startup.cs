@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Diversify_Server.Data;
-
 namespace Diversify_Server
 {
     public class Startup
@@ -26,9 +26,15 @@ namespace Diversify_Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string baseUri = Configuration["StockApi:BaseUri"];
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddHttpClient();
+            services.AddHttpClient("alphaVantage", c => 
+            {
+                c.BaseAddress = new Uri(baseUri);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
