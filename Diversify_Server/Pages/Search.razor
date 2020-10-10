@@ -1,10 +1,54 @@
-﻿<h3>Search</h3>
+﻿@page "/search"
+
+@inject IHttpClientFactory Client
+
+<h3>Search</h3>
 
 <!-- Search form -->
-<input class="form-control" type="text" placeholder="Search" aria-label="Search">
+<input class="form-control" @onkeydown="KeyHandler" />
+<h2>@_searchString</h2>
+<h2>@_count</h2>
+
+
+
 
 @code {
 
+    int _count;
+    string _searchString;
     SearchResultModel[] _results;
+
+    /**
+     * Method to handle the keypress events to dynamically search
+     */
+    private void KeyHandler(KeyboardEventArgs e)
+    {
+        // If backspace is pressed subtract from the count and remove logged string 
+        if (e.Key.Equals("Backspace"))
+        {
+            // Subtract string if there are any
+            if (string.IsNullOrWhiteSpace(_searchString) == false)
+            {
+                _searchString = _searchString.Remove(_searchString.Length - 1);
+                _searchString += "";
+                _count = _searchString.Length;
+            }
+
+        }
+        else if (e.Key.Equals("Shift"))
+        {
+            // Don't capture shift key as well 
+            _searchString += "";
+        }
+        else
+        {
+            // Log the string for search
+            _searchString += e.Key;
+            _count = _searchString.Length;
+        }
+
+
+
+    }
 
 }
