@@ -1,11 +1,9 @@
 ﻿@page "/overview"
-@using Microsoft.Extensions.Configuration
 
-
-@inject IHttpClientFactory _client
+@inject IHttpClientFactory Client
 @inject IConfiguration Configuration 
 
-<h3>Details</h3>
+<h3>Overview</h3>
 
 @if (string.IsNullOrWhiteSpace(_errorMessage) == false)
 {
@@ -43,12 +41,11 @@ else
     protected override async Task OnInitializedAsync()
     {
         // Create client 
-        var client = _client.CreateClient("alphaVantage");
-        //var client = _client.CreateClient();
+        var client = Client.CreateClient("alphaVantage");
 
 
 
-        // Call the API with the parameter 
+    // Call the API with the parameter 
         try
         {
             _overview = await client.GetFromJsonAsync<CompanyOverviewModel>($"query?function=OVERVIEW&symbol=AAPL&apikey={Configuration["StockApi:ApiKey"]}");

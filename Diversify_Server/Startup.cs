@@ -26,10 +26,13 @@ namespace Diversify_Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Initializing as string
             string baseUri = Configuration["StockApi:BaseUri"];
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+
+            // Adding httpclient 
             services.AddHttpClient();
             services.AddHttpClient("alphaVantage", c => 
             {
