@@ -1,48 +1,22 @@
 ﻿@page "/search"
-@using System.Runtime.CompilerServices
 
-@inject IHttpClientFactory Client
-@inject IConfiguration Configuration
 
 <h3>Search</h3>
 
 <!-- Search form -->
 <input class="form-control" @onkeydown="KeyHandler" />
-<br/>
+<br />
 
-@if ((_isFound) && _results.BestMatches!=null)
-{
-    <table class="table table-striped">
-        <thead class="thead-light">
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th>Type</th>
-            </tr>
-        </thead>
-        @foreach (var company in _results.BestMatches)
-        {
-            <tbody>
-                <tr>
-
-                    <td>@company.Symbol</td>
-                    <td>@company.Name</td>
-                    <td>@company.Type</td>
-
-                </tr>
-            </tbody>
-        }
-    </table>
+if(_count >=2){
+    <SearchResult SearchString=@_searchString></SearchResult>
 }
 
 
 @code {
 
-    int _count;
-    bool _isFound = false;
-    string _searchString;
-    string _errorMessage;
-    SearchModelList _results;
+    private int _count;
+    private string _searchString;
+
 
     /**
      * Method to handle the keypress events to dynamically search
@@ -58,12 +32,6 @@
                 _searchString = _searchString.Remove(_searchString.Length - 1);
                 _searchString += "";
                 _count = _searchString.Length;
-                if (_searchString.Length >= 2)
-                {
-                    GetCompanyList(_searchString);
-                }
-
-
             }
 
         }
@@ -77,36 +45,7 @@
             // Log the string for search
             _searchString += e.Key;
             _count = _searchString.Length;
-            if (_searchString.Length >= 2)
-            {
-                GetCompanyList(_searchString);
-            }
-
         }
     }
-
-
-    /**
-     * Get the list of company using the keyword
-     */
-    private async void GetCompanyList(string keyword)
-    {
-        // Create client
-        var client = Client.CreateClient("alphaVantage");
-
-        // Call the API with the parameter
-        try
-        {
-            _results = await client.GetFromJsonAsync<SearchModelList>($"query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={Configuration["StockApi:ApiKey"]}");
-            _errorMessage = null;
-            _isFound = true;
-
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = $"There was an error getting the company overview data: {ex.Message}";
-        }
-    }
-
 
 }

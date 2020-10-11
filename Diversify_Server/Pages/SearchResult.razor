@@ -1,0 +1,61 @@
+﻿
+
+@inject IHttpClientFactory Client
+@inject IConfiguration Configuration
+
+@if(_results!=null)
+{
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        @foreach (var company in _results.BestMatches)
+        {
+            <tbody>
+                <tr>
+
+                    <td>@company.Symbol</td>
+                    <td>@company.Name</td>
+                    <td>@company.Type</td>
+
+                </tr>
+            </tbody>
+        }
+    </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public string SearchString { get; set; }
+
+    private string _errorMessage;
+    private SearchModelList _results;
+
+    /**
+     * Get the list of company using the keyword
+     */
+    protected override async Task OnInitializedAsync()
+    {
+        // Create client
+        var client = Client.CreateClient("alphaVantage");
+
+        // Call the API with the parameter
+        try
+        {
+            _results = await client.GetFromJsonAsync<SearchModelList>($"query?function=SYMBOL_SEARCH&keywords={SearchString}&apikey={Configuration["StockApi:ApiKey"]}");
+            _errorMessage = null;
+
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"There was an error getting the company overview data: {ex.Message}";
+        }
+    }
+
+}
