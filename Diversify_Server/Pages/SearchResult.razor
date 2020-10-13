@@ -1,7 +1,7 @@
-﻿
+﻿@using Diversify_Server.Services
+@using Diversify_Server.Interfaces
 
-@inject IHttpClientFactory Client
-@inject IConfiguration Configuration
+@inject IStockSearchService Client
 
 @if(_results!=null)
 {
@@ -42,20 +42,7 @@
      */
     protected override async Task OnInitializedAsync()
     {
-        // Create client
-        var client = Client.CreateClient("alphaVantage");
-
-        // Call the API with the parameter
-        try
-        {
-            _results = await client.GetFromJsonAsync<SearchModelList>($"query?function=SYMBOL_SEARCH&keywords={SearchString}&apikey={Configuration["StockApi:ApiKey"]}");
-            _errorMessage = null;
-
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = $"There was an error getting the company overview data: {ex.Message}";
-        }
+        _results = await Client.GetStockAsync(SearchString);
     }
 
 }

@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Diversify_Server.Data;
+using Diversify_Server.Interfaces;
+using Diversify_Server.Services;
+
 namespace Diversify_Server
 {
     public class Startup
@@ -34,9 +37,11 @@ namespace Diversify_Server
 
             // Adding httpclient 
             services.AddHttpClient();
-            services.AddHttpClient("alphaVantage", c => 
+
+            // Registering httpclient service for stock searching
+            services.AddHttpClient<IStockSearchService,StockSearchService>(client =>
             {
-                c.BaseAddress = new Uri(baseUri);
+                client.BaseAddress = new Uri(baseUri);
             });
         }
 
