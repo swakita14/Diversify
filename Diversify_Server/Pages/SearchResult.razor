@@ -1,5 +1,4 @@
-﻿@using Diversify_Server.Services
-@using Diversify_Server.Interfaces
+﻿@using Diversify_Server.Interfaces
 
 @inject IStockSearchService Client
 
@@ -42,6 +41,8 @@
     protected override async Task OnInitializedAsync()
     {
         _results = await Client.GetStockAsync(SearchString);
+
+        SearchString = "";
     }
 
 }

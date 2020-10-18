@@ -2,17 +2,30 @@
 
 <h3>News</h3>
 
-<form>
+<EditForm Model=@searchModel OnValidSubmit="@OnValidFormSubmission">
     <div class="row">
         <div class="col">
-            <input type="text" class="form-control" placeholder="Company Name">
+            <input type="text" class="form-control" placeholder="Company Name" @bind="searchModel.CompanyName" />
         </div>
         <div class="col">
-            <button type="button" class="btn btn-outline-primary">Search</button>
+            <button type="submit" class="btn btn-outline-primary">Search</button>
         </div>
     </div>
-</form>
+</EditForm>
+<br />
+
+<NewsResult SearchString="@searchModel.CompanyName"></NewsResult>
+
+
 
 @code {
+
+    StockNewsSearchModel searchModel = new StockNewsSearchModel();
+    private bool _isFormSubmitted = false;
+
+    private void OnValidFormSubmission()
+    {
+        
+    }
 
 }
