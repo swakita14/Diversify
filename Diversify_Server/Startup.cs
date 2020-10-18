@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Diversify_Server.Data;
 using Diversify_Server.Interfaces;
 using Diversify_Server.Services;
 
@@ -33,7 +32,6 @@ namespace Diversify_Server
             string baseUri = Configuration["StockApi:BaseUri"];
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
 
             // Adding httpclient 
             services.AddHttpClient();
