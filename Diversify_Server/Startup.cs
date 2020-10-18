@@ -29,7 +29,8 @@ namespace Diversify_Server
         public void ConfigureServices(IServiceCollection services)
         {
             // Initializing as string
-            string baseUri = Configuration["StockApi:BaseUri"];
+            string stockSearchUri = Configuration["StockApi:BaseUri"];
+            string newsUri = Configuration["NewsApi:BaseUri"];
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
@@ -39,7 +40,13 @@ namespace Diversify_Server
             // Registering httpclient service for stock searching
             services.AddHttpClient<IStockSearchService,StockSearchService>(client =>
             {
-                client.BaseAddress = new Uri(baseUri);
+                client.BaseAddress = new Uri(stockSearchUri);
+            });
+
+            // Registering httpclient service for company news searching
+            services.AddHttpClient<ICompanyNewsService,CompanyNewsService>(client =>
+            {
+                client.BaseAddress = new Uri(newsUri);
             });
         }
 
