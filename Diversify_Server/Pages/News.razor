@@ -1,11 +1,13 @@
 ﻿@page "/news"
 
+@inject ICompanyNewsService Client
+
 <h3>News</h3>
 
-<EditForm Model=@searchModel OnValidSubmit="@OnValidFormSubmission">
+<EditForm Model="@_searchModel" OnValidSubmit="@OnValidFormSubmission">
     <div class="row">
         <div class="col">
-            <input type="text" class="form-control" placeholder="Company Name" @bind="searchModel.CompanyName" />
+            <input type="text" class="form-control" placeholder="Company Name" @bind="_searchModel.CompanyName" />
         </div>
         <div class="col">
             <button type="submit" class="btn btn-outline-primary">Search</button>
@@ -14,9 +16,34 @@
 </EditForm>
 <br />
 
-@if (_newsIfFound)
+
+@if (!(_results is null))
 {
-    <NewsResult SearchString="@searchModel.CompanyName"></NewsResult>
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Published</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        @foreach (var company in _results.Articles)
+        {
+            <tbody>
+                <tr>
+
+                    <td>@company.Title</td>
+                    <td>@company.Author</td>
+                    <td>@company.Description</td>
+                    <td>@company.PublishedAt</td>
+                    <td><a href="@company.Url">Link</a></td>
+
+                </tr>
+            </tbody>
+        }
+    </table>
 }
 
 
@@ -24,13 +51,31 @@
 
 @code {
 
-    private bool _newsIfFound = false;
-    StockNewsSearchModel searchModel = new StockNewsSearchModel();
+    private StockNewsSearchModel _searchModel;
+    private NewsSearchResult _results;
 
-
-    private void OnValidFormSubmission()
+    /**
+     * Creates new model for the search
+     */
+    protected override void OnInitialized()
     {
-        _newsIfFound = true;
+        _searchModel = new StockNewsSearchModel();
+    }
+
+    /**
+     * When form submitted, gets the user input and calls api method 
+     */
+    private async Task OnValidFormSubmission()
+    {
+        await GetStockNews();
+    }
+
+    /*
+     * Get the stock news api call result
+     */
+    public async Task GetStockNews()
+    {
+        _results = await Client.GetCompanyNewsAsync(_searchModel.CompanyName);
     }
 
 }
