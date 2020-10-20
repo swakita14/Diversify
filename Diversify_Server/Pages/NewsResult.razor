@@ -1,7 +1,7 @@
 ﻿
 @inject ICompanyNewsService Client
 
-@if (_results != null)
+@if (!(_results is null))
 {
     <table class="table table-striped">
         <thead class="thead-light">

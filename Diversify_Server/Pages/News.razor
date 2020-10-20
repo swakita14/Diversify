@@ -14,18 +14,23 @@
 </EditForm>
 <br />
 
-<NewsResult SearchString="@searchModel.CompanyName"></NewsResult>
+@if (_newsIfFound)
+{
+    <NewsResult SearchString="@searchModel.CompanyName"></NewsResult>
+}
+
 
 
 
 @code {
 
+    private bool _newsIfFound = false;
     StockNewsSearchModel searchModel = new StockNewsSearchModel();
-    private bool _isFormSubmitted = false;
+
 
     private void OnValidFormSubmission()
     {
-        
+        _newsIfFound = true;
     }
 
 }

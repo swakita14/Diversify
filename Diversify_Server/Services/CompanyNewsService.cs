@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -30,8 +31,11 @@ namespace Diversify_Server.Services
             // Call the API with the parameter
             try
             {
+                // Debugging, only allowed me to do it this way
+                string apiKey = _configuration["NewsApi:ApiKey"];
+
                 // Parse the JSON response into model 
-                resultList = await _client.GetFromJsonAsync<NewsSearchResult>($"everything?q={keyword}&apikey={_configuration["NewsApi:ApiKey"]}");
+                resultList = await _client.GetFromJsonAsync<NewsSearchResult>($"everything?q={keyword}&apiKey={apiKey}");
             }
             catch (Exception ex)
             {
