@@ -1,51 +1,79 @@
 ﻿@page "/search"
+@using System.Globalization
 
+@inject IStockSearchService Client
 
 <h3>Search</h3>
 
-<!-- Search form -->
-<input class="form-control" @onkeydown="KeyHandler" />
+<EditForm Model="@_searchModel" OnValidSubmit="@OnValidFormSubmission">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Company Name" @bind="_searchModel.CompanyName" />
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </div>
+</EditForm>
 <br />
 
-@if(_count >=2){
-    <SearchResult SearchString=@_searchString></SearchResult>
+@if (!(_results is null))
+{
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Symbol</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+        </thead>
+        @foreach (var company in _results.BestMatches)
+        {
+            <tbody>
+            <tr>
+
+                <td>@company.Symbol</td>
+                <td>@company.Name</td>
+                <td>
+                    <a href="#link" class="btn btn-outline-info" role="button">Detail</a>
+                    <a href="#link" class="btn btn-outline-success" role="button">Add Stock</a>
+                </td>
+            </tr>
+            </tbody>
+        }
+    </table>
 }
 
 
 @code {
 
-    private int _count;
-    private string _searchString;
+    private StockNewsSearchModel _searchModel;
+    private SearchModelList _results;
+
+    /**
+     * Creates new model for the search
+     */
+    protected override void OnInitialized()
+    {
+        _searchModel = new StockNewsSearchModel();
+    }
 
 
     /**
-     * Method to handle the keypress events to dynamically search
+     * When form submitted, gets the user input and calls api method
      */
-    private void KeyHandler(KeyboardEventArgs e)
+    private async Task OnValidFormSubmission()
     {
-        // If backspace is pressed subtract from the count and remove logged string
-        if (e.Key.Equals("Backspace"))
-        {
-            // Subtract string if there are any
-            if (string.IsNullOrWhiteSpace(_searchString) == false)
-            {
-                _searchString = _searchString.Remove(_searchString.Length - 1);
-                _searchString += "";
-                _count = _searchString.Length;
-            }
-
-        }
-        else if (e.Key.Equals("Shift"))
-        {
-            // Don't capture shift key as well
-            _searchString += "";
-        }
-        else
-        {
-            // Log the string for search
-            _searchString += e.Key;
-            _count = _searchString.Length;
-        }
+        await GetStockNews();
     }
 
+    /*
+     * Get the stock news api call result
+     */
+    public async Task GetStockNews()
+    {
+        _results = await Client.GetStockAsync(_searchModel.CompanyName);
+    }
 }
+
+

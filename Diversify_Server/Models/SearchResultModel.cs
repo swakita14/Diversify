@@ -39,7 +39,10 @@ namespace Diversify_Server.Models
 
         [JsonPropertyName("9. matchScore")]
         public string MatchScore
-        { get; set; } 
+        {
+            get;
+            set;
+        }
     }
 
     public class SearchModelList

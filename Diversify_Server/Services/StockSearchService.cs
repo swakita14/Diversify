@@ -33,7 +33,8 @@ namespace Diversify_Server.Services
             try
             {
                 // Parse the JSON to C# model
-                resultList = await _client.GetFromJsonAsync<SearchModelList>($"query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={_configuration["StockApi:ApiKey"]}");
+                resultList = await _client.GetFromJsonAsync<SearchModelList>(
+                    $"query?function=SYMBOL_SEARCH&keywords={keyword}&apikey={_configuration["StockApi:ApiKey"]}");
             }
             catch (Exception ex)
             {
