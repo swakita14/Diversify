@@ -1,0 +1,47 @@
+﻿
+@page "/overview/{Symbol}"
+
+@inject ICompanyOverviewService Client
+
+<h3>CompanyOverview</h3>
+
+<h2>This is the details for: @Symbol</h2>
+
+@if (!(_results is null))
+{
+    <div class="jumbotron">
+        <h1 class="display-4">@_results.Name</h1>
+        <p class="lead">@TruncateAtWord(_results.Description, 5)</p>
+        <hr class="my-4">
+        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public string Symbol { get; set; }
+
+    private CompanyOverviewModel _results;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetCompanyOverview();
+    }
+
+    public async Task GetCompanyOverview()
+    {
+        _results = await Client.GetCompanyOverviewAsync(Symbol);
+    }
+
+    public static string TruncateAtWord(string input, int length)
+    {
+        if (input == null || input.Length < length)
+            return input;
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
+    }
+
+
+
+}

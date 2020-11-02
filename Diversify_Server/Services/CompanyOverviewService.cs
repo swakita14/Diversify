@@ -25,11 +25,14 @@ namespace Diversify_Server.Services
             // Initialize new model
             CompanyOverviewModel overview = new CompanyOverviewModel();
 
+            // Getting ApiKey from Config 
+            var apiKey = _configuration["StockApi:ApiKey"];
+
             // Call API with stock symbol
             try
             {
                 overview = await _client.GetFromJsonAsync<CompanyOverviewModel>(
-                    $"query?function=OVERVIEW&symbol={symbol}apikey={_configuration["StockApi:ApiKey"]}");
+                    $"query?function=OVERVIEW&symbol={symbol}&apikey={apiKey}");
             }
             catch (Exception e)
             {

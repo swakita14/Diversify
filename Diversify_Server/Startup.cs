@@ -48,6 +48,11 @@ namespace Diversify_Server
             {
                 client.BaseAddress = new Uri(newsUri);
             });
+            
+            services.AddHttpClient<ICompanyOverviewService,CompanyOverviewService>(client =>
+            {
+                client.BaseAddress = new Uri(stockSearchUri);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

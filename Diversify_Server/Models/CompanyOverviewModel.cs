@@ -8,6 +8,8 @@ namespace Diversify_Server.Models
     {
         [JsonPropertyName("Symbol")] public string Symbol { get; set; }
 
+        [JsonPropertyName("AssetType")] public string AssetType { get; set; }
+
         [JsonPropertyName("Name")] public string Name { get; set; }
 
         [JsonPropertyName("Description")] public string Description { get; set; }
@@ -16,12 +18,25 @@ namespace Diversify_Server.Models
 
         [JsonPropertyName("Currency")] public string Currency { get; set; }
 
+        [JsonPropertyName("Country")] public string Country { get; set; }
+
         [JsonPropertyName("Sector")] public string Sector { get; set; }
 
         [JsonPropertyName("Industry")] public string Industry { get; set; }
 
+        [JsonPropertyName("Address")] public string Address { get; set; }
+
+        [JsonPropertyName("FullTimeEmployees")]
+        public string FullTimeEmployees { get; set; }
+
+        [JsonPropertyName("FiscalYearEnd")] public string FiscalYearEnd { get; set; }
+
+        [JsonPropertyName("LatestQuarter")] public string LatestQuarter { get; set; }
+
         [JsonPropertyName("MarketCapitalization")]
         public string MarketCapitalization { get; set; }
+
+        [JsonPropertyName("EBITDA")] public string EBITDA { get; set; }
 
         [JsonPropertyName("PERatio")] public string PERatio { get; set; }
 
@@ -73,14 +88,21 @@ namespace Diversify_Server.Models
 
         [JsonPropertyName("PriceToBookRatio")] public string PriceToBookRatio { get; set; }
 
+        [JsonPropertyName("EVToRevenue")] public string EVToRevenue { get; set; }
+
+        [JsonPropertyName("EVToEBITDA")] public string EVToEBITDA { get; set; }
+
         [JsonPropertyName("Beta")] public string Beta { get; set; }
 
-        [JsonPropertyName("52WeekHigh")] public string YearHigh { get; set; }
+        [JsonPropertyName("52WeekHigh")] public string FiftyTwoWeekHigh { get; set; }
 
-        [JsonPropertyName("52WeekLow")] public string YearLow { get; set; }
+        [JsonPropertyName("52WeekLow")] public string FiftyTwoWeekLow { get; set; }
+
+        [JsonPropertyName("50DayMovingAverage")]
+        public string FiftyDayMovingAverage { get; set; }
 
         [JsonPropertyName("200DayMovingAverage")]
-        public string MovingAverage { get; set; }
+        public string TwoHundredDayMovingAverage { get; set; }
 
         [JsonPropertyName("SharesOutstanding")]
         public string SharesOutstanding { get; set; }
@@ -120,10 +142,11 @@ namespace Diversify_Server.Models
         [JsonPropertyName("LastSplitFactor")] public string LastSplitFactor { get; set; }
 
         [JsonPropertyName("LastSplitDate")] public string LastSplitDate { get; set; }
-
     }
 }
 
 
-    
+
+
+
 
