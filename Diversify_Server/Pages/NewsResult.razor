@@ -1,0 +1,45 @@
+﻿@inject ICompanyNewsService Client
+
+@if (_results.Articles!= null && _results!=null)
+{
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Published</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        @foreach (var company in _results.Articles)
+        {
+            <tbody>
+                <tr>
+
+                    <td>@company.Title</td>
+                    <td>@company.Author</td>
+                    <td>@company.Description</td>
+                    <td>@company.PublishedAt</td>
+                    <td><a href="@company.Url">Link</a></td>
+
+                </tr>
+            </tbody>
+        }
+    </table>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public string CompanyName { get; set; }
+
+    private NewsSearchResult _results = new NewsSearchResult();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _results = await Client.GetCompanyNewsAsync(CompanyName);
+    }
+}

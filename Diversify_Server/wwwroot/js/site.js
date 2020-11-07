@@ -1,11 +1,11 @@
-﻿function saveMessage() {
-    alert("Hello World");
-}
+﻿//function saveMessage() {
+//    alert("Hello World");
+//}
 
-function organizeTable() {
-    $(document).ready(function () {
-        var table = $('#stockTable').DataTable();
-    });
+//function organizeTable() {
+//    $(document).ready(function () {
+//        var table = $('#stockTable').DataTable();
+//    });
 
-    alert("Hello World");
-}
+//    alert("Hello World");
+//}

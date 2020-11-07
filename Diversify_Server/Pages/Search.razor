@@ -1,6 +1,4 @@
 ﻿@page "/search"
-@using System.Threading
-@using System.Security.Cryptography
 
 @inject IStockSearchService Client
 @inject IJSRuntime JsRuntime
@@ -28,7 +26,7 @@
         </tr>
     </thead>
 
-    @if (_isLoaded)
+    @if (!(_results is null))
     {
         @foreach (var company in _results.BestMatches)
         {
@@ -56,15 +54,13 @@
 
     private StockNewsSearchModel _searchModel;
     private SearchModelList _results;
-    private bool _isLoaded = false;
 
     /**
      * Creates new model for the search
      */
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _searchModel = new StockNewsSearchModel();
-        await JsRuntime.InvokeVoidAsync("organizeTable");
     }
 
     /**
@@ -72,18 +68,9 @@
      */
     private async Task OnValidFormSubmission()
     {
-        await GetStockNews();
-        _isLoaded = true;
-        await JsRuntime.InvokeVoidAsync("organizeTable");
-    }
-
-    /*
-     * Get the stock news api call result
-     */
-    public async Task GetStockNews()
-    {
         _results = await Client.GetStockAsync(_searchModel.CompanyName);
     }
+
 }
 
 

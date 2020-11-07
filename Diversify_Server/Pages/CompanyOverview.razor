@@ -6,9 +6,44 @@
 @if (!(_results is null))
 {
     <div class="jumbotron">
-        <h3 class="display-4">@_results.Name (@_results.Symbol)</h3>
+        <h5>@_results.Name (@_results.Symbol)</h5>
         <p class="lead">@TruncateAtWord(_results.Description, 300)</p>
         <hr class="my-4" />
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <b>Sector:</b><p>@_results.Sector</p>
+                </div>
+                <div class="col-sm">
+                    <b>Industry:</b><p>@_results.Industry</p>
+                </div>
+                <div class="col-sm">
+                    <b>Exchange:</b><p>@_results.Exchange</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <b>EPS:</b><p>@_results.EPS</p>
+                </div>
+                <div class="col-sm">
+                    <b>Div/Yield:</b><p>@_results.DividendYield</p>
+                </div>
+                <div class="col-sm">
+                    <b>Ex-Dividend Date:</b><p>@_results.ExDividendDate</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <b>Profit Margin:</b><p>@_results.ProfitMargin</p>
+                </div>
+                <div class="col-sm">
+                    <b>Payout Ratio:</b><p>@_results.PayoutRatio</p>
+                </div>
+                <div class="col-sm">
+                    <b>PE Ratio:</b><p>@_results.PERatio</p>
+                </div>
+            </div>
+        </div>
     </div>
 }
 
