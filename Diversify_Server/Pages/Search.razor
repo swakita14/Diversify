@@ -1,11 +1,8 @@
 ﻿@page "/search"
 
-@inject IStockSearchService Client
-@inject IJSRuntime JsRuntime
-
 <link href="" />
 
-<EditForm Model="@_searchModel" OnValidSubmit="@OnValidFormSubmission">
+<EditForm Model="@_searchModel">
     <div class="row">
         <div class="col">
             <input type="text" class="form-control" placeholder="Company Name" @bind="_searchModel.CompanyName" />
@@ -17,35 +14,7 @@
 </EditForm>
 <br />
 
-<table class="table table-striped" id="stockTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th></th>
-        </tr>
-    </thead>
-
-    @if (!(_results is null))
-    {
-        @foreach (var company in _results.BestMatches)
-        {
-            <tbody>
-                <tr>
-
-                    <td>@company.Symbol</td>
-                    <td>@company.Name</td>
-                    <td>
-                        <a href="/overview/@company.Symbol" class="btn btn-outline-info" role="button">Detail</a>
-                        <a href="#link" class="btn btn-outline-success" role="button">Add Stock</a>
-                    </td>
-                </tr>
-            </tbody>
-        }
-    }
-
-
-</table>
+<_StockSearchResult CompanyName="@_searchModel.CompanyName"></_StockSearchResult>
 
 
 
@@ -53,7 +22,6 @@
 @code {
 
     private StockNewsSearchModel _searchModel;
-    private SearchModelList _results;
 
     /**
      * Creates new model for the search
@@ -63,13 +31,6 @@
         _searchModel = new StockNewsSearchModel();
     }
 
-    /**
-     * When form submitted, gets the user input and calls api method
-     */
-    private async Task OnValidFormSubmission()
-    {
-        _results = await Client.GetStockAsync(_searchModel.CompanyName);
-    }
 
 }
 

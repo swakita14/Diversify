@@ -12,14 +12,14 @@
                 <th>Link</th>
             </tr>
         </thead>
-        @foreach (var company in _results.Articles)
+        @foreach (var company in _results.Articles.Take(8))
         {
             <tbody>
                 <tr>
 
                     <td>@company.Title</td>
                     <td>@company.Author</td>
-                    <td>@company.Description</td>
+                    <td>@TruncateAtWord(company.Description, 100)</td>
                     <td>@company.PublishedAt</td>
                     <td><a href="@company.Url">Link</a></td>
 
@@ -41,5 +41,13 @@
     protected override async Task OnParametersSetAsync()
     {
         _results = await Client.GetCompanyNewsAsync(CompanyName);
+    }
+
+    public static string TruncateAtWord(string input, int length)
+    {
+        if (input == null || input.Length < length)
+            return input;
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
     }
 }
