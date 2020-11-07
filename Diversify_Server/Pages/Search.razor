@@ -1,8 +1,11 @@
 ﻿@page "/search"
+@using System.Threading
+@using System.Security.Cryptography
 
 @inject IStockSearchService Client
+@inject IJSRuntime JsRuntime
 
-<h3>Search</h3>
+<link href="" />
 
 <EditForm Model="@_searchModel" OnValidSubmit="@OnValidFormSubmission">
     <div class="row">
@@ -16,47 +19,53 @@
 </EditForm>
 <br />
 
-@if (!(_results is null))
-{
-    <table class="table table-striped">
-        <thead class="thead-dark">
+<table class="table table-striped" id="stockTable">
+    <thead class="thead-dark">
         <tr>
             <th>Symbol</th>
             <th>Name</th>
             <th></th>
         </tr>
-        </thead>
+    </thead>
+
+    @if (_isLoaded)
+    {
         @foreach (var company in _results.BestMatches)
         {
             <tbody>
-            <tr>
+                <tr>
 
-                <td>@company.Symbol</td>
-                <td>@company.Name</td>
-                <td>
-                    <a href="/overview/@company.Symbol" class="btn btn-outline-info" role="button">Detail</a>
-                    <a href="#link" class="btn btn-outline-success" role="button">Add Stock</a>
-                </td>
-            </tr>
+                    <td>@company.Symbol</td>
+                    <td>@company.Name</td>
+                    <td>
+                        <a href="/overview/@company.Symbol" class="btn btn-outline-info" role="button">Detail</a>
+                        <a href="#link" class="btn btn-outline-success" role="button">Add Stock</a>
+                    </td>
+                </tr>
             </tbody>
         }
-    </table>
-}
+    }
+
+
+</table>
+
+
 
 
 @code {
 
     private StockNewsSearchModel _searchModel;
     private SearchModelList _results;
+    private bool _isLoaded = false;
 
     /**
      * Creates new model for the search
      */
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _searchModel = new StockNewsSearchModel();
+        await JsRuntime.InvokeVoidAsync("organizeTable");
     }
-
 
     /**
      * When form submitted, gets the user input and calls api method
@@ -64,6 +73,8 @@
     private async Task OnValidFormSubmission()
     {
         await GetStockNews();
+        _isLoaded = true;
+        await JsRuntime.InvokeVoidAsync("organizeTable");
     }
 
     /*
