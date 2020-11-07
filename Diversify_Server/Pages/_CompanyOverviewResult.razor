@@ -1,0 +1,67 @@
+﻿@inject ICompanyOverviewService Client
+
+@if (_results != null)
+{
+    <div class="jumbotron">
+        <h5>@_results.Name (@_results.Symbol)</h5>
+        <p class="lead">@TruncateAtWord(_results.Description, 300)</p>
+        <hr class="my-4" />
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <b>Sector:</b><p>@_results.Sector</p>
+                </div>
+                <div class="col-sm">
+                    <b>Industry:</b><p>@_results.Industry</p>
+                </div>
+                <div class="col-sm">
+                    <b>Exchange:</b><p>@_results.Exchange</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <b>EPS:</b><p>@_results.EPS</p>
+                </div>
+                <div class="col-sm">
+                    <b>Div/Yield:</b><p>@_results.DividendYield</p>
+                </div>
+                <div class="col-sm">
+                    <b>Ex-Dividend Date:</b><p>@_results.ExDividendDate</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <b>Profit Margin:</b><p>@_results.ProfitMargin</p>
+                </div>
+                <div class="col-sm">
+                    <b>Payout Ratio:</b><p>@_results.PayoutRatio</p>
+                </div>
+                <div class="col-sm">
+                    <b>PE Ratio:</b><p>@_results.PERatio</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string CompanySymbol { get; set; }
+
+    private CompanyOverviewModel _results = new CompanyOverviewModel();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _results = await Client.GetCompanyOverviewAsync(CompanySymbol);
+    }
+
+    public static string TruncateAtWord(string input, int length)
+    {
+        if (input == null || input.Length < length)
+            return input;
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
+    }
+
+}
