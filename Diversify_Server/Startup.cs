@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Diversify_Server.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Diversify_Server.Interfaces;
 using Diversify_Server.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Diversify_Server
 {
@@ -28,6 +30,10 @@ namespace Diversify_Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // Registering dbcontext
+            services.AddDbContext<DiversifyContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
             // Initializing as string
             string stockSearchUri = Configuration["StockApi:BaseUri"];
             string newsUri = Configuration["NewsApi:BaseUri"];
