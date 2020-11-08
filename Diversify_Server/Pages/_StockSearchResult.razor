@@ -1,6 +1,5 @@
-﻿@using Microsoft.Extensions.Logging
+﻿
 @inject IStockSearchService Client
-@inject IJSRuntime JsRuntime
 
 @if (_results != null && _results.BestMatches != null)
 {
@@ -14,7 +13,7 @@
         </thead>
 
 
-        @foreach (var company in _results.BestMatches)
+        @foreach (var company in _results.BestMatches.Take(8))
         {
             <tbody>
                 <tr>
@@ -44,6 +43,5 @@
     protected override async Task OnParametersSetAsync()
     {
         _results = await Client.GetStockAsync(CompanyName);
-        await JsRuntime.InvokeVoidAsync("RenderStockTable");
     }
 }
