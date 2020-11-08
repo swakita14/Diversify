@@ -35,7 +35,7 @@ namespace Diversify_Server.Services
                 string apiKey = _configuration["NewsApi:ApiKey"];
 
                 // Parse the JSON response into model 
-                resultList = await _client.GetFromJsonAsync<NewsSearchResult>($"everything?q={keyword}&apiKey={apiKey}");
+                resultList = await _client.GetFromJsonAsync<NewsSearchResult>($"everything?domains=marketwatch.com&q={keyword}&apiKey={apiKey}");
             }
             catch (Exception ex)
             {

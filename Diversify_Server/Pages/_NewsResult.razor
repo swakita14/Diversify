@@ -13,7 +13,7 @@
             </tr>
         </thead>
 
-        @foreach (var company in _results.Articles.Take(8))
+        @foreach (var company in _results.Articles.OrderByDescending(x => x.PublishedAt).Take(8))
         {
             <tbody>
                 <tr>
@@ -41,7 +41,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _results = await Client.GetCompanyNewsAsync(CompanyName);
+        if (!string.IsNullOrEmpty(CompanyName))
+        {
+            _results = await Client.GetCompanyNewsAsync(CompanyName);
+        }
+
     }
 
     public static string TruncateAtWord(string input, int length)
