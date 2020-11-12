@@ -1,0 +1,35 @@
+﻿@page "/news"
+
+@inject ICompanyNewsService Client
+
+<EditForm Model="@_searchModel">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Company Name" @bind="_searchModel.CompanyName" />
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </div>
+</EditForm>
+<br />
+
+<_NewsResult CompanyName="@_searchModel.CompanyName"></_NewsResult>
+
+
+
+@code {
+
+    private StockNewsSearchModel _searchModel;
+
+
+    /**
+     * Creates new model for the search
+     */
+    protected override void OnInitialized()
+    {
+        _searchModel = new StockNewsSearchModel();
+    }
+
+
+}

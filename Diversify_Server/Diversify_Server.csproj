@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>153c63c4-7745-4c4b-9653-cd016b24b31c</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+  </ItemGroup>
 
 </Project>

@@ -1,0 +1,47 @@
+﻿
+@inject IStockSearchService Client
+
+@if (_results != null && _results.BestMatches != null)
+{
+    <table class="table table-striped" id="stockTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>Symbol</th>
+                <th>Name</th>
+                <th></th>
+            </tr>
+        </thead>
+
+
+        @foreach (var company in _results.BestMatches.Take(8))
+        {
+            <tbody>
+                <tr>
+
+                    <td>@company.Symbol</td>
+                    <td>@company.Name</td>
+                    <td>
+                        <a href="/overview/@company.Symbol" class="btn btn-outline-info" role="button">Detail</a>
+                        <a href="#link" class="btn btn-outline-success" role="button">Add Stock</a>
+                    </td>
+                </tr>
+            </tbody>
+        }
+
+
+
+    </table>
+}
+
+@code {
+
+    [Parameter]
+    public string CompanyName { get; set; }
+
+    private SearchModelList _results = new SearchModelList();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _results = await Client.GetStockAsync(CompanyName);
+    }
+}

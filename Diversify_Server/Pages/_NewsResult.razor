@@ -1,0 +1,60 @@
+﻿@inject ICompanyNewsService Client
+
+@if (_results.Articles != null && _results != null)
+{
+    <table class="table table-striped" id="example">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Description</th>
+                <th>Published</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+
+        @foreach (var company in _results.Articles.OrderByDescending(x => x.PublishedAt).Take(8))
+        {
+            <tbody>
+                <tr>
+
+                    <td>@company.Title</td>
+                    <td>@company.Author</td>
+                    <td>@TruncateAtWord(company.Description, 100)</td>
+                    <td>@company.PublishedAt</td>
+                    <td><a href="@company.Url">Link</a></td>
+
+                </tr>
+            </tbody>
+        }
+
+    </table>
+}
+
+
+@code {
+
+    [Parameter]
+    public string CompanyName { get; set; }
+
+    private NewsSearchResult _results = new NewsSearchResult();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrEmpty(CompanyName))
+        {
+            _results = await Client.GetCompanyNewsAsync(CompanyName);
+        }
+
+    }
+
+    public static string TruncateAtWord(string input, int length)
+    {
+        if (input == null || input.Length < length)
+            return input;
+        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
+        return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
+    }
+
+
+}
