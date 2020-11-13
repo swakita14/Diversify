@@ -15,6 +15,7 @@ using Diversify_Server.Interfaces;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diversify_Server
@@ -34,7 +35,17 @@ namespace Diversify_Server
         {
             // Registering dbcontext
             services.AddDbContext<DiversifyContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));            
+            
+            // Registering DbContext for application user
+            services.AddDbContext<IdentityContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<IdentityContext>();
+
+            // Adds cookie authentication service 
+            services.AddAuthentication("Identity.Application").AddCookie();
 
             // Initializing as string
             string stockSearchUri = Configuration["StockApi:BaseUri"];
@@ -87,6 +98,7 @@ namespace Diversify_Server
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
