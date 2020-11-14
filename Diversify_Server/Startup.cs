@@ -15,6 +15,8 @@ using Diversify_Server.Interfaces;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +45,8 @@ namespace Diversify_Server
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<IdentityContext>();
+
+            services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
             // Adds cookie authentication service 
             services.AddAuthentication("Identity.Application").AddCookie();
@@ -99,9 +103,11 @@ namespace Diversify_Server
 
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
