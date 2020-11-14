@@ -19,5 +19,7 @@ namespace Diversify_Server.Models.Database
         public decimal? PayoutRatio { get; set; }
         public int Sector { get; set; }
         public int Industry { get; set; }
+
+        public string User { get; set; }
     }
 }

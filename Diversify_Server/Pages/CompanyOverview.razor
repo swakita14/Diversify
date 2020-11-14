@@ -2,15 +2,15 @@
 @page "/overview/{Symbol}"
 
 @inject ICompanyOverviewService Client
-
+@attribute [Authorize]
 
 <_CompanyOverviewResult CompanySymbol="@Symbol"></_CompanyOverviewResult>
 <_NewsResult CompanyName="@Symbol"></_NewsResult>
 
 
 
+
 @code {
     [Parameter]
     public string Symbol { get; set; }
-
 }

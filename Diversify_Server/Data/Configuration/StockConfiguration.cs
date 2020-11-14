@@ -69,6 +69,12 @@ namespace Diversify_Server.Data.Configuration
                 .HasColumnType("int")
                 .IsRequired();
 
-		}
+            builder.Property(x => x.User)
+                .HasColumnName("User")
+                .HasColumnType("nvarchar")
+                .HasMaxLength(900)
+                .IsRequired();
+
+        }
 	}
 }
