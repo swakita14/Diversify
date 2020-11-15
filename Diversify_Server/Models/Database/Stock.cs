@@ -21,5 +21,7 @@ namespace Diversify_Server.Models.Database
         public int Industry { get; set; }
 
         public string User { get; set; }
+
+        public decimal? InvestmentAmount { get; set; }
     }
 }

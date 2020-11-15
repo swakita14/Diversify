@@ -1,0 +1,60 @@
+﻿@page "/addStock"
+@inject IJSRuntime JsRuntime
+
+
+<div>
+    <div class="modal fade" id="stockModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="txtProdcutName">Name</label>
+                            <input type="text" class="form-control" id="txtProductName">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtBrand">Brand Name</label>
+                            <input type="text" class="form-control" id="txtBrand">
+                        </div>
+                        <div class="form-group">
+                            <label for="txtCost">Cost</label>
+                            <input type="text" class="form-control" id="txtCost">
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlType">Gadget Type</label>
+                            <select class="form-control" id="ddlType">
+                                <option value="mobile">Mobile</option>
+                                <option value="laptop">Laptop</option>
+                                <option value="Computer">Computer</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    public async Task OpenModal(string modalId, int itemId)
+    {
+    
+        await JsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+    public async Task CloseModal(string modalId)
+    {
+        await JsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+    }
+}

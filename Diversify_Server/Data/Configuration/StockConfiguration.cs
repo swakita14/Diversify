@@ -58,6 +58,10 @@ namespace Diversify_Server.Data.Configuration
             builder.Property(x => x.PayoutRatio)
                 .HasColumnName("PayoutRatio")
                 .HasColumnType("decimal");
+            
+            builder.Property(x => x.InvestmentAmount)
+                .HasColumnName("InvestmentAmount")
+                .HasColumnType("decimal");
 
             builder.Property(x => x.Sector)
                 .HasColumnName("Sector")
