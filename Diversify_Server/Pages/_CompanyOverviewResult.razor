@@ -58,14 +58,9 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        @*<input type="hidden" @bind="@_results.Id" id="gadgetId">
-                        <input type="hidden" @bind="Model.Id" id="gadgetId">
-                        <input type="hidden" @bind="Model.Id" id="gadgetId">
-                        <input type="hidden" @bind="Model.Id" id="gadgetId">
-                        <input type="hidden" @bind="Model.Id" id="gadgetId">*@
                         <div class="form-group">
                             <label for="txtProdcutName">Investment Amount</label>
-                            <input type="text" class="form-control" id="txtProductName">
+                            <input type="text" class="form-control" @bind="@_results." id="txtProductName">
                         </div>
                     </form>
                 </div>
