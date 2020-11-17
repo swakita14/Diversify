@@ -1,0 +1,16 @@
+﻿
+@if (_displayModal)
+{
+    <h2>Helllo World</h2>
+}
+
+@code {
+    private bool _displayModal;
+
+    public void ShowModal()
+    {
+        _displayModal = true;
+        StateHasChanged();
+    }
+
+}

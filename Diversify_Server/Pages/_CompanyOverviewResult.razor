@@ -1,5 +1,5 @@
 ﻿@inject ICompanyOverviewService Client
-@inject IJSRuntime JsRuntime
+
 
 @if (_results != null)
 {
@@ -42,36 +42,13 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-primary" type="button" @onclick='@(e => OpenModal("stockModal",0))'>Add Gadget</button>
+        <button class="btn btn-primary" type="button" @onclick='(() => { _child.ShowModal();})'>Add Gadget</button>
     </div>
 }
 
-<div>
-    <div class="modal fade" id="stockModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="txtProdcutName">Investment Amount</label>
-                            <input type="text" class="form-control" @bind="@_results." id="txtProductName">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<_AddStock @ref="_child"></_AddStock>
+
+
 
 @code {
 
@@ -79,6 +56,8 @@
     public string CompanySymbol { get; set; }
 
     private CompanyOverviewModel _results = new CompanyOverviewModel();
+
+    private _AddStock _child;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -93,16 +72,5 @@
         return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
     }
 
-
-    public async Task OpenModal(string modalId, int itemId)
-    {
-
-        await JsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
-    public async Task CloseModal(string modalId)
-    {
-        await JsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
 }
