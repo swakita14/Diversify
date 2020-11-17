@@ -40,14 +40,14 @@ namespace Diversify_Server.Repositories
             _context.SaveChanges();
         }
 
-        public List<Stock> GetStockBySector(int sectorId)
+        public async Task<List<Stock>> GetStockBySector(int sectorId)
         {
-            return _context.Stock.Where(x => x.Sector == sectorId).ToList();
+            return await _context.Stock.Where(x => x.Sector == sectorId).ToListAsync();
         }
         
-        public List<Stock> GetStockByIndustry(int industryId)
+        public async Task<List<Stock>> GetStockByIndustry(int industryId)
         {
-            return _context.Stock.Where(x => x.Industry == industryId).ToList();
+            return await _context.Stock.Where(x => x.Industry == industryId).ToListAsync();
         }
     }
 }

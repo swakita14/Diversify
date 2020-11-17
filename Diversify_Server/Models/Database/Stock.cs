@@ -22,6 +22,6 @@ namespace Diversify_Server.Models.Database
 
         public string User { get; set; }
 
-        public decimal? InvestmentAmount { get; set; }
+        public decimal InvestmentAmount { get; set; }
     }
 }

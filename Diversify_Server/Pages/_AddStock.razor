@@ -1,4 +1,6 @@
-﻿@inject IStockRepository StockRepository
+﻿@using Diversify_Server.Models.Database
+
+@inject IStockRepository StockRepository
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -16,11 +18,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <EditForm Model="@_stock">
+                    <label for="invested-amount">Amount Invested</label>
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                </EditForm>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @onclick="(() => AddStock(Overview, amount))">Save changes</button>
+                <button type="button" class="btn btn-primary" @onclick="(() => AddStock(Overview, _stock.InvestmentAmount))">Save changes</button>
             </div>
         </div>
     </div>
@@ -31,8 +36,7 @@
     [Parameter]
     public CompanyOverviewModel Overview { get; set; }
 
-    // Two way bind the amount of the investment
-    private decimal amount;
+    private Stock _stock = new Stock();
 
     public void AddStock(CompanyOverviewModel model, decimal investmentAmount)
     {
