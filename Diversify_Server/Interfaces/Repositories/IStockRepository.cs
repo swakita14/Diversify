@@ -5,7 +5,7 @@ namespace Diversify_Server.Interfaces.Repositories
 {
     public interface IStockRepository
     {
-        Stock AddStock(Stock stock);
+        void AddStock(Stock stock);
         void DeleteStock(Stock stock);
         void Edit(Stock restaurant);
         List<Stock> GetStockBySector(int sectorId);

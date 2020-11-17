@@ -17,12 +17,10 @@ namespace Diversify_Server.Repositories
             _context = context;
         }
 
-        public Stock AddStock(Stock stock)
+        public void AddStock(Stock stock)
         {
             _context.Stock.Add(stock);
             _context.SaveChanges();
-
-            return stock;
         }
 
         public void DeleteStock(Stock stock)
