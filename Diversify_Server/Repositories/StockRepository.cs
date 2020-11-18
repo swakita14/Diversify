@@ -18,6 +18,9 @@ namespace Diversify_Server.Repositories
             _context = context;
         }
 
+        /**
+         *  Adding Stock
+         */
         public void AddStock(Stock stock)
         {
             _context.Stock.Add(stock);
@@ -34,22 +37,34 @@ namespace Diversify_Server.Repositories
             _context.SaveChanges();
         }
 
-        public void Edit(Stock restaurant)
+        /**
+         * Edit the stock information
+         */
+        public void Edit(Stock stock)
         {
-            _context.Entry(restaurant).State = EntityState.Modified;
+            _context.Entry(stock).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
+        /**
+         * Retrieve stocks by sector 
+         */
         public async Task<List<Stock>> GetStockBySector(int sectorId)
         {
             return await _context.Stock.Where(x => x.Sector == sectorId).ToListAsync();
         }
-        
+
+        /**
+         * Retrieve stocks by industry 
+         */
         public async Task<List<Stock>> GetStockByIndustry(int industryId)
         {
             return await _context.Stock.Where(x => x.Industry == industryId).ToListAsync();
         }
 
+        /**
+         * Retrieve stocks by user id  
+         */
         public async Task<List<Stock>> GetStockByUserId(string userId)
         {
             return await _context.Stock.Where(x => x.User == userId).ToListAsync();

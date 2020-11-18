@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Diversify_Server.Interfaces;
+using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
@@ -45,6 +45,9 @@ namespace Diversify_Server
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<IdentityContext>();
+
+            // Adding this for getting user information
+            services.AddHttpContextAccessor();
 
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
