@@ -49,5 +49,10 @@ namespace Diversify_Server.Repositories
         {
             return await _context.Stock.Where(x => x.Industry == industryId).ToListAsync();
         }
+
+        public async Task<List<Stock>> GetStockByUserId(string userId)
+        {
+            return await _context.Stock.Where(x => x.User == userId).ToListAsync();
+        }
     }
 }

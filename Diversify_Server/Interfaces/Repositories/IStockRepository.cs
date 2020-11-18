@@ -11,5 +11,7 @@ namespace Diversify_Server.Interfaces.Repositories
         void Edit(Stock restaurant);
         Task<List<Stock>> GetStockBySector(int sectorId);
         Task<List<Stock>> GetStockByIndustry(int industryId);
+
+        Task<List<Stock>> GetStockByUserId(string userId);
     }
 }
