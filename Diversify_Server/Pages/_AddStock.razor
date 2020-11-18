@@ -1,7 +1,9 @@
 ﻿
 
 @inject IStockRepository StockRepository
+@inject ISectorRepository SectorRepository
 
+@inject IStockAddService StockAddService
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
     Launch demo modal
@@ -18,14 +20,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <EditForm Model="@_stock">
+                <EditForm Model="@_stock" OnValidSubmit="() => AddStock(Overview, _stock.InvestmentAmount)">
                     <label for="invested-amount">Amount Invested</label>
                     <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
                 </EditForm>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @onclick="(() => AddStock(Overview, _stock.InvestmentAmount))">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -38,12 +40,27 @@
 
     private Stock _stock = new Stock();
 
+    /**
+     * Method that would add the stock to the current signed on user
+     */
     public void AddStock(CompanyOverviewModel model, decimal investmentAmount)
     {
-        // Also need to add the investment
+        Stock newStock = new Stock()
+        {
+            Name = model.Name,
+            Symbol = model.Symbol,
+            DividendYield = model.DividendYield,
+            Sector = SectorRepository.GetSectorIdByName(model.Sector).SectorId,
+            InvestmentAmount = investmentAmount,
+            User = StockAddService.GetCurrentLoggedInUser()
+        };
+
+        StockRepository.AddStock(newStock);
+
+
     }
 
-    
+
 
 
 

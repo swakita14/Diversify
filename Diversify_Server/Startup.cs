@@ -49,6 +49,7 @@ namespace Diversify_Server
             // Adding this for getting user information
             services.AddHttpContextAccessor();
 
+            // Adding authentication
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
             // Adds cookie authentication service 
@@ -81,8 +82,15 @@ namespace Diversify_Server
                 client.BaseAddress = new Uri(stockSearchUri);
             });
 
+            // Registering services that do not need httpclient
+            services.AddScoped<IStockAddService, StockAddService>();
+
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<ISectorRepository, SectorRepository>();
+
+            
+            
 
 
         }

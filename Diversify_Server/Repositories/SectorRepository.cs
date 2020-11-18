@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using Diversify_Server.Data;
+using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Repositories
 {
-    public class SectorRepository
+    public class SectorRepository : ISectorRepository
     {
         private readonly DiversifyContext _context;
         public SectorRepository(DiversifyContext context)

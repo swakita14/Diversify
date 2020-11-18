@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
+using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models.Database;
 using Microsoft.AspNetCore.Http;
 
 namespace Diversify_Server.Services
 {
-    public class StockAddService
+    public class StockAddService : IStockAddService
     {
         private readonly IStockRepository _stockRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -29,6 +30,11 @@ namespace Diversify_Server.Services
 
             // Return all the stocks that the user has
             return await _stockRepository.GetStockByUserId(userId);
+        }
+
+        public string GetCurrentLoggedInUser()
+        {
+            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
     }
 }

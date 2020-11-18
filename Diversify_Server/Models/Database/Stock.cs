@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace Diversify_Server.Models.Database
 
         public string User { get; set; }
 
+        [Required]
         public decimal InvestmentAmount { get; set; }
     }
 }
