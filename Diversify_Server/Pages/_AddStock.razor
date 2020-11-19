@@ -29,8 +29,14 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
+                    @if (_success)
+                    {
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true">hello world</span>
+                    }
                 </div>
             </EditForm>
+
+
         </div>
     </div>
 </div>
@@ -41,12 +47,14 @@
     public CompanyOverviewModel Overview { get; set; }
 
     private Stock _stock = new Stock();
+    private bool _success = false;
 
     /**
      * Method that would add the stock to the current signed on user
      */
     public void AddStock(CompanyOverviewModel model, decimal investmentAmount)
     {
+        // Transferring information from api data to db model
         Stock newStock = new Stock()
         {
             Name = model.Name,
@@ -54,10 +62,20 @@
             DividendYield = model.DividendYield,
             Sector = SectorRepository.GetSectorIdByName(model.Sector).SectorId,
             InvestmentAmount = investmentAmount,
-            User = StockAddService.GetCurrentLoggedInUser()
+            User = StockAddService.GetCurrentLoggedInUser(),
+            Exchange = model.Exchange,
+            EPS = Convert.ToDecimal(model.EPS),
+            ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
+            PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
+            PERatio = Convert.ToDecimal(model.PERatio),
+            ProfitMargin = Convert.ToDecimal(model.ProfitMargin)
         };
 
+        // Adding stock object 
         StockRepository.AddStock(newStock);
+
+        // glyphicon 
+        _success = true;
 
 
     }
