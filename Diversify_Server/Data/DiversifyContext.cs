@@ -11,7 +11,6 @@ namespace Diversify_Server.Data
         {
         }
 
-        public DbSet<Industry> Industry { get; set; }
         public DbSet<Sector> Sector { get; set; }
         public DbSet<Stock> Stock { get; set; }
 
@@ -20,8 +19,6 @@ namespace Diversify_Server.Data
          */
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new IndustryConfiguration());
-            
             modelBuilder.ApplyConfiguration(new SectorConfiguration());
             
             modelBuilder.ApplyConfiguration(new StockConfiguration());

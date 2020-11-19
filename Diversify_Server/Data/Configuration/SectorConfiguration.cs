@@ -22,7 +22,7 @@ namespace Diversify_Server.Data.Configuration
 
             builder.Property(x => x.SectorName)
                 .HasColumnName("SectorName")
-                .HasColumnType("nchar");
+                .HasColumnType("nvarchar(64)");
         }
     }
 }

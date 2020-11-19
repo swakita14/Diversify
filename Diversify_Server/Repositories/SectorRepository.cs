@@ -18,11 +18,16 @@ namespace Diversify_Server.Repositories
          */
         public Sector GetSectorIdByName(string sectorName)
         {
-            Sector sector = _context.Sector.First(x => x.SectorName.Equals(sectorName)) ?? new Sector
+            Sector sector = _context.Sector.FirstOrDefault(x => x.SectorName == sectorName);
+
+            if (sector is null)
             {
-                SectorId = 13,
-                SectorName = "Others"
-            };
+                sector = new Sector
+                {
+                    SectorName = "Others",
+                    SectorId = 13
+                };
+            }
 
             return sector;
         }

@@ -55,14 +55,6 @@ namespace Diversify_Server.Repositories
         }
 
         /**
-         * Retrieve stocks by industry 
-         */
-        public async Task<List<Stock>> GetStockByIndustry(int industryId)
-        {
-            return await _context.Stock.Where(x => x.Industry == industryId).ToListAsync();
-        }
-
-        /**
          * Retrieve stocks by user id  
          */
         public async Task<List<Stock>> GetStockByUserId(string userId)
