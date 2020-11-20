@@ -46,6 +46,8 @@
             _results = await Client.GetCompanyNewsAsync(CompanyName);
         }
 
+        StateHasChanged();
+
     }
 
     public static string TruncateAtWord(string input, int length)
