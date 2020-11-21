@@ -54,6 +54,17 @@ namespace Diversify_Server.Repositories
             return await _context.Stock.Where(x => x.Sector == sectorId).ToListAsync();
         }
 
+        //public async Task<List<Stock>> GetStockByUserGroupBySector(string userId)
+        //{
+
+        //}
+
+        //public async Task<List<Stock>> GetStockByUserGroupByCompany(string userId)
+        //{
+        //    return await _context.Stock.Where(x => x.User == userId).GroupBy(y => y.Symbol).ToListAsync();
+
+        //}
+
         /**
          * Retrieve stocks by user id  
          */

@@ -1,0 +1,47 @@
+﻿@page "/transactions"
+
+@inject IStockPortfolioService StockAddService
+
+@attribute [Authorize]
+
+<h3>Portfolio</h3>
+
+<table class="table table-striped" id="example">
+    <thead class="thead-dark">
+        <tr>
+            <th>Company</th>
+            <th>Invested Amount</th>
+            <th>Dividend Yield</th>
+            <th>Sector</th>
+        </tr>
+    </thead>
+
+    @foreach (var stocks in _ownedStocks)
+    {
+        <tbody>
+            <tr>
+
+                <td>@stocks.Name</td>
+                <td>@stocks.InvestmentAmount</td>
+                <td>@stocks.DividendYield</td>
+                <td>@stocks.Sector</td>
+
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+
+
+@code {
+
+    private List<Stock> _ownedStocks = new List<Stock>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _ownedStocks = await StockAddService.GetCurrentUserStockTransaction();
+        StateHasChanged();
+    }
+
+}
