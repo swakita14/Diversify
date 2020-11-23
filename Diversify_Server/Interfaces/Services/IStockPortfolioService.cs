@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Diversify_Server.Models.Database;
+using Diversify_Server.Models.ViewModels;
 
 namespace Diversify_Server.Interfaces.Services
 {
@@ -11,7 +12,7 @@ namespace Diversify_Server.Interfaces.Services
          */
         Task<List<Stock>> GetCurrentUserStockTransaction();
 
-        Task<List<Stock>> GetCurrentUserStockPortfolio();
+        Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany();
 
         string GetCurrentLoggedInUser();
     }

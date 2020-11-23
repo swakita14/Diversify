@@ -31,5 +31,13 @@ namespace Diversify_Server.Repositories
 
             return sector;
         }
+
+        /**
+         * Return Sector Name when given SectorId 
+         */
+        public string GetSectorNameById(int sectorId)
+        {
+            return _context.Sector.Find(sectorId).SectorName;
+        }
     }
 }
