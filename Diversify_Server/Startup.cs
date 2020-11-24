@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Diversify_Server.Interfaces;
+using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
@@ -46,6 +46,10 @@ namespace Diversify_Server
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<IdentityContext>();
 
+            // Adding this for getting user information
+            services.AddHttpContextAccessor();
+
+            // Adding authentication
             services.AddScoped<AuthenticationStateProvider, ServerAuthenticationStateProvider>();
 
             // Adds cookie authentication service 
@@ -78,8 +82,15 @@ namespace Diversify_Server
                 client.BaseAddress = new Uri(stockSearchUri);
             });
 
+            // Registering services that do not need httpclient
+            services.AddScoped<IStockPortfolioService, StockPortfolio>();
+
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<ISectorRepository, SectorRepository>();
+
+            
+            
 
 
         }

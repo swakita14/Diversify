@@ -1,0 +1,43 @@
+﻿@page "/portfolio"
+
+@inject IStockPortfolioService StockPortfolioService
+
+<table class="table table-striped" id="example">
+    <thead class="thead-dark">
+        <tr>
+            <th>Symbol</th>
+            <th>Company Name</th>
+            <th>Dividend Yield</th>
+            <th>Sector</th>
+            <th>Ex-Dividend Date</th>
+            <th>Total Invested</th>
+        </tr>
+    </thead>
+
+    @foreach (var stocks in _portfolioList)
+    {
+        <tbody>
+            <tr>
+                <td>@stocks.Symbol</td>
+                <td>@stocks.CompanyName</td>
+                <td>@stocks.DividendYield</td>
+                <td>@stocks.Sector</td>
+                <td>@stocks.ExDividendDate.ToString("MM/dd/yyyy")</td>
+                <td>$@stocks.TotalInvestment</td>
+
+            </tr>
+        </tbody>
+    }
+
+</table>
+
+@code {
+
+    private IEnumerable<StockPortfolioViewModel> _portfolioList = new List<StockPortfolioViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _portfolioList = await StockPortfolioService.StockPortfolioGroupByCompany();
+    }
+
+}

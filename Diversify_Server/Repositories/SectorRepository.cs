@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using Diversify_Server.Data;
+using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Repositories
 {
-    public class SectorRepository
+    public class SectorRepository : ISectorRepository
     {
         private readonly DiversifyContext _context;
         public SectorRepository(DiversifyContext context)
@@ -17,13 +18,26 @@ namespace Diversify_Server.Repositories
          */
         public Sector GetSectorIdByName(string sectorName)
         {
-            Sector sector = _context.Sector.First(x => x.SectorName.Equals(sectorName)) ?? new Sector
+            Sector sector = _context.Sector.FirstOrDefault(x => x.SectorName == sectorName);
+
+            if (sector is null)
             {
-                SectorId = 13,
-                SectorName = "Others"
-            };
+                sector = new Sector
+                {
+                    SectorName = "Others",
+                    SectorId = 13
+                };
+            }
 
             return sector;
+        }
+
+        /**
+         * Return Sector Name when given SectorId 
+         */
+        public string GetSectorNameById(int sectorId)
+        {
+            return _context.Sector.Find(sectorId).SectorName;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Models.Database;
@@ -17,12 +18,13 @@ namespace Diversify_Server.Repositories
             _context = context;
         }
 
-        public Stock AddStock(Stock stock)
+        /**
+         *  Adding Stock
+         */
+        public void AddStock(Stock stock)
         {
             _context.Stock.Add(stock);
             _context.SaveChanges();
-
-            return stock;
         }
 
         public void DeleteStock(Stock stock)
@@ -35,20 +37,29 @@ namespace Diversify_Server.Repositories
             _context.SaveChanges();
         }
 
-        public void Edit(Stock restaurant)
+        /**
+         * Edit the stock information
+         */
+        public void Edit(Stock stock)
         {
-            _context.Entry(restaurant).State = EntityState.Modified;
+            _context.Entry(stock).State = EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public List<Stock> GetStockBySector(int sectorId)
+        /**
+         * Retrieve stocks by sector 
+         */
+        public async Task<List<Stock>> GetStockBySector(int sectorId)
         {
-            return _context.Stock.Where(x => x.Sector == sectorId).ToList();
+            return await _context.Stock.Where(x => x.Sector == sectorId).ToListAsync();
         }
-        
-        public List<Stock> GetStockByIndustry(int industryId)
+
+        /**
+         * Retrieve stocks by user id  
+         */
+        public async Task<List<Stock>> GetStockByUserId(string userId)
         {
-            return _context.Stock.Where(x => x.Industry == industryId).ToList();
+            return await _context.Stock.Where(x => x.User == userId).ToListAsync();
         }
     }
 }

@@ -1,0 +1,87 @@
+﻿
+
+@inject IStockRepository StockRepository
+@inject ISectorRepository SectorRepository
+
+@inject IStockPortfolioService StockAddService
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStockModal">
+    Add to Portfolio
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Invested Amount for @Overview.Symbol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <EditForm Model="@_stock" OnValidSubmit="() => AddStock(Overview, _stock.InvestmentAmount)">
+                <div class="modal-body">
+
+                    <label for="invested-amount">Amount Invested</label>
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                    @if (_success)
+                    {
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true">Stock Added!</span>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+
+                </div>
+            </EditForm>
+
+
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public CompanyOverviewModel Overview { get; set; }
+
+    private Stock _stock = new Stock();
+    private bool _success = false;
+
+    /**
+     * Method that would add the stock to the current signed on user
+     */
+    public void AddStock(CompanyOverviewModel model, decimal investmentAmount)
+    {
+        // Transferring information from api data to db model
+        Stock newStock = new Stock()
+        {
+            Name = model.Name,
+            Symbol = model.Symbol,
+            DividendYield = model.DividendYield,
+            Sector = SectorRepository.GetSectorIdByName(model.Sector).SectorId,
+            InvestmentAmount = investmentAmount,
+            User = StockAddService.GetCurrentLoggedInUser(),
+            Exchange = model.Exchange,
+            EPS = Convert.ToDecimal(model.EPS),
+            ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
+            PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
+            PERatio = Convert.ToDecimal(model.PERatio),
+            ProfitMargin = Convert.ToDecimal(model.ProfitMargin)
+        };
+
+        // Adding stock object 
+        StockRepository.AddStock(newStock);
+
+        // glyphicon 
+        _success = true;
+
+
+    }
+
+
+
+
+
+}

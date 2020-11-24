@@ -22,17 +22,17 @@ namespace Diversify_Server.Data.Configuration
 
             builder.Property(x => x.Name)
                 .HasColumnName("Name")
-                .HasColumnType("nchar")
+                .HasColumnType("nvarchar(128)")
                 .IsRequired();
 
             builder.Property(x => x.Symbol)
                 .HasColumnName("Symbol")
-                .HasColumnType("nchar")
+                .HasColumnType("nvarchar(32)")
                 .IsRequired();
 
             builder.Property(x => x.Exchange)
                 .HasColumnName("Exchange")
-                .HasColumnType("nchar");
+                .HasColumnType("nvarchar(32)");
 
             builder.Property(x => x.EPS)
                 .HasColumnName("EPS")
@@ -40,7 +40,7 @@ namespace Diversify_Server.Data.Configuration
 
             builder.Property(x => x.DividendYield)
                 .HasColumnName("DividendYield")
-                .HasColumnType("nchar")
+                .HasColumnType("nvarchar(10)")
                 .IsRequired();
 
             builder.Property(x => x.ExDividendDate)
@@ -58,19 +58,18 @@ namespace Diversify_Server.Data.Configuration
             builder.Property(x => x.PayoutRatio)
                 .HasColumnName("PayoutRatio")
                 .HasColumnType("decimal");
+            
+            builder.Property(x => x.InvestmentAmount)
+                .HasColumnName("InvestmentAmount")
+                .HasColumnType("decimal");
 
             builder.Property(x => x.Sector)
                 .HasColumnName("Sector")
                 .HasColumnType("int")
                 .IsRequired();
 
-            builder.Property(x => x.Industry)
-                .HasColumnName("Industry")
-                .HasColumnType("int")
-                .IsRequired();
-
             builder.Property(x => x.User)
-                .HasColumnName("User")
+                .HasColumnName("AspNetUserId")
                 .HasColumnType("nvarchar")
                 .HasMaxLength(900)
                 .IsRequired();
