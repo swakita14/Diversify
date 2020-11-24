@@ -69,7 +69,7 @@ namespace Diversify_Server.Data.Configuration
                 .IsRequired();
 
             builder.Property(x => x.User)
-                .HasColumnName("User")
+                .HasColumnName("AspNetUserId")
                 .HasColumnType("nvarchar")
                 .HasMaxLength(900)
                 .IsRequired();

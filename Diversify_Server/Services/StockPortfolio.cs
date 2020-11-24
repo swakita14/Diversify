@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models.Database;
 using Diversify_Server.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace Diversify_Server.Services
 {
@@ -28,9 +26,33 @@ namespace Diversify_Server.Services
         /**
          *  Retrieves all the stocks that the user has added 
          */
-        public async Task<List<Stock>> GetCurrentUserStockTransaction()
+        public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction()
         {
             // Return all the stocks that the user has
+            var userStocks =  await _stockRepository.GetStockByUserId(GetCurrentLoggedInUser());
+
+            var transactionList = new List<StockTransactionViewModel>();
+
+            foreach (var transactions in userStocks)
+            {
+                transactionList.Add(new StockTransactionViewModel
+                {
+                    CompanyName = transactions.Name,
+                    DividendYield = Decimal.Parse(transactions.DividendYield),
+                    PurchaseDate = DateTime.Now.Date,
+                    Symbol = transactions.Symbol,
+                    PurchasePrice = transactions.InvestmentAmount,
+                    StockId = transactions.StockId,
+                    Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
+                });
+
+            }
+
+            return transactionList;
+        }
+
+        public async Task<List<Stock>> GetCurrentUserStocks()
+        {
             return await _stockRepository.GetStockByUserId(GetCurrentLoggedInUser());
         }
 
@@ -40,7 +62,7 @@ namespace Diversify_Server.Services
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany()
         {
             // Get current user stocks 
-            var currentStockList = await GetCurrentUserStockTransaction();
+            var currentStockList = await GetCurrentUserStocks();
 
             var groupedListBySymbol = currentStockList.GroupBy(x => x.Symbol)
                 .Select(y => new StockPortfolioViewModel
@@ -49,8 +71,8 @@ namespace Diversify_Server.Services
                     Symbol = y.Key,
                     DividendYield = decimal.Parse(currentStockList.First(x => x.Symbol == y.Key).DividendYield),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
-                    //ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate
-                    //Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
+                    ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
+                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
                 }).ToList();
             
 

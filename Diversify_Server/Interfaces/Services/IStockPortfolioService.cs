@@ -10,7 +10,7 @@ namespace Diversify_Server.Interfaces.Services
         /**
          *  Retrieves all the stocks that the user has added 
          */
-        Task<List<Stock>> GetCurrentUserStockTransaction();
+        Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction();
 
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany();
 

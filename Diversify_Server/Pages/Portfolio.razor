@@ -4,38 +4,32 @@
 
 <table class="table table-striped" id="example">
     <thead class="thead-dark">
-    <tr>
-        <th>Company Name</th>
-        <th>Symbol</th>
-        <th>Dividend Yield</th>
-        <th>Ex-Dividend Date</th>
-        <th>Sector</th>
-        <th>Total Invested</th>
-    </tr>
+        <tr>
+            <th>Symbol</th>
+            <th>Company Name</th>
+            <th>Dividend Yield</th>
+            <th>Sector</th>
+            <th>Ex-Dividend Date</th>
+            <th>Total Invested</th>
+        </tr>
     </thead>
 
     @foreach (var stocks in _portfolioList)
     {
         <tbody>
-        <tr>
+            <tr>
+                <td>@stocks.Symbol</td>
+                <td>@stocks.CompanyName</td>
+                <td>@stocks.DividendYield</td>
+                <td>@stocks.Sector</td>
+                <td>@stocks.ExDividendDate.ToString("MM/dd/yyyy")</td>
+                <td>$@stocks.TotalInvestment</td>
 
-            <td>@stocks.CompanyName</td>
-            <td>@stocks.Symbol</td>
-            <td>@stocks.DividendYield</td>
-            <td>@stocks.ExDividendDate</td>
-            <td>@stocks.Sector</td>
-            <td>$@stocks.TotalInvestment</td>
-
-        </tr>
+            </tr>
         </tbody>
     }
 
 </table>
-
-
-
-
-<h3>Portfolio</h3>
 
 @code {
 

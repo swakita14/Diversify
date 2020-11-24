@@ -1,18 +1,24 @@
 ﻿@page "/transactions"
 
-@inject IStockPortfolioService StockAddService
+@inject IStockPortfolioService StockPortfolioService
 
 @attribute [Authorize]
 
-<h3>Portfolio</h3>
+<h3>Transaction History</h3>
 
-<table class="table table-striped" id="example">
+
+
+<label for="stockTable">Stocks Purchased</label>
+<table class="table table-striped" id="stockTable">
     <thead class="thead-dark">
         <tr>
-            <th>Company</th>
-            <th>Invested Amount</th>
+            <th>Symbol</th>
+            <th>Name</th>
             <th>Dividend Yield</th>
             <th>Sector</th>
+            <th>Purchase Date</th>
+            <th>Purchase Price</th>
+
         </tr>
     </thead>
 
@@ -21,11 +27,12 @@
         <tbody>
             <tr>
 
-                <td>@stocks.Name</td>
-                <td>@stocks.InvestmentAmount</td>
+                <td>@stocks.Symbol</td>
+                <td>@stocks.CompanyName</td>
                 <td>@stocks.DividendYield</td>
                 <td>@stocks.Sector</td>
-
+                <td>@stocks.PurchaseDate.ToString("MM/dd/yyyy")</td>
+                <td>@stocks.PurchasePrice</td>
             </tr>
         </tbody>
     }
@@ -36,11 +43,11 @@
 
 @code {
 
-    private List<Stock> _ownedStocks = new List<Stock>();
+    private List<StockTransactionViewModel> _ownedStocks = new List<StockTransactionViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        _ownedStocks = await StockAddService.GetCurrentUserStockTransaction();
+        _ownedStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
         StateHasChanged();
     }
 
