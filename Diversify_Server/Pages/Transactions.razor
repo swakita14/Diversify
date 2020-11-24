@@ -6,49 +6,26 @@
 
 <h3>Transaction History</h3>
 
-
-
-<label for="stockTable">Stocks Purchased</label>
-<table class="table table-striped" id="stockTable">
-    <thead class="thead-dark">
-        <tr>
-            <th>Symbol</th>
-            <th>Name</th>
-            <th>Dividend Yield</th>
-            <th>Sector</th>
-            <th>Purchase Date</th>
-            <th>Purchase Price</th>
-
-        </tr>
-    </thead>
-
-    @foreach (var stocks in _ownedStocks)
-    {
-        <tbody>
-            <tr>
-
-                <td>@stocks.Symbol</td>
-                <td>@stocks.CompanyName</td>
-                <td>@stocks.DividendYield</td>
-                <td>@stocks.Sector</td>
-                <td>@stocks.PurchaseDate.ToString("MM/dd/yyyy")</td>
-                <td>@stocks.PurchasePrice</td>
-            </tr>
-        </tbody>
-    }
-
-</table>
-
+<label>Purchase History</label>
+<SfGrid DataSource="@_ownedStocks" AllowPaging="true" AllowSorting="true">
+    <GridPageSettings PageSize="5"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(StockTransactionViewModel.Symbol) HeaderText="Symbol" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(StockTransactionViewModel.CompanyName) HeaderText="Customer Name" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(StockTransactionViewModel.DividendYield) HeaderText="Dividend Yield" Format="N2" Type="ColumnType.Number" Width="130"></GridColumn>
+        <GridColumn Field=@nameof(StockTransactionViewModel.Sector) HeaderText="Sector" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(StockTransactionViewModel.PurchaseDate) HeaderText="Purchase Date" Format="d" Type="ColumnType.Date" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(StockTransactionViewModel.PurchasePrice) HeaderText="Purchase Price" Format="C2" Width="120"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
 
 @code {
 
-    private List<StockTransactionViewModel> _ownedStocks = new List<StockTransactionViewModel>();
+        private List<StockTransactionViewModel> _ownedStocks = new List<StockTransactionViewModel>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        _ownedStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
-        StateHasChanged();
-    }
-
+        protected override async Task OnInitializedAsync()
+        {
+            _ownedStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
+        }
 }

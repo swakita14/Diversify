@@ -38,8 +38,8 @@ namespace Diversify_Server.Services
                 transactionList.Add(new StockTransactionViewModel
                 {
                     CompanyName = transactions.Name,
-                    DividendYield = Decimal.Parse(transactions.DividendYield),
-                    PurchaseDate = DateTime.Now.Date,
+                    DividendYield = Decimal.Parse(transactions.DividendYield)*100,
+                    PurchaseDate = transactions.PurchaseDate,
                     Symbol = transactions.Symbol,
                     PurchasePrice = transactions.InvestmentAmount,
                     StockId = transactions.StockId,

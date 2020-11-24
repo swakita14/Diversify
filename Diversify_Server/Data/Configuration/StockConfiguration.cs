@@ -45,7 +45,12 @@ namespace Diversify_Server.Data.Configuration
 
             builder.Property(x => x.ExDividendDate)
                 .HasColumnName("ExDividendDate")
-                .HasColumnType("date");
+                .HasColumnType("date");            
+            
+            builder.Property(x => x.PurchaseDate)
+                .HasColumnName("PurchaseDate")
+                .HasColumnType("date")
+                .IsRequired();
 
             builder.Property(x => x.ProfitMargin)
                 .HasColumnName("ProfitMargin")
