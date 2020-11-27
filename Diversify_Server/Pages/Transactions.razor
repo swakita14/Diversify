@@ -7,7 +7,7 @@
 <h3>Transaction History</h3>
 
 <label>Purchase History</label>
-<SfGrid DataSource="@_ownedStocks" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
+<SfGrid DataSource="@_ownedStocks" AllowPaging="true" AllowSorting="true">
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
         <GridColumn Field=@nameof(StockTransactionViewModel.Symbol) HeaderText="Symbol" Width="120"></GridColumn>

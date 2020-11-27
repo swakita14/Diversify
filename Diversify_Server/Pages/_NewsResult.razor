@@ -1,48 +1,45 @@
-﻿@inject ICompanyNewsService Client
+﻿@using System.Diagnostics
+@inject ICompanyNewsService Client
 
-@*@if (_results.Articles != null && _results != null)
-{
-    <table class="table table-striped" id="example">
-        <thead class="thead-dark">
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description</th>
-                <th>Published</th>
-                <th>Link</th>
-            </tr>
-        </thead>
 
-        @foreach (var company in _results.Articles.OrderByDescending(x => x.PublishedAt).Take(8))
-        {
-            <tbody>
-                <tr>
-
-                    <td>@company.Title</td>
-                    <td>@company.Author</td>
-                    <td>@TruncateAtWord(company.Description, 100)</td>
-                    <td>@company.PublishedAt</td>
-                    <td><a href="@company.Url">Link</a></td>
-
-                </tr>
-            </tbody>
-        }
-
-    </table>
-}*@
-
-<label>Purchase History</label>
-<SfGrid DataSource="@_results" AllowPaging="true" AllowSorting="true" AllowFiltering="true">
-    <GridPageSettings PageSize="5"></GridPageSettings>
+<SfGrid DataSource="@_results.Articles" AllowPaging="true" AllowSorting="true">
+    <GridPageSettings PageSize="6"></GridPageSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(Article.Title) HeaderText="Title" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(Article.Author) HeaderText="Author" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(Article.Description) HeaderText="Description" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(Article.PublishedAt) HeaderText="Purchase Date" Format="d" Type="ColumnType.Date" Width="120"></GridColumn>
-        <GridColumn HeaderText="Link" Width="120">
+        <GridColumn Field=@nameof(Article.UrlToImage) HeaderText="" Width="80" TextAlign="TextAlign.Center">
+            <Template>
+                @{
+                    var image = (context as Article);
+                    <div class="image">
+                        <img src="@image.UrlToImage"/>
+                    </div>
+                }
+            </Template>
+
+        </GridColumn>
+
+        <GridColumn Field=@nameof(Article.Title) HeaderText="Title" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(Article.Author) HeaderText="Author" Width="150" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(Article.Description) HeaderText="Description" Width="150" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(Article.PublishedAt) HeaderText="Publish Date" Format="d" Type="ColumnType.Date" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(Article.Source) HeaderText="Link" Width="120">
+            <Template>
+                @{
+                    var news = (context as Article);
+                    <div><a href="#" @onclick="@(() => Navigate(news))">View</a></div>
+                }
+            </Template>
         </GridColumn>
     </GridColumns>
 </SfGrid>
+
+<style>
+    .image img {
+        height: 60px;
+        width: 70px;
+    }
+</style>
+
+
 
 
 @code {
@@ -63,6 +60,10 @@
 
     }
 
+    public void Navigate(Article source)
+    {
+        Debug.Write(source.Source);
+    }
 
     public static string TruncateAtWord(string input, int length)
     {
