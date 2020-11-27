@@ -75,16 +75,25 @@ namespace Diversify_Server.Services
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
                 }).ToList();
             
-
             return  groupedListBySymbol;
+        }            
+        
+        public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
+        {
+            // Get current user stocks 
+            var currentStockList = await GetCurrentUserStocks();
 
-
+            var groupedListBySymbol = currentStockList.GroupBy(x => x.Sector)
+                .Select(y => new StockPortfolioViewModel
+                {
+                    //DividendYield = decimal.Parse(currentStockList.First(x => x.Sector == y.Key).DividendYield),
+                    TotalInvestment = y.Sum(x => x.InvestmentAmount),
+                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector)
+                }).ToList();
+            
+            return  groupedListBySymbol;
         }        
         
-        //public async Task<List<StockPortfolioViewModel>> StockPortfolioGroupBySector()
-        //{
-        //    return await null;
-        //}
 
         /**
          * Gets the userId of the current logged in user
@@ -92,22 +101,6 @@ namespace Diversify_Server.Services
         public string GetCurrentLoggedInUser()
         {
             return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        }
-
-        /**
-         * Gets the total invested value by company symbol
-         */
-        public decimal GetInvestedTotalByCompany(List<Stock> userStockList, string symbol)
-        {
-            return userStockList.Where(x => x.Name == symbol).Sum(y => y.InvestmentAmount);
-        }        
-        
-        /**
-         * Gets the total invested value by the sectorid 
-         */
-        public decimal GetInvestedTotalBySector(List<Stock> userStockList, int sector)
-        {
-            return userStockList.Where(x => x.Sector == sector).Sum(y => y.InvestmentAmount);
         }
     }
 }

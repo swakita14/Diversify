@@ -1,5 +1,7 @@
-﻿@using System.Diagnostics
+﻿
+
 @inject ICompanyNewsService Client
+@inject NavigationManager NavigationManager
 
 
 <SfGrid DataSource="@_results.Articles" AllowPaging="true" AllowSorting="true">
@@ -10,7 +12,7 @@
                 @{
                     var image = (context as Article);
                     <div class="image">
-                        <img src="@image.UrlToImage"/>
+                        <img src="@image.UrlToImage" />
                     </div>
                 }
             </Template>
@@ -49,6 +51,9 @@
 
     private NewsSearchResult _results = new NewsSearchResult();
 
+    /**
+     * Method searches for anything that is typed into parameter
+     */
     protected override async Task OnParametersSetAsync()
     {
         if (!string.IsNullOrEmpty(CompanyName))
@@ -60,17 +65,12 @@
 
     }
 
+    /**
+     * Navigation method
+     */
     public void Navigate(Article source)
     {
-        Debug.Write(source.Source);
-    }
-
-    public static string TruncateAtWord(string input, int length)
-    {
-        if (input == null || input.Length < length)
-            return input;
-        int iNextSpace = input.LastIndexOf(" ", length, StringComparison.Ordinal);
-        return string.Format("{0}…", input.Substring(0, (iNextSpace > 0) ? iNextSpace : length).Trim());
+        NavigationManager.NavigateTo(source.Url);
     }
 
 

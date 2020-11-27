@@ -2,7 +2,7 @@
 
 @inject IStockPortfolioService StockPortfolioService
 
-<table class="table table-striped" id="example">
+@*<table class="table table-striped" id="example">
     <thead class="thead-dark">
         <tr>
             <th>Symbol</th>
@@ -29,15 +29,19 @@
         </tbody>
     }
 
-</table>
+</table>*@
+
+
 
 @code {
 
-    private IEnumerable<StockPortfolioViewModel> _portfolioList = new List<StockPortfolioViewModel>();
+    private IEnumerable<StockPortfolioViewModel> _portfolioListCompany = new List<StockPortfolioViewModel>();
+    private IEnumerable<StockPortfolioViewModel> _portfolioListSector = new List<StockPortfolioViewModel>();
 
     protected override async Task OnInitializedAsync()
     {
-        _portfolioList = await StockPortfolioService.StockPortfolioGroupByCompany();
+        _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany();
+        _portfolioListSector = await StockPortfolioService.StockPortfolioGroupBySector();
     }
 
 }
