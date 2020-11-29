@@ -1,36 +1,25 @@
 ﻿
 @inject IStockSearchService Client
-
-@if (_results != null && _results.BestMatches != null)
-{
-    <table class="table table-striped" id="stockTable">
-        <thead class="thead-dark">
-            <tr>
-                <th>Symbol</th>
-                <th>Name</th>
-                <th></th>
-            </tr>
-        </thead>
+@inject NavigationManager NavigationManager
 
 
-        @foreach (var company in _results.BestMatches.Take(8))
-        {
-            <tbody>
-                <tr>
+<SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true">
+    <GridPageSettings PageSize="5"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Symbol" Width="120"></GridColumn>
+        <GridColumn Field=@nameof(SearchModel.Name) HeaderText="Customer Name" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Customer Name" Width="150"></GridColumn>
+        <GridColumn HeaderText="Link" Width="120">
+            <Template>
+                @{
+                    var company = (context as SearchModel);
+                    <div><a href="#" @onclick="@(() => Navigate(company))">View</a></div>
+                }
+            </Template>
+        </GridColumn>
 
-                    <td>@company.Symbol</td>
-                    <td>@company.Name</td>
-                    <td>
-                        <a href="/overview/@company.Symbol" class="btn btn-outline-info" role="button">Overview</a>
-                    </td>
-                </tr>
-            </tbody>
-        }
-
-
-
-    </table>
-}
+    </GridColumns>
+</SfGrid>
 
 @code {
 
@@ -42,5 +31,13 @@
     protected override async Task OnParametersSetAsync()
     {
         _results = await Client.GetStockAsync(CompanyName);
+    }
+
+    /**
+     * Navigation method
+     */
+    public void Navigate(SearchModel company)
+    {
+        NavigationManager.NavigateTo($"/overview/{company.Symbol}");
     }
 }

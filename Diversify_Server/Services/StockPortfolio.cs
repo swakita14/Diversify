@@ -78,6 +78,9 @@ namespace Diversify_Server.Services
             return  groupedListBySymbol;
         }            
         
+        /**
+         * Getting the stocks and grouping it by sector
+         */
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
         {
             // Get current user stocks 

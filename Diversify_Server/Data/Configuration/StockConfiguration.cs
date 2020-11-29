@@ -72,6 +72,11 @@ namespace Diversify_Server.Data.Configuration
                 .HasColumnName("Sector")
                 .HasColumnType("int")
                 .IsRequired();
+            
+            builder.Property(x => x.Status)
+                .HasColumnName("Status")
+                .HasColumnType("int")
+                .IsRequired();
 
             builder.Property(x => x.User)
                 .HasColumnName("AspNetUserId")
