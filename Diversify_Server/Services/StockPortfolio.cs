@@ -29,7 +29,7 @@ namespace Diversify_Server.Services
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction()
         {
             // Return all the stocks that the user has
-            var userStocks =  await _stockRepository.GetStockByUserId(GetCurrentLoggedInUser());
+            var userStocks =  await _stockRepository.GetStockPurchasedByUserId(GetCurrentLoggedInUser());
 
             var transactionList = new List<StockTransactionViewModel>();
 
@@ -38,7 +38,35 @@ namespace Diversify_Server.Services
                 transactionList.Add(new StockTransactionViewModel
                 {
                     CompanyName = transactions.Name,
-                    DividendYield = Decimal.Parse(transactions.DividendYield)*100,
+                    DividendYield = transactions.DividendYield*100,
+                    PurchaseDate = transactions.PurchaseDate,
+                    Symbol = transactions.Symbol,
+                    PurchasePrice = transactions.InvestmentAmount,
+                    StockId = transactions.StockId,
+                    Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
+                });
+
+            }
+
+            return transactionList;
+        }        
+        
+        /**
+         * Retrieve stocks that have been sold 
+         */
+        public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold()
+        {
+            // Return all the stocks that the user has
+            var userStocks =  await _stockRepository.GetStockSoldByUserId(GetCurrentLoggedInUser());
+
+            var transactionList = new List<StockTransactionViewModel>();
+
+            foreach (var transactions in userStocks)
+            {
+                transactionList.Add(new StockTransactionViewModel
+                {
+                    CompanyName = transactions.Name,
+                    DividendYield = transactions.DividendYield*100,
                     PurchaseDate = transactions.PurchaseDate,
                     Symbol = transactions.Symbol,
                     PurchasePrice = transactions.InvestmentAmount,
@@ -50,10 +78,11 @@ namespace Diversify_Server.Services
 
             return transactionList;
         }
+        
 
         public async Task<List<Stock>> GetCurrentUserStocks()
         {
-            return await _stockRepository.GetStockByUserId(GetCurrentLoggedInUser());
+            return await _stockRepository.GetCurrentStockByUserId(GetCurrentLoggedInUser());
         }
 
         /**
@@ -69,7 +98,7 @@ namespace Diversify_Server.Services
                 {
                     CompanyName = currentStockList.First(x => x.Symbol == y.Key).Name,
                     Symbol = y.Key,
-                    DividendYield = decimal.Parse(currentStockList.First(x => x.Symbol == y.Key).DividendYield),
+                    DividendYield = currentStockList.First(x => x.Symbol == y.Key).DividendYield,
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
@@ -91,7 +120,7 @@ namespace Diversify_Server.Services
                 {
                     //DividendYield = decimal.Parse(currentStockList.First(x => x.Sector == y.Key).DividendYield),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
-                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector)
+                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
                 }).ToList();
             
             return  groupedListBySymbol;

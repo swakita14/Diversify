@@ -59,7 +59,7 @@
         {
             Name = model.Name,
             Symbol = model.Symbol,
-            DividendYield = model.DividendYield,
+            DividendYield = Decimal.Parse(model.DividendYield),
             Sector = SectorRepository.GetSectorIdByName(model.Sector).SectorId,
             InvestmentAmount = investmentAmount,
             User = StockAddService.GetCurrentLoggedInUser(),

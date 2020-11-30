@@ -9,7 +9,14 @@ namespace Diversify_Server.Interfaces.Repositories
         void AddStock(Stock stock);
         void DeleteStock(Stock stock);
         void Edit(Stock restaurant);
-        Task<List<Stock>> GetStockBySector(int sectorId);
-        Task<List<Stock>> GetStockByUserId(string userId);
+
+        int GetCompanyCountBySectorId(int sectorId);
+
+        decimal GetAverageDividendBySector(int sectorId); 
+
+        Task<List<Stock>> GetStockPurchasedByUserId(string userId);
+
+        Task<List<Stock>> GetCurrentStockByUserId(string userId);
+        Task<List<Stock>> GetStockSoldByUserId(string userId);
     }
 }

@@ -5,7 +5,7 @@
 @attribute [Authorize]
 
 
-<label>Transaction History</label>
+<label>Stock Purchase</label>
 <SfGrid DataSource="@_ownedStocks" AllowPaging="true" AllowSorting="true">
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
@@ -22,9 +22,11 @@
 @code {
 
         private List<StockTransactionViewModel> _ownedStocks = new List<StockTransactionViewModel>();
+        private List<StockTransactionViewModel> _soldStocks = new List<StockTransactionViewModel>();
 
         protected override async Task OnInitializedAsync()
         {
             _ownedStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
+            _soldStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
         }
 }
