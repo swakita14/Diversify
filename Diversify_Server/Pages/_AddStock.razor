@@ -68,7 +68,9 @@
             ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
             PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
             PERatio = Convert.ToDecimal(model.PERatio),
-            ProfitMargin = Convert.ToDecimal(model.ProfitMargin)
+            ProfitMargin = Convert.ToDecimal(model.ProfitMargin),
+            PurchaseDate = DateTime.Now.Date,
+            Status = 1
         };
 
         // Adding stock object 

@@ -24,6 +24,10 @@ namespace Diversify_Server.Models.Database
         public int Sector { get; set; }
         public string User { get; set; }
 
+        public int  Status { get; set; }
+
+        public DateTime PurchaseDate { get; set; }
+
         [Required]
         public decimal InvestmentAmount { get; set; }
     }
