@@ -1,0 +1,24 @@
+﻿@inject IStockPortfolioService StockPortfolioService
+
+<SfAccumulationChart Title="Company Stock Diversity">
+    <AccumulationChartSeriesCollection>
+        <AccumulationChartSeries DataSource="@_portfolioListSector" XName="Sector" YName="TotalInvestment"
+                                 Name="Symbol">
+        </AccumulationChartSeries>
+    </AccumulationChartSeriesCollection>
+
+    <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+    <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>$${point.y}</b>"></AccumulationChartTooltipSettings>
+
+</SfAccumulationChart>
+
+@code {
+
+    private IEnumerable<StockPortfolioViewModel> _portfolioListSector = new List<StockPortfolioViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _portfolioListSector = await StockPortfolioService.StockPortfolioGroupBySector();
+    }
+
+}
