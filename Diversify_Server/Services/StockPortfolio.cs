@@ -98,7 +98,7 @@ namespace Diversify_Server.Services
                 {
                     CompanyName = currentStockList.First(x => x.Symbol == y.Key).Name,
                     Symbol = y.Key,
-                    DividendYield = currentStockList.First(x => x.Symbol == y.Key).DividendYield,
+                    DividendYield = decimal.Round((currentStockList.First(x => x.Symbol == y.Key).DividendYield * 100), 2, MidpointRounding.AwayFromZero),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
@@ -121,6 +121,7 @@ namespace Diversify_Server.Services
                     //DividendYield = decimal.Parse(currentStockList.First(x => x.Sector == y.Key).DividendYield),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
+                    AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key)) * 100), 2, MidpointRounding.AwayFromZero)
                 }).ToList();
             
             return  groupedListBySymbol;

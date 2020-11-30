@@ -12,7 +12,7 @@ namespace Diversify_Server.Interfaces.Repositories
 
         int GetCompanyCountBySectorId(int sectorId);
 
-        decimal GetAverageDividendBySector(int sectorId); 
+        decimal GetTotalDividendBySector(int sectorId);
 
         Task<List<Stock>> GetStockPurchasedByUserId(string userId);
 

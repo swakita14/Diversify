@@ -52,7 +52,7 @@ namespace Diversify_Server.Repositories
          */
         public int GetCompanyCountBySectorId(int sectorId)
         {
-            return 0;
+            return _context.Stock.Count(x => x.Sector == sectorId);
         }
 
         /**
@@ -60,7 +60,7 @@ namespace Diversify_Server.Repositories
          */
         public decimal GetTotalDividendBySector(int sectorId)
         {
-            return 0;
+            return _context.Stock.Where(x => x.Sector == sectorId).Sum(x => x.DividendYield);
         }
 
         /**
@@ -94,5 +94,6 @@ namespace Diversify_Server.Repositories
         {
             return await _context.Stock.Where(x => x.User == userId && x.Status == 2).ToListAsync();
         }
+
     }
 }
