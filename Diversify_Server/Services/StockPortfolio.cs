@@ -78,8 +78,11 @@ namespace Diversify_Server.Services
 
             return transactionList;
         }
-        
 
+
+        /**
+         * Retrieves all the stocks that the user currently owns 
+         */
         public async Task<List<Stock>> GetCurrentUserStocks()
         {
             return await _stockRepository.GetCurrentStockByUserId(GetCurrentLoggedInUser());
@@ -125,8 +128,26 @@ namespace Diversify_Server.Services
                 }).ToList();
             
             return  groupedListBySymbol;
-        }        
-        
+        }
+
+        /**
+         * Gets the total amount invested and the estimated yearly income 
+         */
+        public async Task<InvestmentTotalViewModel> GetUserInvestmentTotal()
+        {
+            var currentUserStock = await GetCurrentUserStocks();
+
+            InvestmentTotalViewModel totalViewModel = new InvestmentTotalViewModel();
+
+            foreach (var stock in currentUserStock)
+            {
+                totalViewModel.InvestmentTotal += stock.InvestmentAmount;
+                totalViewModel.EstimatedYearlyIncome = (stock.DividendYield * stock.InvestmentAmount);
+            }
+
+            return totalViewModel;
+        }
+
 
         /**
          * Gets the userId of the current logged in user

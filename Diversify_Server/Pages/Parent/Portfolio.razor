@@ -6,22 +6,22 @@
 @attribute [Authorize]
 
 <div class="container">
+    <div class="row">
+        <div class="col">
+            <_StockPortfolioChart PortfolioCompanyList="@_portfolioListCompany" Title="@_title" XName="@_xName"></_StockPortfolioChart>
+        </div>
+        <div class="col d-flex justify-content-center">
+            @if (_showTotal)
+            {
+                <_InvestmentTotal PortfolioViewModels="@_totalInvestment"></_InvestmentTotal>
+            }
 
-
-    <SfAccumulationChart Title="@_title">
-        <AccumulationChartSeriesCollection>
-            <AccumulationChartSeries DataSource="@_portfolioListCompany" XName="@_xName" YName="TotalInvestment"
-                                     Name="Symbol">
-            </AccumulationChartSeries>
-        </AccumulationChartSeriesCollection>
-
-        <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
-        <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>$${point.y}</b>"></AccumulationChartTooltipSettings>
-
-    </SfAccumulationChart>
-
+        </div>
+    </div>
+</div>
+<div class="container">
     <_StockPortfolioTotal PortfolioList="@_portfolioListCompany" SwitchView="@_switchView"></_StockPortfolioTotal>
-
+    <br />
     <button type="button" class="btn btn-outline-secondary" @onclick="@(async () => await SwitchView())">Switch View</button>
 </div>
 
@@ -30,6 +30,9 @@
 
     private IEnumerable<StockPortfolioViewModel> _portfolioListCompany = new List<StockPortfolioViewModel>();
 
+    private IEnumerable<StockPortfolioViewModel> _totalInvestment = new List<StockPortfolioViewModel>();
+
+    private bool _showTotal = false;
     private bool _switchView = false;
     private string _xName = "Symbol";
     private string _title = "Company Diversity";
@@ -38,6 +41,7 @@
     protected override async Task OnInitializedAsync()
     {
         _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany();
+        _totalInvestment = await StockPortfolioService.StockPortfolioGroupByCompany();
     }
 
     private async Task SwitchView()
@@ -58,4 +62,11 @@
         }
         StateHasChanged();
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _showTotal = true;
+    }
+
+
 }

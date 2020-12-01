@@ -16,6 +16,9 @@ namespace Diversify_Server.Interfaces.Services
 
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector();
 
+        Task<InvestmentTotalViewModel> GetUserInvestmentTotal();
+
         string GetCurrentLoggedInUser();
+
     }
 }

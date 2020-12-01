@@ -19,19 +19,21 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <EditForm Model="@_stock" OnValidSubmit="() => AddStock(Overview, _stock.InvestmentAmount)">
+            <EditForm Model="@_stock" OnValidSubmit="() => AddStock(Overview, _stock.InvestmentAmount, DateValue)">
                 <div class="modal-body">
 
                     <label for="invested-amount">Amount Invested</label>
                     <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                    <br>
+                    <SfDatePicker TValue="DateTime" Max='@_maxDateTime' @bind-Value="@DateValue" Placeholder='Choose a Date'></SfDatePicker>
                     @if (_success)
                     {
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true">Stock Added!</span>
+                        <span class="oi oi-check" aria-hidden="true">Stocks Added!</span>
                     }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">Add Stock</button>
 
                 </div>
             </EditForm>
@@ -41,10 +43,14 @@
     </div>
 </div>
 
+
 @code {
 
     [Parameter]
     public CompanyOverviewModel Overview { get; set; }
+
+    private DateTime _maxDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+    public DateTime DateValue { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
     private Stock _stock = new Stock();
     private bool _success = false;
@@ -52,7 +58,7 @@
     /**
      * Method that would add the stock to the current signed on user
      */
-    public void AddStock(CompanyOverviewModel model, decimal investmentAmount)
+    public void AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
     {
         // Transferring information from api data to db model
         Stock newStock = new Stock()
@@ -73,10 +79,10 @@
             Status = 1
         };
 
-        // Adding stock object 
+        // Adding stock object
         StockRepository.AddStock(newStock);
 
-        // glyphicon 
+        // glyphicon
         _success = true;
 
 

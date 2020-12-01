@@ -32,7 +32,7 @@ namespace Diversify_Server.Repositories
         {
             Stock existing = _context.Stock.Find(stock.StockId);
 
-            if (existing == null) throw new ArgumentException($"Count not find the restaurant with ID {stock.StockId}");
+            if (existing == null) throw new ArgumentException($"Count not find the Stock with ID {stock.StockId}");
 
             _context.Stock.Remove(stock);
             _context.SaveChanges();
