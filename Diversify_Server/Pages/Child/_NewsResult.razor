@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 
 
-<SfGrid DataSource="@_results.Articles" AllowPaging="true" AllowSorting="true">
+<SfGrid DataSource="@_results.Articles" AllowPaging="true" AllowSorting="true" ShowColumnChooser="true">
     <GridPageSettings PageSize="6"></GridPageSettings>
     <GridColumns>
         <GridColumn Field=@nameof(Article.UrlToImage) HeaderText="" Width="80" TextAlign="TextAlign.Center">

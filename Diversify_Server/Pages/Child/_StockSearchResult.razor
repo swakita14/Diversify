@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 
 
-<SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true">
+<SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true" >
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
         <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Symbol" Width="120"></GridColumn>

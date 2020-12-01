@@ -38,7 +38,7 @@ namespace Diversify_Server.Services
                 transactionList.Add(new StockTransactionViewModel
                 {
                     CompanyName = transactions.Name,
-                    DividendYield = transactions.DividendYield*100,
+                    DividendYield = transactions.DividendYield,
                     PurchaseDate = transactions.PurchaseDate,
                     Symbol = transactions.Symbol,
                     PurchasePrice = transactions.InvestmentAmount,
@@ -66,7 +66,7 @@ namespace Diversify_Server.Services
                 transactionList.Add(new StockTransactionViewModel
                 {
                     CompanyName = transactions.Name,
-                    DividendYield = transactions.DividendYield*100,
+                    DividendYield = transactions.DividendYield,
                     PurchaseDate = transactions.PurchaseDate,
                     Symbol = transactions.Symbol,
                     PurchasePrice = transactions.InvestmentAmount,
@@ -98,11 +98,11 @@ namespace Diversify_Server.Services
                 {
                     CompanyName = currentStockList.First(x => x.Symbol == y.Key).Name,
                     Symbol = y.Key,
-                    DividendYield = decimal.Round((currentStockList.First(x => x.Symbol == y.Key).DividendYield * 100), 2, MidpointRounding.AwayFromZero),
+                    DividendYield = decimal.Round((currentStockList.First(x => x.Symbol == y.Key).DividendYield ), 4, MidpointRounding.AwayFromZero),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector),
-                    InvestedPercentage = String.Format("{0:P2}",(y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(GetCurrentLoggedInUser()))
+                    InvestedPercentage = (y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(GetCurrentLoggedInUser())
                 }).ToList();
             
             return  groupedListBySymbol;
@@ -121,7 +121,7 @@ namespace Diversify_Server.Services
                 {
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
-                    AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key)) * 100), 2, MidpointRounding.AwayFromZero)
+                    AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
                 }).ToList();
             
             return  groupedListBySymbol;
