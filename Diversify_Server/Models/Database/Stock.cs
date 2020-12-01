@@ -16,7 +16,7 @@ namespace Diversify_Server.Models.Database
         public string Symbol { get; set; }
         public string Exchange { get; set; }
         public decimal? EPS { get; set; }
-        public string DividendYield { get; set; }
+        public decimal DividendYield { get; set; }
         public DateTime ExDividendDate { get; set; }
         public decimal? ProfitMargin { get; set; }
         public decimal? PERatio { get; set; }

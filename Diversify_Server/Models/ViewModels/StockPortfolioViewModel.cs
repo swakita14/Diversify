@@ -22,5 +22,7 @@ namespace Diversify_Server.Models.ViewModels
         public string  Sector { get; set; }
 
         public decimal AverageDividend { get; set; }
+
+        public string InvestedPercentage { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Models.Database;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor.Schedule.Internal;
 
 namespace Diversify_Server.Repositories
 {
@@ -47,6 +48,22 @@ namespace Diversify_Server.Repositories
         }
 
         /**
+         * Gets the total amount of stocks with the sector id 
+         */
+        public int GetCompanyCountBySectorId(int sectorId)
+        {
+            return _context.Stock.Count(x => x.Sector == sectorId);
+        }
+
+        /**
+         * Gets the Total amount of Dividend by sector id
+         */
+        public decimal GetTotalDividendBySector(int sectorId)
+        {
+            return _context.Stock.Where(x => x.Sector == sectorId).Sum(x => x.DividendYield);
+        }
+
+        /**
          * Retrieve stocks by sector 
          */
         public async Task<List<Stock>> GetStockBySector(int sectorId)
@@ -55,11 +72,44 @@ namespace Diversify_Server.Repositories
         }
 
         /**
-         * Retrieve stocks by user id  
+         * Retrieve any stocks information that have been purchased by the user
          */
-        public async Task<List<Stock>> GetStockByUserId(string userId)
+        public async Task<List<Stock>> GetStockPurchasedByUserId(string userId)
         {
             return await _context.Stock.Where(x => x.User == userId).ToListAsync();
         }
+
+        /**
+         * Returns the total amount invested in stocks 
+         */
+        public decimal GetTotalInvestedByUserId(string userId)
+        {
+            return _context.Stock.Where(x => x.User == userId).Sum(x => x.InvestmentAmount);
+        }
+
+        /**
+         * Returns the total count of stocks users have in
+         */
+        public int GetTotalCountStockByUserId(string userId)
+        {
+            return _context.Stock.Count(x => x.User == userId);
+        }
+
+        /**
+         * Retrieves only the stocks that the user currently owns 
+         */
+        public async Task<List<Stock>> GetCurrentStockByUserId(string userId)
+        {
+            return await _context.Stock.Where(x => x.User == userId && x.Status == 1).ToListAsync();
+        }        
+        
+        /**
+         * Retrieves the list of stocks that the user has sold 
+         */
+        public async Task<List<Stock>> GetStockSoldByUserId(string userId)
+        {
+            return await _context.Stock.Where(x => x.User == userId && x.Status == 2).ToListAsync();
+        }
+
     }
 }

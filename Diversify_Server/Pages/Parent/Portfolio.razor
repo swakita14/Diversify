@@ -1,0 +1,61 @@
+﻿@page "/portfolio"
+
+
+@inject IStockPortfolioService StockPortfolioService
+
+@attribute [Authorize]
+
+<div class="container">
+
+
+    <SfAccumulationChart Title="@_title">
+        <AccumulationChartSeriesCollection>
+            <AccumulationChartSeries DataSource="@_portfolioListCompany" XName="@_xName" YName="TotalInvestment"
+                                     Name="Symbol">
+            </AccumulationChartSeries>
+        </AccumulationChartSeriesCollection>
+
+        <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+        <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>$${point.y}</b>"></AccumulationChartTooltipSettings>
+
+    </SfAccumulationChart>
+
+    <_StockPortfolioTotal PortfolioList="@_portfolioListCompany" SwitchView="@_switchView"></_StockPortfolioTotal>
+
+    <button type="button" class="btn btn-outline-secondary" @onclick="@(async () => await SwitchView())">Switch View</button>
+</div>
+
+
+@code {
+
+    private IEnumerable<StockPortfolioViewModel> _portfolioListCompany = new List<StockPortfolioViewModel>();
+
+    private bool _switchView = false;
+    private string _xName = "Symbol";
+    private string _title = "Company Diversity";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany();
+    }
+
+    private async Task SwitchView()
+    {
+        if (!_switchView)
+        {
+            _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupBySector();
+            _xName = "Sector";
+            _title = "Sector Diversity";
+            _switchView = true;
+        }
+        else
+        {
+            _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany();
+            _xName = "Symbol";
+            _title = "Company Diversity";
+            _switchView = false;
+        }
+        StateHasChanged();
+    }
+}

@@ -40,7 +40,7 @@ namespace Diversify_Server.Data.Configuration
 
             builder.Property(x => x.DividendYield)
                 .HasColumnName("DividendYield")
-                .HasColumnType("nvarchar(10)")
+                .HasColumnType("decimal")
                 .IsRequired();
 
             builder.Property(x => x.ExDividendDate)
