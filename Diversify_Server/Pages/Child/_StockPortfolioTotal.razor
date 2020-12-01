@@ -3,6 +3,7 @@
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
         <GridColumn Field=@nameof(StockPortfolioViewModel.TotalInvestment) HeaderText="Total Investment" Width="150" Format="C2" TextAlign="TextAlign.Center"></GridColumn>
+
         @if (!SwitchView)
         {
             <GridColumn Field=@nameof(StockPortfolioViewModel.Symbol) HeaderText="Symbol" Width="120" TextAlign="TextAlign.Center"></GridColumn>
@@ -10,6 +11,7 @@
             <GridColumn Field=@nameof(StockPortfolioViewModel.DividendYield) HeaderText="Dividend Yield" Width="150" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field=@nameof(StockPortfolioViewModel.ExDividendDate) HeaderText="Ex-Dividend Date" Format="d" Type="ColumnType.Date" Width="120" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field=@nameof(StockPortfolioViewModel.Sector) HeaderText="Sector" Width="150" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field=@nameof(StockPortfolioViewModel.InvestedPercentage) HeaderText="Portfolio Diversity" Width="120" TextAlign="TextAlign.Center"></GridColumn>
         }
         else
         {

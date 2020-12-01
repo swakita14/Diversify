@@ -14,6 +14,10 @@ namespace Diversify_Server.Interfaces.Repositories
 
         decimal GetTotalDividendBySector(int sectorId);
 
+        decimal GetTotalInvestedByUserId(string userId);
+
+        int GetTotalCountStockByUserId(string userId);
+
         Task<List<Stock>> GetStockPurchasedByUserId(string userId);
 
         Task<List<Stock>> GetCurrentStockByUserId(string userId);

@@ -101,7 +101,8 @@ namespace Diversify_Server.Services
                     DividendYield = decimal.Round((currentStockList.First(x => x.Symbol == y.Key).DividendYield * 100), 2, MidpointRounding.AwayFromZero),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
-                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector)
+                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector),
+                    InvestedPercentage = String.Format("{0:P2}",(y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(GetCurrentLoggedInUser()))
                 }).ToList();
             
             return  groupedListBySymbol;
@@ -118,7 +119,6 @@ namespace Diversify_Server.Services
             var groupedListBySymbol = currentStockList.GroupBy(x => x.Sector)
                 .Select(y => new StockPortfolioViewModel
                 {
-                    //DividendYield = decimal.Parse(currentStockList.First(x => x.Sector == y.Key).DividendYield),
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
                     AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key)) * 100), 2, MidpointRounding.AwayFromZero)
