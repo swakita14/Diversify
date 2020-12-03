@@ -6,7 +6,7 @@ namespace Diversify_Server.Interfaces.Repositories
 {
     public interface IStockRepository
     {
-        void AddStock(Stock stock);
+        Task AddStock(Stock stock);
         void DeleteStock(Stock stock);
         void Edit(Stock restaurant);
 

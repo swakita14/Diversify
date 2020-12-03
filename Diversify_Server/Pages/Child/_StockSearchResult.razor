@@ -4,11 +4,10 @@
 
 
 <SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true" >
-    <GridPageSettings PageSize="5"></GridPageSettings>
+    <GridPageSettings PageSize="10"></GridPageSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Symbol" Width="120"></GridColumn>
-        <GridColumn Field=@nameof(SearchModel.Name) HeaderText="Customer Name" Width="150"></GridColumn>
-        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Customer Name" Width="150"></GridColumn>
+        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Symbol" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(SearchModel.Name) HeaderText="Company Name" Width="150" TextAlign="TextAlign.Center"></GridColumn>
         <GridColumn HeaderText="Link" Width="120">
             <Template>
                 @{

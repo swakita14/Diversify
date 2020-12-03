@@ -22,10 +22,10 @@ namespace Diversify_Server.Repositories
         /**
          *  Adding Stock
          */
-        public void AddStock(Stock stock)
+        public async Task AddStock(Stock stock)
         {
-            _context.Stock.Add(stock);
-            _context.SaveChanges();
+            await _context.Stock.AddAsync(stock);
+            await _context.SaveChangesAsync();
         }
 
         public void DeleteStock(Stock stock)

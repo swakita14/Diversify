@@ -1,11 +1,5 @@
 ﻿
-
-@inject IStockRepository StockRepository
-@inject ISectorRepository SectorRepository
-
-@inject IStockPortfolioService StockAddService
-
-@inject NavigationManager NavigationManager
+@inject IStockPortfolioService StockPortfolioService
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addStockModal">
@@ -61,29 +55,10 @@
     /**
      * Method that would add the stock to the current signed on user
      */
-    public void AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
+    public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
     {
         // Transferring information from api data to db model
-        Stock newStock = new Stock()
-        {
-            Name = model.Name,
-            Symbol = model.Symbol,
-            DividendYield = Decimal.Parse(model.DividendYield),
-            Sector = SectorRepository.GetSectorIdByName(model.Sector).SectorId,
-            InvestmentAmount = investmentAmount,
-            User = StockAddService.GetCurrentLoggedInUser(),
-            Exchange = model.Exchange,
-            EPS = Convert.ToDecimal(model.EPS),
-            ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
-            PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
-            PERatio = Convert.ToDecimal(model.PERatio),
-            ProfitMargin = Convert.ToDecimal(model.ProfitMargin),
-            PurchaseDate = DateTime.Now.Date,
-            Status = 1
-        };
-
-        // Adding stock object
-        StockRepository.AddStock(newStock);
+        await StockPortfolioService.AddStock(model, investmentAmount, purchaseTime);
 
         // glyphicon
         _success = true;

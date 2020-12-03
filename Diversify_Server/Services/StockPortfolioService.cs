@@ -5,18 +5,20 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
+using Diversify_Server.Models;
 using Diversify_Server.Models.Database;
 using Diversify_Server.Models.ViewModels;
+using Diversify_Server.Repositories;
 using Microsoft.AspNetCore.Http;
 
 namespace Diversify_Server.Services
 {
-    public class StockPortfolio : IStockPortfolioService
+    public class StockPortfolioService : IStockPortfolioService
     {
         private readonly IStockRepository _stockRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public StockPortfolio(IStockRepository stockRepository, ISectorRepository sectorRepository, IHttpContextAccessor httpContextAccessor)
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IHttpContextAccessor httpContextAccessor)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
@@ -146,6 +148,32 @@ namespace Diversify_Server.Services
             }
 
             return totalViewModel;
+        }
+
+        /**
+         * Adds new stock with the model, amount, and the time that the stock was purchased 
+         */
+        public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime)
+        {
+            Stock newStock = new Stock()
+            {
+                Name = model.Name,
+                Symbol = model.Symbol,
+                DividendYield = decimal.Parse(model.DividendYield),
+                Sector = _sectorRepository.GetSectorIdByName(model.Sector).SectorId,
+                InvestmentAmount = investmentAmount,
+                User = GetCurrentLoggedInUser(),
+                Exchange = model.Exchange,
+                EPS = Convert.ToDecimal(model.EPS),
+                ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
+                PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
+                PERatio = Convert.ToDecimal(model.PERatio),
+                ProfitMargin = Convert.ToDecimal(model.ProfitMargin),
+                PurchaseDate = DateTime.Now.Date,
+                Status = 1
+            };
+
+            await _stockRepository.AddStock(newStock);
         }
 
 

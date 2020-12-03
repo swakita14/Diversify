@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 using Diversify_Server.Interfaces;
 using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using Microsoft.Extensions.Configuration;
 
 namespace Diversify_Server.Services
 {
-    public class StockSearchService : IStockSearchService
+    public class StockService : IStockSearchService
     {
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
 
-        public StockSearchService(HttpClient client, IConfiguration configuration)
+        public StockService(HttpClient client, IConfiguration configuration)
         {
             _client = client;
             _configuration = configuration;
