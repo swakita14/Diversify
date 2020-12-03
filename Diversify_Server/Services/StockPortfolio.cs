@@ -30,7 +30,7 @@ namespace Diversify_Server.Services
         {
             // Return all the stocks that the user has
             var userStocks =  await _stockRepository.GetStockPurchasedByUserId(GetCurrentLoggedInUser());
-
+            
             var transactionList = new List<StockTransactionViewModel>();
 
             foreach (var transactions in userStocks)

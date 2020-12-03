@@ -7,10 +7,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-8">
             <_StockPortfolioChart PortfolioCompanyList="@_portfolioListCompany" Title="@_title" XName="@_xName"></_StockPortfolioChart>
         </div>
-        <div class="col d-flex justify-content-center">
+        <div class="col-4">
             @if (_showTotal)
             {
                 <_InvestmentTotal PortfolioViewModels="@_totalInvestment"></_InvestmentTotal>

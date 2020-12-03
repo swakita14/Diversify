@@ -4,9 +4,12 @@
 @inject ISectorRepository SectorRepository
 
 @inject IStockPortfolioService StockAddService
+
+@inject NavigationManager NavigationManager
+
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addStockModal">
-    Add to Portfolio
+<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addStockModal">
+    Add @Overview.Symbol to Portfolio
 </button>
 
 <!-- Modal -->
@@ -84,8 +87,6 @@
 
         // glyphicon
         _success = true;
-
-
     }
 
 

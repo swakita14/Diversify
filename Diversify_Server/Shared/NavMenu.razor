@@ -14,22 +14,22 @@
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="transactions">
-                <span class="oi oi-plus" aria-hidden="true"></span> Transaction
+                <span class="oi oi-dollar" aria-hidden="true"></span> Transaction
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="portfolio">
-                <span class="oi oi-plus" aria-hidden="true"></span> Portfolio
+                <span class="oi oi-pie-chart" aria-hidden="true"></span> Portfolio
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="news">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Company News
+                <span class="oi oi-globe" aria-hidden="true"></span> Company News
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="search">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Search Stock
+                <span class="oi oi-magnifying-glass" aria-hidden="true"></span> Search Stock
             </NavLink>
         </li>
 
@@ -37,27 +37,24 @@
             <Authorized>
                 <li class="nav-item px-3 align-bottom">
                     <NavLink class="nav-link" href="Identity/Account/Manage">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> @context.User.Identity.Name
-                    </NavLink>
-                </li>                
-                <li class="nav-item px-3 oi-vertical-align-bottom">
-                    <NavLink class="nav-link" href="Identity/Account/LogOut">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Log Out
+                        <span class="oi oi-person" aria-hidden="true"></span> @context.User.Identity.Name
                     </NavLink>
                 </li>
-                @*<form method="post" action="Identity/Account/Logout">
-                    <button type="submit" class="nav-link btn btn-link">Log out</button>
-                </form>*@
+                <li class="nav-item px-3 oi-vertical-align-bottom">
+                    <form method="post" action="Identity/Account/Logout">
+                       <button type="submit" class="nav-link btn btn-link" style="color: #D7D7D7; font-size: 14.4px;" >Log Out </button>
+                    </form>
+                </li>
             </Authorized>
             <NotAuthorized>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" href="dentity/Account/Register">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Register
+                    <NavLink class="nav-link" href="Identity/Account/Register">
+                        <span class="oi oi-person" aria-hidden="true"></span> Register
                     </NavLink>
-                </li> 
+                </li>
                 <li class="nav-item px-3">
                     <NavLink class="nav-link" href="Identity/Account/Login">
-                        <span class="oi oi-list-rich" aria-hidden="true"></span> Login
+                        <span class="oi oi-key" aria-hidden="true"></span> Login
                     </NavLink>
                 </li>
             </NotAuthorized>
@@ -65,13 +62,18 @@
     </ul>
 </div>
 
+
 @code {
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
+
     private void ToggleNavMenu()
     {
         collapseNavMenu = !collapseNavMenu;
     }
+
+
+
 }
