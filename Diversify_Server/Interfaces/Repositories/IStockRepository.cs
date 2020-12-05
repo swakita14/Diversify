@@ -7,8 +7,9 @@ namespace Diversify_Server.Interfaces.Repositories
     public interface IStockRepository
     {
         Task AddStock(Stock stock);
-        void DeleteStock(Stock stock);
-        void Edit(Stock restaurant);
+        Task SellStock(Stock currentStock);
+        Task DeleteStock(Stock stock);
+        Task Edit(Stock restaurant);
 
         int GetCompanyCountBySectorId(int sectorId);
 
