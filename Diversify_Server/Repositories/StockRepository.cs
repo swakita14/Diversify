@@ -118,8 +118,14 @@ namespace Diversify_Server.Repositories
         public async Task<List<Stock>> GetCurrentStockByUserId(string userId)
         {
             return await _context.Stock.Where(x => x.User == userId && x.Status == 1).ToListAsync();
-        }        
-        
+        }
+
+        public async Task<Stock> GetCompanyBySymbol(string companySymbol)
+        {
+            return await _context.Stock.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
+        }
+
+
         /**
          * Retrieves the list of stocks that the user has sold 
          */

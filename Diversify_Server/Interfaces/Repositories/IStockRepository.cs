@@ -9,7 +9,9 @@ namespace Diversify_Server.Interfaces.Repositories
         Task AddStock(Stock stock);
         Task SellStock(Stock currentStock);
         Task DeleteStock(Stock stock);
-        Task Edit(Stock restaurant);
+        Task Edit(Stock currentStock);
+
+        Task<Stock> GetCompanyBySymbol(string companySymbol);
 
         int GetCompanyCountBySectorId(int sectorId);
 

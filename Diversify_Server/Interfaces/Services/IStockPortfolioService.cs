@@ -24,5 +24,7 @@ namespace Diversify_Server.Interfaces.Services
 
         string GetCurrentLoggedInUser();
 
+        Task SellStock(string symbol, decimal amount);
+
     }
 }

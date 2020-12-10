@@ -176,6 +176,18 @@ namespace Diversify_Server.Services
             await _stockRepository.AddStock(newStock);
         }
 
+        public async Task SellStock(string symbol, decimal amount)
+        {
+            var existing = await _stockRepository.GetCompanyBySymbol(symbol);
+
+            // Need to get company as a total first then subtract from it. 
+
+
+            // Adding a new stock as a sold one instead of editing. 
+
+
+        }
+
 
         /**
          * Gets the userId of the current logged in user

@@ -1,4 +1,6 @@
 ﻿
+@inject
+
 <SfGrid DataSource="@PortfolioList" AllowPaging="true" AllowSorting="true" ShowColumnChooser="true">
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
@@ -12,6 +14,14 @@
             <GridColumn Field=@nameof(StockPortfolioViewModel.ExDividendDate) HeaderText="Ex-Dividend Date" Format="d" Type="ColumnType.Date" Width="120" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field=@nameof(StockPortfolioViewModel.Sector) HeaderText="Sector" Width="150" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field=@nameof(StockPortfolioViewModel.InvestedPercentage) HeaderText="Portfolio Diversity" Format="P2" Type="ColumnType.Number" Width="130"></GridColumn>
+            <GridColumn HeaderText="Sell Stock" Width="120">
+                <Template>
+                    @{
+                        var news = (context as StockPortfolioViewModel);
+                        <div><a href="#" @onclick="@(() => SellStockAsync(news.Symbol))">View</a></div>
+                    }
+                </Template>
+            </GridColumn>
         }
         else
         {
@@ -32,5 +42,10 @@
 
     [Parameter]
     public bool SwitchView { get; set; }
+
+    public async Task SellStockAsync(string symbol)
+    {
+
+    }
 
 }
