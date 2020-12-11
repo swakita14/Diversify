@@ -79,10 +79,12 @@ namespace Diversify_Server
 
             // Registering services that do not need httpclient
             services.AddScoped<IStockPortfolioService, StockPortfolioService>();
+            services.AddScoped<IInvestmentTotalService, InvestmentTotalService>();
 
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
+            services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
 
             // Adding Syncfusion for Blazor
             services.AddSyncfusionBlazor();

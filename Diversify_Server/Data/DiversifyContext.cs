@@ -13,6 +13,7 @@ namespace Diversify_Server.Data
 
         public DbSet<Sector> Sector { get; set; }
         public DbSet<Stock> Stock { get; set; }
+        public DbSet<InvestmentTotal> InvestmentTotals { get; set; }
 
         /**
          * Model Builder
@@ -22,6 +23,8 @@ namespace Diversify_Server.Data
             modelBuilder.ApplyConfiguration(new SectorConfiguration());
             
             modelBuilder.ApplyConfiguration(new StockConfiguration());
+
+            modelBuilder.ApplyConfiguration(new InvestmentTotalConfiguration());
         }
     }
 }

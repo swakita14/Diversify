@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models;
 using Diversify_Server.Models.Database;
 using Diversify_Server.Models.ViewModels;
-using Diversify_Server.Repositories;
-using Microsoft.AspNetCore.Http;
 
 namespace Diversify_Server.Services
 {
@@ -17,12 +14,13 @@ namespace Diversify_Server.Services
     {
         private readonly IStockRepository _stockRepository;
         private readonly ISectorRepository _sectorRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IHttpContextAccessor httpContextAccessor)
+        private readonly IIdentityService _identityService;
+
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
-            _httpContextAccessor = httpContextAccessor;
+            _identityService = identityService;
         }
 
         /**
@@ -31,7 +29,7 @@ namespace Diversify_Server.Services
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction()
         {
             // Return all the stocks that the user has
-            var userStocks =  await _stockRepository.GetStockPurchasedByUserId(GetCurrentLoggedInUser());
+            var userStocks =  await _stockRepository.GetStockPurchasedByUserId(_identityService.GetCurrentLoggedInUser());
             
             var transactionList = new List<StockTransactionViewModel>();
 
@@ -59,7 +57,7 @@ namespace Diversify_Server.Services
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold()
         {
             // Return all the stocks that the user has
-            var userStocks =  await _stockRepository.GetStockSoldByUserId(GetCurrentLoggedInUser());
+            var userStocks =  await _stockRepository.GetStockSoldByUserId(_identityService.GetCurrentLoggedInUser());
 
             var transactionList = new List<StockTransactionViewModel>();
 
@@ -87,7 +85,7 @@ namespace Diversify_Server.Services
          */
         public async Task<List<Stock>> GetCurrentUserStocks()
         {
-            return await _stockRepository.GetCurrentStockByUserId(GetCurrentLoggedInUser());
+            return await _stockRepository.GetCurrentStockByUserId(_identityService.GetCurrentLoggedInUser());
         }
 
         /**
@@ -107,7 +105,7 @@ namespace Diversify_Server.Services
                     TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
                     Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector),
-                    InvestedPercentage = (y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(GetCurrentLoggedInUser())
+                    InvestedPercentage = (y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(_identityService.GetCurrentLoggedInUser())
                 }).ToList();
             
             return  groupedListBySymbol;
@@ -162,7 +160,7 @@ namespace Diversify_Server.Services
                 DividendYield = decimal.Parse(model.DividendYield),
                 Sector = _sectorRepository.GetSectorIdByName(model.Sector).SectorId,
                 InvestmentAmount = investmentAmount,
-                User = GetCurrentLoggedInUser(),
+                User = _identityService.GetCurrentLoggedInUser(),
                 Exchange = model.Exchange,
                 EPS = Convert.ToDecimal(model.EPS),
                 ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
@@ -186,15 +184,6 @@ namespace Diversify_Server.Services
             // Adding a new stock as a sold one instead of editing. 
 
 
-        }
-
-
-        /**
-         * Gets the userId of the current logged in user
-         */
-        public string GetCurrentLoggedInUser()
-        {
-            return _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
     }
 }

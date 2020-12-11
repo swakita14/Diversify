@@ -22,8 +22,6 @@ namespace Diversify_Server.Interfaces.Services
 
         Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime);
 
-        string GetCurrentLoggedInUser();
-
         Task SellStock(string symbol, decimal amount);
 
     }
