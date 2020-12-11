@@ -7,5 +7,9 @@ namespace Diversify_Server.Interfaces.Repositories
     public interface IInvestmentTotalRepository
     { 
         Task<List<InvestmentTotal>> GetAllInvestmentTotalsByUserId(string userId);
+
+        Task AddNewTotal(InvestmentTotal newInvestmentTotal);
+
+        Task EditInvestmentAmount(InvestmentTotal investmentTotal);
     }
 }

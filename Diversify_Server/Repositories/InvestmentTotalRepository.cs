@@ -18,6 +18,17 @@ namespace Diversify_Server.Repositories
         {
             _context = context;
         }
+
+        public Task AddNewTotal(InvestmentTotal newInvestmentTotal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EditInvestmentAmount(InvestmentTotal investmentTotal)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<InvestmentTotal>> GetAllInvestmentTotalsByUserId(string userId)
         {
             return await _context.InvestmentTotals.Where(x => x.User == userId).ToListAsync();
