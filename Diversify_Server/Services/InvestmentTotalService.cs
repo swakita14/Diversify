@@ -31,8 +31,6 @@ namespace Diversify_Server.Services
             var companyTotal = currentUserStocks.FirstOrDefault(x => x.Symbol == symbol);
 
             return companyTotal.InvestedAmount;
-
-
         }
     }
 }

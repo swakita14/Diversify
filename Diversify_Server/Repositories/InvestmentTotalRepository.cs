@@ -19,14 +19,28 @@ namespace Diversify_Server.Repositories
             _context = context;
         }
 
-        public Task AddNewTotal(InvestmentTotal newInvestmentTotal)
+        /**
+         * Adding new investment total if not existing 
+         */
+        public async Task AddNewTotal(InvestmentTotal newInvestmentTotal)
         {
-            throw new NotImplementedException();
+            await _context.InvestmentTotals.AddAsync(newInvestmentTotal);
+
+            _context.Entry(newInvestmentTotal).State = EntityState.Added;
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task EditInvestmentAmount(InvestmentTotal investmentTotal)
+        /**
+         * Edit existing investment total
+         */
+        public async Task EditInvestmentAmount(InvestmentTotal investmentTotal)
         {
-            throw new NotImplementedException();
+            var existing = await _context.InvestmentTotals.FindAsync(investmentTotal.InvestmentTotalId);
+
+            _context.Entry(existing).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<List<InvestmentTotal>> GetAllInvestmentTotalsByUserId(string userId)
