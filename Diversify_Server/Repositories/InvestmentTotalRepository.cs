@@ -43,6 +43,9 @@ namespace Diversify_Server.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /**
+         * Get investment totals by user Id 
+         */
         public async Task<List<InvestmentTotal>> GetAllInvestmentTotalsByUserId(string userId)
         {
             return await _context.InvestmentTotals.Where(x => x.User == userId).ToListAsync();
