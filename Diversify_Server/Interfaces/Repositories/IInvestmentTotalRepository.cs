@@ -10,6 +10,6 @@ namespace Diversify_Server.Interfaces.Repositories
 
         Task AddNewTotal(InvestmentTotal newInvestmentTotal);
 
-        Task EditInvestmentAmount(InvestmentTotal investmentTotal);
+        Task EditInvestmentAmount(string userId, string companyName, decimal amount);
     }
 }

@@ -6,6 +6,10 @@ namespace Diversify_Server.Interfaces.Services
     {
         Task<decimal> GetInvestedTotalByCompanySymbol(string symbol);
 
+        Task<bool> CheckExistingInvestment(string companySymbol);
 
+        Task AddNewInvestment(string companyName, decimal initialInvestment);
+
+        Task EditExistingInvestment(string companyName, decimal editInvestmentAmount);
     }
 }

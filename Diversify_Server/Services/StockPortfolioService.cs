@@ -15,12 +15,16 @@ namespace Diversify_Server.Services
         private readonly IStockRepository _stockRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
+        private readonly IInvestmentTotalRepository _investmentTotalRepository;
+        private readonly IInvestmentTotalService _investmentTotalService;
 
-        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService)
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, IInvestmentTotalRepository investmentTotalRepository, IInvestmentTotalService investmentTotalService)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
             _identityService = identityService;
+            _investmentTotalRepository = investmentTotalRepository;
+            _investmentTotalService = investmentTotalService;
         }
 
         /**
@@ -170,6 +174,12 @@ namespace Diversify_Server.Services
                 PurchaseDate = DateTime.Now.Date,
                 Status = 1
             };
+
+            if (!await _investmentTotalService.CheckExistingInvestment(model.Symbol))
+            {
+
+            }
+            
 
             await _stockRepository.AddStock(newStock);
         }

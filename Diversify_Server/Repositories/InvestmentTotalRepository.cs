@@ -34,9 +34,11 @@ namespace Diversify_Server.Repositories
         /**
          * Edit existing investment total
          */
-        public async Task EditInvestmentAmount(InvestmentTotal investmentTotal)
+        public async Task EditInvestmentAmount(string userId, string companyName, decimal amount)
         {
-            var existing = await _context.InvestmentTotals.FindAsync(investmentTotal.InvestmentTotalId);
+            var existing = await _context.InvestmentTotals.Where(x => x.User == userId).FirstOrDefaultAsync(x => x.Symbol == companyName);
+
+            existing.InvestedAmount += amount;
 
             _context.Entry(existing).State = EntityState.Modified;
 

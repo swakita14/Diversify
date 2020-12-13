@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
+using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Services
 {
@@ -35,6 +36,30 @@ namespace Diversify_Server.Services
         }
 
         /**
+         * Adds a new investment using the company name
+         */
+        public async Task AddNewInvestment(string companySymbol, decimal initialInvestment)
+        {
+            InvestmentTotal newInvestmentTotal = new InvestmentTotal
+            {
+                InvestedAmount = initialInvestment,
+                Symbol = companySymbol,
+                User = _identityService.GetCurrentLoggedInUser()
+            };
+
+            await _investmentTotalRepository.AddNewTotal(newInvestmentTotal);
+        }
+
+        /**
+         * Edit Investment amount
+         */
+        public async Task EditExistingInvestment(string companyName, decimal editInvestmentAmount)
+        {
+            await _investmentTotalRepository.EditInvestmentAmount(companyName, _identityService.GetCurrentLoggedInUser(),
+                editInvestmentAmount);
+        }
+
+        /**
          * checking if the investment already exists, if not creatinga new one. 
          */
         public async Task<bool> CheckExistingInvestment(string companySymbol)
@@ -43,10 +68,10 @@ namespace Diversify_Server.Services
 
             if (allInvestmentTotalsByUser.FirstOrDefault(x => x.Symbol == companySymbol) is null)
             {
-                return true;
+                return false;
             }
 
-            return false; 
+            return true; 
         }
     }
 }
