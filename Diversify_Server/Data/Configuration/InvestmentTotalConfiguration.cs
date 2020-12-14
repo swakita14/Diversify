@@ -35,6 +35,11 @@ namespace Diversify_Server.Data.Configuration
                 .HasColumnType("nvarchar")
                 .HasMaxLength(900)
                 .IsRequired();
+            
+            builder.Property(x => x.Sector)
+                .HasColumnName("Sector")
+                .HasColumnType("int")
+                .IsRequired();
 
 
         }

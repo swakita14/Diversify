@@ -175,9 +175,14 @@ namespace Diversify_Server.Services
                 Status = 1
             };
 
+            // Adding a new investment, if already existing, add to the total 
             if (!await _investmentTotalService.CheckExistingInvestment(model.Symbol))
             {
-
+                await _investmentTotalService.AddNewInvestment(model.Symbol, investmentAmount);
+            }
+            else
+            {
+                await _investmentTotalService.EditExistingInvestment(model.Symbol, investmentAmount);
             }
             
 

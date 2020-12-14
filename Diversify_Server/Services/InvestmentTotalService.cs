@@ -38,7 +38,7 @@ namespace Diversify_Server.Services
         /**
          * Adds a new investment using the company name
          */
-        public async Task AddNewInvestment(string companySymbol, decimal initialInvestment)
+        public async Task AddNewInvestment(string companySymbol, decimal initialInvestment, int sectorId)
         {
             InvestmentTotal newInvestmentTotal = new InvestmentTotal
             {
@@ -55,6 +55,8 @@ namespace Diversify_Server.Services
          */
         public async Task EditExistingInvestment(string companyName, decimal editInvestmentAmount)
         {
+
+
             await _investmentTotalRepository.EditInvestmentAmount(companyName, _identityService.GetCurrentLoggedInUser(),
                 editInvestmentAmount);
         }

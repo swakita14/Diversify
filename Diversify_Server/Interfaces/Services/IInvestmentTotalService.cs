@@ -8,7 +8,7 @@ namespace Diversify_Server.Interfaces.Services
 
         Task<bool> CheckExistingInvestment(string companySymbol);
 
-        Task AddNewInvestment(string companyName, decimal initialInvestment);
+        Task AddNewInvestment(string companyName, decimal initialInvestment, int sectorId);
 
         Task EditExistingInvestment(string companyName, decimal editInvestmentAmount);
     }
