@@ -44,7 +44,8 @@ namespace Diversify_Server.Services
             {
                 InvestedAmount = initialInvestment,
                 Symbol = companySymbol,
-                User = _identityService.GetCurrentLoggedInUser()
+                User = _identityService.GetCurrentLoggedInUser(),
+                Sector = sectorId
             };
 
             await _investmentTotalRepository.AddNewTotal(newInvestmentTotal);
@@ -55,10 +56,15 @@ namespace Diversify_Server.Services
          */
         public async Task EditExistingInvestment(string companyName, decimal editInvestmentAmount)
         {
+            var existingUserStocks =
+                await _investmentTotalRepository.GetAllInvestmentTotalsByUserId(
+                    _identityService.GetCurrentLoggedInUser());
 
+            var existingCompanyStock = existingUserStocks.FirstOrDefault(x => x.Symbol == companyName);
 
-            await _investmentTotalRepository.EditInvestmentAmount(companyName, _identityService.GetCurrentLoggedInUser(),
-                editInvestmentAmount);
+            existingCompanyStock.InvestedAmount += editInvestmentAmount;
+
+            await _investmentTotalRepository.EditInvestmentAmount(existingCompanyStock);
         }
 
         /**

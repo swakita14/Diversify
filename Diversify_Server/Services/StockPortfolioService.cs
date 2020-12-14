@@ -178,7 +178,7 @@ namespace Diversify_Server.Services
             // Adding a new investment, if already existing, add to the total 
             if (!await _investmentTotalService.CheckExistingInvestment(model.Symbol))
             {
-                await _investmentTotalService.AddNewInvestment(model.Symbol, investmentAmount);
+                await _investmentTotalService.AddNewInvestment(model.Symbol, investmentAmount, _sectorRepository.GetSectorIdByName(model.Sector).SectorId);
             }
             else
             {
@@ -189,16 +189,13 @@ namespace Diversify_Server.Services
             await _stockRepository.AddStock(newStock);
         }
 
+        /**
+         * Sell the user owned stock by the company symbol and the amount 
+         */
         public async Task SellStock(string symbol, decimal amount)
         {
-            var existing = await _stockRepository.GetCompanyBySymbol(symbol);
-
-            // Need to get company as a total first then subtract from it. 
-
-
-            // Adding a new stock as a sold one instead of editing. 
-
-
+            // Add a bool statement to check 
+            await _investmentTotalService.EditExistingInvestment(symbol, amount);
         }
     }
 }

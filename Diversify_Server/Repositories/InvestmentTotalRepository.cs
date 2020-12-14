@@ -20,6 +20,15 @@ namespace Diversify_Server.Repositories
         }
 
         /**
+         * Get company total by the symbol
+         */
+        public async Task<InvestmentTotal> GetTotalByCompanySymbol(string companySymbol)
+        {
+            return await _context.InvestmentTotals.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
+        }
+
+
+        /**
          * Adding new investment total if not existing 
          */
         public async Task AddNewTotal(InvestmentTotal newInvestmentTotal)
@@ -34,11 +43,11 @@ namespace Diversify_Server.Repositories
         /**
          * Edit existing investment total
          */
-        public async Task EditInvestmentAmount(string userId, string companyName, decimal amount)
+        public async Task EditInvestmentAmount(InvestmentTotal existingInvestmentTotal)
         {
-            var existing = await _context.InvestmentTotals.Where(x => x.User == userId).FirstOrDefaultAsync(x => x.Symbol == companyName);
+            var existing = await _context.InvestmentTotals.FindAsync(existingInvestmentTotal.InvestmentTotalId);
 
-            existing.InvestedAmount += amount;
+            existing.InvestedAmount += existingInvestmentTotal.InvestedAmount;
 
             _context.Entry(existing).State = EntityState.Modified;
 
