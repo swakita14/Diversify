@@ -68,7 +68,7 @@ namespace Diversify_Server.Services
         }
 
         /**
-         * checking if the investment already exists, if not creatinga new one. 
+         * checking if the investment already exists, if not creating a  new one. 
          */
         public async Task<bool> CheckExistingInvestment(string companySymbol)
         {
@@ -80,6 +80,21 @@ namespace Diversify_Server.Services
             }
 
             return true; 
+        }
+
+        /**
+         * If the edit investment amount is larger than the current investment, will return false, else true
+         */
+        public async Task<bool> CheckRemainderInvestment(string companySymbol, decimal editInvestmentAmount)
+        {
+            var currentInvestment = await GetInvestedTotalByCompanySymbol(companySymbol);
+
+            if (currentInvestment < editInvestmentAmount)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

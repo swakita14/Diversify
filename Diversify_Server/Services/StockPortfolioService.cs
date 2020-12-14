@@ -194,8 +194,15 @@ namespace Diversify_Server.Services
          */
         public async Task SellStock(string symbol, decimal amount)
         {
-            // Add a bool statement to check 
-            await _investmentTotalService.EditExistingInvestment(symbol, amount);
+            if (await _investmentTotalService.CheckRemainderInvestment(symbol, amount))
+            {
+                // Add a bool statement to check 
+                await _investmentTotalService.EditExistingInvestment(symbol, amount);
+            }
+            else
+            {
+                throw new Exception("The entered amount is larger than the current invested amount");
+            }
         }
     }
 }

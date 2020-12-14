@@ -47,6 +47,8 @@ namespace Diversify_Server.Repositories
         {
             var existing = await _context.InvestmentTotals.FindAsync(existingInvestmentTotal.InvestmentTotalId);
 
+            if(existing == null) throw new ArgumentException($"Count not find the Stock with ID {existing.InvestmentTotalId}");
+
             existing.InvestedAmount += existingInvestmentTotal.InvestedAmount;
 
             _context.Entry(existing).State = EntityState.Modified;
