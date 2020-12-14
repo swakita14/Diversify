@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
@@ -22,29 +23,45 @@ namespace Diversify_Server.Repositories
         /**
          *  Adding Stock
          */
-        public void AddStock(Stock stock)
+        public async Task AddStock(Stock stock)
         {
-            _context.Stock.Add(stock);
-            _context.SaveChanges();
+            await _context.Stock.AddAsync(stock);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteStock(Stock stock)
+        /**
+         * Method to sell stocks 
+         */
+        public async Task SellStock(Stock currentStock)
         {
-            Stock existing = _context.Stock.Find(stock.StockId);
+            var existing = await _context.Stock.FindAsync(currentStock.StockId);
 
-            if (existing == null) throw new ArgumentException($"Count not find the restaurant with ID {stock.StockId}");
+            existing.Status = 2;
+            _context.Entry(existing).State = EntityState.Modified;
 
-            _context.Stock.Remove(stock);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+        }
+
+        /**
+         * Delete stock
+         */
+        public async Task DeleteStock(Stock currentStock)
+        {
+            var existing = await _context.Stock.FindAsync(currentStock.StockId);
+
+            if (existing == null) throw new ArgumentException($"Count not find the Stock with ID {currentStock.StockId}");
+
+            _context.Stock.Remove(currentStock);
+            await _context.SaveChangesAsync();
         }
 
         /**
          * Edit the stock information
          */
-        public void Edit(Stock stock)
+        public async Task Edit(Stock stock)
         {
             _context.Entry(stock).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         /**
@@ -101,8 +118,14 @@ namespace Diversify_Server.Repositories
         public async Task<List<Stock>> GetCurrentStockByUserId(string userId)
         {
             return await _context.Stock.Where(x => x.User == userId && x.Status == 1).ToListAsync();
-        }        
-        
+        }
+
+        public async Task<Stock> GetCompanyBySymbol(string companySymbol)
+        {
+            return await _context.Stock.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
+        }
+
+
         /**
          * Retrieves the list of stocks that the user has sold 
          */

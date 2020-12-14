@@ -1,0 +1,30 @@
+﻿@inject IStockPortfolioService StockPortfolioService
+
+<div class="card" style="width: 20rem;">
+    <div class="card-body">
+        <h5 class="card-title">Investment Analysis</h5>
+        <p class="card-text">Based off of the current user stocks these are the information regarding totals.</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><b>Total Investment: </b>@String.Format("{0:C}", _results.InvestmentTotal)</li>
+        <li class="list-group-item"><b>Estimated Yearly Dividend: </b>@String.Format("{0:C}",_results.EstimatedYearlyIncome)</li>
+    </ul>
+</div>
+
+@code {
+
+    [Parameter]
+    public IEnumerable<StockPortfolioViewModel> PortfolioViewModels { get; set; }
+
+    private InvestmentTotalViewModel _results = new InvestmentTotalViewModel();
+
+    protected override void OnInitialized()
+    {
+        foreach (var stocks in PortfolioViewModels)
+        {
+            _results.InvestmentTotal += stocks.TotalInvestment;
+            _results.EstimatedYearlyIncome += (stocks.TotalInvestment * stocks.DividendYield);
+        }
+    }
+
+}

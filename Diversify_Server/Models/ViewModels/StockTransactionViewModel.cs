@@ -17,5 +17,9 @@ namespace Diversify_Server.Models.ViewModels
         public string Sector { get; set; }
 
         public DateTime PurchaseDate { get; set; }
+
+        public DateTime SoldDate { get; set; }
+
+        public decimal SoldPrice { get; set; }
     }
 }
