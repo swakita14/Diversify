@@ -1,9 +1,8 @@
-﻿
-@inject IStockPortfolioService StockPortfolioService
+﻿@inject IInvestmentTotalService InvestmentTotalService
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addStockModal">
-    Add @Overview.Symbol to Portfolio
+    Add @StockPortfolio.Symbol to Portfolio
 </button>
 
 <!-- Modal -->
@@ -11,21 +10,20 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Invested Amount for @Overview.Symbol</h5>
+                <h5 class="modal-title" id="ModalLabel">Amount Sold for @StockPortfolio.Symbol</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <EditForm Model="@_stock" OnValidSubmit="() => AddStock(Overview, _stock.InvestmentAmount, DateValue)">
+            <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(StockPortfolio.Symbol, _stock.InvestmentAmount)">
                 <div class="modal-body">
 
-                    <label for="invested-amount">Amount Invested</label>
+                    <label for="invested-amount">Amount Sold</label>
                     $<InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
                     <br>
-                    <SfDatePicker TValue="DateTime" Max='@_maxDateTime' @bind-Value="@DateValue" Placeholder='Choose a Date'></SfDatePicker>
                     @if (_success)
                     {
-                        <span class="oi oi-check" aria-hidden="true">Stocks Added!</span>
+                        <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
                     }
                 </div>
                 <div class="modal-footer">
@@ -40,32 +38,22 @@
     </div>
 </div>
 
-
-@code {
+@code{
 
     [Parameter]
-    public CompanyOverviewModel Overview { get; set; }
-
-    private DateTime _maxDateTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-    public DateTime DateValue { get; set; } = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+    public StockPortfolioViewModel StockPortfolio { get; set; }
 
     private Stock _stock = new Stock();
     private bool _success = false;
 
     /**
-     * Method that would add the stock to the current signed on user
+     * Method to sell the stock
      */
-    public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
+    public async Task SellStockAsync(string companySymbol, decimal amount)
     {
-        // Transferring information from api data to db model
-        await StockPortfolioService.AddStock(model, investmentAmount, purchaseTime);
+        await InvestmentTotalService.EditExistingInvestment(companySymbol, amount);
 
-        // glyphicon
         _success = true;
     }
-
-
-
-
 
 }
