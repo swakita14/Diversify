@@ -57,7 +57,7 @@
      */
     public async Task SellStockAsync(string companySymbol, decimal amount)
     {
-        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount))
+        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
         {
             await StockPortfolioService.SellStock(companySymbol, amount, DateTime.Now);
             _success = true;

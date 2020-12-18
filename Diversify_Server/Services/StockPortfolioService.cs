@@ -128,33 +128,18 @@ namespace Diversify_Server.Services
          */
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
         {
-            //_investmentTotalService.GetUserTotalInvestment()
+            var userInvestments = await _investmentTotalService.GetInvestmentTotalByUserId();
 
-            //var stockPortfolio = new List<StockPortfolioViewModel>();
 
-            //foreach (var stock in currentStockList.Distinct())
-            //{
-            //    stockPortfolio.Add(new StockPortfolioViewModel
-            //    {
-            //        CompanyName = stock.Name,
-            //        Symbol = stock.Symbol,
-            //        DividendYield = stock.DividendYield,
-            //        TotalInvestment = await _investmentTotalService.GetInvestedTotalBySector(stock.Sector),
-            //        ExDividendDate = stock.ExDividendDate,
-            //        Sector = _sectorRepository.GetSectorNameById(stock.Sector),
-            //        InvestedPercentage = await _investmentTotalService.GetInvestedTotalByCompanySymbol(stock.Symbol) / await _investmentTotalService.GetUserTotalInvestment()
-            //    });
-            //}
+            var groupedListBySymbol = userInvestments.GroupBy(x => x.Sector)
+                .Select(y => new StockPortfolioViewModel
+                {
+                    TotalInvestment = y.Sum(x => x.InvestedAmount),
+                    Sector = _sectorRepository.GetSectorNameById(userInvestments.First(x => x.Sector == y.Key).Sector),
+                    AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
+                }).ToList();
 
-            //var groupedListBySymbol = currentStockList.GroupBy(x => x.Sector)
-            //    .Select(y => new StockPortfolioViewModel
-            //    {
-            //        TotalInvestment = y.Sum(x => x.InvestmentAmount),
-            //        Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
-            //        AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
-            //    }).ToList();
-
-            //return stockPortfolio;
+            return groupedListBySymbol;
         }
 
         /**
@@ -231,6 +216,7 @@ namespace Diversify_Server.Services
                 DividendYield = stockInformation.DividendYield,
                 ExDividendDate = stockInformation.ExDividendDate,
                 Status = 2,
+                User = _identityService.GetCurrentLoggedInUser(),
                 InvestmentAmount = amount,
                 SoldDate = dateSold,
                 Sector = stockInformation.Sector
