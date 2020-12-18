@@ -52,6 +52,10 @@ namespace Diversify_Server.Data.Configuration
                 .HasColumnType("date")
                 .IsRequired();
 
+            builder.Property(x => x.SoldDate)
+                .HasColumnName("SoldDate")
+                .HasColumnType("date");
+
             builder.Property(x => x.ProfitMargin)
                 .HasColumnName("ProfitMargin")
                 .HasColumnType("decimal");

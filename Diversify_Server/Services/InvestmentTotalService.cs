@@ -27,13 +27,34 @@ namespace Diversify_Server.Services
         {
             // Get all company stocks by user Id 
             var currentUserStocks =
-                await _investmentTotalRepository.GetAllInvestmentTotalsByUserId(_identityService.GetCurrentLoggedInUser());
+                await GetInvestmentTotalByUserId();
 
             // Find how the total amount by company 
             var companyTotal = currentUserStocks.FirstOrDefault(x => x.Symbol == symbol);
 
             return companyTotal.InvestedAmount;
         }
+
+        public async Task<List<InvestmentTotal>> GetInvestmentTotalByUserId()
+        {
+            return await _investmentTotalRepository.GetAllInvestmentTotalsByUserId(_identityService
+                .GetCurrentLoggedInUser());
+        }
+
+        /**
+         * Gets the invested total with the sector Id
+         */
+        public async Task<IEnumerable<InvestmentTotal>> GetInvestedTotalBySector(int sectorId)
+        {
+            var currentUserInvestments =
+                await GetInvestmentTotalByUserId();
+
+            var investmentTotalBySector = currentUserInvestments.Where(x => x.Sector == sectorId);
+
+            return investmentTotalBySector;
+
+        }
+
 
         /**
          * Adds a new investment using the company name
@@ -52,17 +73,27 @@ namespace Diversify_Server.Services
         }
 
         /**
+         * Get the sum of user investment
+         */
+        public async Task<decimal> GetUserTotalInvestment()
+        {
+            var currentUserInvestmentTotals =
+                await GetInvestmentTotalByUserId();
+
+            return currentUserInvestmentTotals.Sum(x => x.InvestedAmount);
+        }
+
+        /**
          * Edit Investment amount
          */
         public async Task EditExistingInvestment(string companyName, decimal editInvestmentAmount)
         {
             var existingUserStocks =
-                await _investmentTotalRepository.GetAllInvestmentTotalsByUserId(
-                    _identityService.GetCurrentLoggedInUser());
+                await GetInvestmentTotalByUserId();
 
             var existingCompanyStock = existingUserStocks.FirstOrDefault(x => x.Symbol == companyName);
 
-            existingCompanyStock.InvestedAmount += editInvestmentAmount;
+            existingCompanyStock.InvestedAmount -= editInvestmentAmount;
 
             await _investmentTotalRepository.EditInvestmentAmount(existingCompanyStock);
         }
@@ -72,7 +103,7 @@ namespace Diversify_Server.Services
          */
         public async Task<bool> CheckExistingInvestment(string companySymbol)
         {
-            var allInvestmentTotalsByUser = await _investmentTotalRepository.GetAllInvestmentTotalsByUserId(_identityService.GetCurrentLoggedInUser());
+            var allInvestmentTotalsByUser = await GetInvestmentTotalByUserId();
 
             if (allInvestmentTotalsByUser.FirstOrDefault(x => x.Symbol == companySymbol) is null)
             {

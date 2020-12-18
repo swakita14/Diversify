@@ -1,8 +1,9 @@
-﻿@inject IInvestmentTotalService InvestmentTotalService
+﻿@inject IStockPortfolioService StockPortfolioService
+@inject IInvestmentTotalService InvestmentTotalService
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addStockModal">
-    Add @StockPortfolio.Symbol to Portfolio
+<button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#addStockModal">
+    <span class="oi oi-dollar" aria-hidden="true"></span>
 </button>
 
 <!-- Modal -->
@@ -19,16 +20,20 @@
                 <div class="modal-body">
 
                     <label for="invested-amount">Amount Sold</label>
-                    $<InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
                     <br>
                     @if (_success)
                     {
                         <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
                     }
+                    @if (_error)
+                    {
+                        <span class="oi oi-circle-x" aria-hidden="true">Error - Check Remainder</span>
+                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Stock</button>
+                    <button type="submit" class="btn btn-primary">Sell Stock</button>
 
                 </div>
             </EditForm>
@@ -45,15 +50,22 @@
 
     private Stock _stock = new Stock();
     private bool _success = false;
+    private bool _error = false;
 
     /**
      * Method to sell the stock
      */
     public async Task SellStockAsync(string companySymbol, decimal amount)
     {
-        await InvestmentTotalService.EditExistingInvestment(companySymbol, amount);
-
-        _success = true;
+        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount))
+        {
+            await StockPortfolioService.SellStock(companySymbol, amount, DateTime.Now);
+            _success = true;
+        }
+        else
+        {
+            _error = true;
+        }
     }
 
 }

@@ -20,7 +20,7 @@
                 <div class="modal-body">
 
                     <label for="invested-amount">Amount Invested</label>
-                    $<InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
                     <br>
                     <SfDatePicker TValue="DateTime" Max='@_maxDateTime' @bind-Value="@DateValue" Placeholder='Choose a Date'></SfDatePicker>
                     @if (_success)

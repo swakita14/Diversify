@@ -3,17 +3,17 @@
 <SfGrid DataSource="@PortfolioList" AllowPaging="true" AllowSorting="true" ShowColumnChooser="true">
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
-        <GridColumn Field=@nameof(StockPortfolioViewModel.TotalInvestment) HeaderText="Total Investment" Width="150" Format="C2" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(StockPortfolioViewModel.TotalInvestment) HeaderText="Total Investment" Width="130" Format="C2" TextAlign="TextAlign.Center"></GridColumn>
 
         @if (!SwitchView)
         {
             <GridColumn Field=@nameof(StockPortfolioViewModel.Symbol) HeaderText="Symbol" Width="120" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field=@nameof(StockPortfolioViewModel.CompanyName) HeaderText="Company Name" Width="150" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field=@nameof(StockPortfolioViewModel.DividendYield) HeaderText="Dividend Yield" Format="P2" Type="ColumnType.Number" Width="130" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field=@nameof(StockPortfolioViewModel.CompanyName) HeaderText="Company Name" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field=@nameof(StockPortfolioViewModel.DividendYield) HeaderText="Dividend Yield" Format="P2" Type="ColumnType.Number" Width="120" TextAlign="TextAlign.Center"></GridColumn>
             <GridColumn Field=@nameof(StockPortfolioViewModel.ExDividendDate) HeaderText="Ex-Dividend Date" Format="d" Type="ColumnType.Date" Width="120" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field=@nameof(StockPortfolioViewModel.Sector) HeaderText="Sector" Width="150" TextAlign="TextAlign.Center"></GridColumn>
-            <GridColumn Field=@nameof(StockPortfolioViewModel.InvestedPercentage) HeaderText="Portfolio Diversity" Format="P2" Type="ColumnType.Number" Width="130"></GridColumn>
-            <GridColumn HeaderText="Sell Stock" Width="120" Type="ColumnType.Number">
+            <GridColumn Field=@nameof(StockPortfolioViewModel.Sector) HeaderText="Sector" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Field=@nameof(StockPortfolioViewModel.InvestedPercentage) HeaderText="Portfolio Diversity" Format="P2" Type="ColumnType.Number" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+            <GridColumn Width="120" TextAlign="TextAlign.Center">
                 <Template>
                     @{
                         var portfolioViewModel = (context as StockPortfolioViewModel);

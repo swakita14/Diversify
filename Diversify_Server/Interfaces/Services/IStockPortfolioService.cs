@@ -20,9 +20,11 @@ namespace Diversify_Server.Interfaces.Services
 
         Task<InvestmentTotalViewModel> GetUserInvestmentTotal();
 
+        Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold();
+
         Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime);
 
-        Task SellStock(string symbol, decimal amount);
+        Task SellStock(string symbol, decimal amount, DateTime dateSold);
 
     }
 }

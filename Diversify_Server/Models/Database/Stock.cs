@@ -28,6 +28,8 @@ namespace Diversify_Server.Models.Database
 
         public DateTime PurchaseDate { get; set; }
 
+        public DateTime SoldDate { get; set; }
+
         [Required]
         public decimal InvestmentAmount { get; set; }
     }

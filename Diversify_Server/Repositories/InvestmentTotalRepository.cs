@@ -45,13 +45,13 @@ namespace Diversify_Server.Repositories
          */
         public async Task EditInvestmentAmount(InvestmentTotal existingInvestmentTotal)
         {
-            var existing = await _context.InvestmentTotals.FindAsync(existingInvestmentTotal.InvestmentTotalId);
+            //var existing = await _context.InvestmentTotals.FindAsync(existingInvestmentTotal.InvestmentTotalId);
 
-            if(existing == null) throw new ArgumentException($"Count not find the Stock with ID {existing.InvestmentTotalId}");
+            //if(existing == null) throw new ArgumentException($"Count not find the Stock with ID {existing.InvestmentTotalId}");
 
-            existing.InvestedAmount += existingInvestmentTotal.InvestedAmount;
+            //existing.InvestedAmount -= existingInvestmentTotal.InvestedAmount;
 
-            _context.Entry(existing).State = EntityState.Modified;
+            _context.Entry(existingInvestmentTotal).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
         }
