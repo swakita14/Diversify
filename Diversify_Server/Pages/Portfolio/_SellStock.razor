@@ -19,22 +19,17 @@
             <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(StockPortfolio.Symbol, _stock.InvestmentAmount)">
                 <div class="modal-body">
 
-                    <label for="invested-amount">Amount Sold</label>
-                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="invested-amount" />
+                    <label for="sold-amount">Amount Sold</label>
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="sold-amount" />
                     <br>
                     @if (_success)
                     {
                         <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
                     }
-                    @if (_error)
-                    {
-                        <span class="oi oi-circle-x" aria-hidden="true">Error - Check Remainder</span>
-                    }
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Sell Stock</button>
-
                 </div>
             </EditForm>
 
@@ -66,6 +61,7 @@
         {
             _error = true;
         }
+        StateHasChanged();
     }
 
 }

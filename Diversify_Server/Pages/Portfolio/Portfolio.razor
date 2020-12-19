@@ -40,6 +40,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        //Foreach item in the list, if the date is past then update 
+
+        // Getting list of the items for the portfolio
         _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany();
         _totalInvestment = await StockPortfolioService.StockPortfolioGroupByCompany();
     }

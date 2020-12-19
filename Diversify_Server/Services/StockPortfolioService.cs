@@ -32,7 +32,7 @@ namespace Diversify_Server.Services
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction()
         {
             // Return all the stocks that the user has
-            var userStocks = await _stockRepository.GetStockPurchasedByUserId(_identityService.GetCurrentLoggedInUser());
+            var userStocks = await _stockRepository.GetCurrentStockByUserId(_identityService.GetCurrentLoggedInUser());
 
             var transactionList = new List<StockTransactionViewModel>();
 
@@ -70,9 +70,9 @@ namespace Diversify_Server.Services
                 {
                     CompanyName = transactions.Name,
                     DividendYield = transactions.DividendYield,
-                    PurchaseDate = transactions.PurchaseDate,
+                    SoldDate = transactions.SoldDate,
                     Symbol = transactions.Symbol,
-                    PurchasePrice = transactions.InvestmentAmount,
+                    SoldPrice = transactions.InvestmentAmount,
                     StockId = transactions.StockId,
                     Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
                 });
@@ -221,7 +221,7 @@ namespace Diversify_Server.Services
                 SoldDate = dateSold,
                 Sector = stockInformation.Sector
             };
-            await _stockRepository.AddStock(stockInformation);
+            await _stockRepository.AddStock(newStockTransaction);
         }
     }
 }
