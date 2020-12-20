@@ -96,13 +96,6 @@ namespace Diversify_Server.Repositories
             return await _context.Stock.Where(x => x.User == userId).ToListAsync();
         }
 
-        /**
-         * Returns the total amount invested in stocks 
-         */
-        public decimal GetTotalInvestedByUserId(string userId)
-        {
-            return _context.Stock.Where(x => x.User == userId).Sum(x => x.InvestmentAmount);
-        }
 
         /**
          * Returns the total count of stocks users have in

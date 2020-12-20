@@ -1,0 +1,67 @@
+﻿@inject IStockPortfolioService StockPortfolioService
+@inject IInvestmentTotalService InvestmentTotalService
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#addStockModal">
+    <span class="oi oi-dollar" aria-hidden="true"></span>
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addStockModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Amount Sold for @StockPortfolio.Symbol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(StockPortfolio.Symbol, _stock.InvestmentAmount)">
+                <div class="modal-body">
+
+                    <label for="sold-amount">Amount Sold</label>
+                    <InputNumber @bind-Value=_stock.InvestmentAmount class="form-control" id="sold-amount" />
+                    <br>
+                    @if (_success)
+                    {
+                        <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Sell Stock</button>
+                </div>
+            </EditForm>
+
+
+        </div>
+    </div>
+</div>
+
+@code{
+
+    [Parameter]
+    public StockPortfolioViewModel StockPortfolio { get; set; }
+
+    private Stock _stock = new Stock();
+    private bool _success = false;
+    private bool _error = false;
+
+    /**
+     * Method to sell the stock
+     */
+    public async Task SellStockAsync(string companySymbol, decimal amount)
+    {
+        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
+        {
+            await StockPortfolioService.SellStock(companySymbol, amount, DateTime.Now);
+            _success = true;
+        }
+        else
+        {
+            _error = true;
+        }
+        StateHasChanged();
+    }
+
+}

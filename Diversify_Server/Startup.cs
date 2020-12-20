@@ -80,6 +80,7 @@ namespace Diversify_Server
             // Registering services that do not need httpclient
             services.AddScoped<IStockPortfolioService, StockPortfolioService>();
             services.AddScoped<IInvestmentTotalService, InvestmentTotalService>();
+            services.AddScoped<IIdentityService, IdentityService>();
 
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();

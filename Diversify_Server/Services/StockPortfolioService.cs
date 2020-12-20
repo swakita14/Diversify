@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
@@ -31,8 +32,8 @@ namespace Diversify_Server.Services
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction()
         {
             // Return all the stocks that the user has
-            var userStocks =  await _stockRepository.GetStockPurchasedByUserId(_identityService.GetCurrentLoggedInUser());
-            
+            var userStocks = await _stockRepository.GetCurrentStockByUserId(_identityService.GetCurrentLoggedInUser());
+
             var transactionList = new List<StockTransactionViewModel>();
 
             foreach (var transactions in userStocks)
@@ -51,15 +52,15 @@ namespace Diversify_Server.Services
             }
 
             return transactionList;
-        }        
-        
+        }
+
         /**
          * Retrieve stocks that have been sold 
          */
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold()
         {
             // Return all the stocks that the user has
-            var userStocks =  await _stockRepository.GetStockSoldByUserId(_identityService.GetCurrentLoggedInUser());
+            var userStocks = await _stockRepository.GetStockSoldByUserId(_identityService.GetCurrentLoggedInUser());
 
             var transactionList = new List<StockTransactionViewModel>();
 
@@ -69,9 +70,9 @@ namespace Diversify_Server.Services
                 {
                     CompanyName = transactions.Name,
                     DividendYield = transactions.DividendYield,
-                    PurchaseDate = transactions.PurchaseDate,
+                    SoldDate = transactions.SoldDate,
                     Symbol = transactions.Symbol,
-                    PurchasePrice = transactions.InvestmentAmount,
+                    SoldPrice = transactions.InvestmentAmount,
                     StockId = transactions.StockId,
                     Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
                 });
@@ -96,40 +97,49 @@ namespace Diversify_Server.Services
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany()
         {
             // Get current user stocks 
-            var currentStockList = await GetCurrentUserStocks();
+            var currentStockList = await _investmentTotalService.GetInvestmentTotalByUserId();
 
-            var groupedListBySymbol = currentStockList.GroupBy(x => x.Symbol)
-                .Select(y => new StockPortfolioViewModel
+            var stockPortfolio = new List<StockPortfolioViewModel>();
+
+            // loop through each of investment totals 
+            foreach (var stock in currentStockList)
+            {
+                // find company information
+                var existingStock = await _stockRepository.GetCompanyBySymbol(stock.Symbol);
+
+                // create new object to pass back 
+                stockPortfolio.Add(new StockPortfolioViewModel
                 {
-                    CompanyName = currentStockList.First(x => x.Symbol == y.Key).Name,
-                    Symbol = y.Key,
-                    DividendYield = decimal.Round((currentStockList.First(x => x.Symbol == y.Key).DividendYield ), 4, MidpointRounding.AwayFromZero),
-                    TotalInvestment = y.Sum(x => x.InvestmentAmount),
-                    ExDividendDate = currentStockList.First(x => x.Symbol == y.Key).ExDividendDate,
-                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Symbol == y.Key).Sector),
-                    InvestedPercentage = (y.Sum(x => x.InvestmentAmount)) / _stockRepository.GetTotalInvestedByUserId(_identityService.GetCurrentLoggedInUser())
-                }).ToList();
-            
-            return  groupedListBySymbol;
-        }            
-        
+                    CompanyName = existingStock.Name,
+                    Symbol = stock.Symbol,
+                    DividendYield = existingStock.DividendYield,
+                    TotalInvestment = await _investmentTotalService.GetInvestedTotalByCompanySymbol(stock.Symbol),
+                    ExDividendDate = existingStock.ExDividendDate,
+                    Sector = _sectorRepository.GetSectorNameById(stock.Sector),
+                    InvestedPercentage = await _investmentTotalService.GetInvestedTotalByCompanySymbol(stock.Symbol) / await _investmentTotalService.GetUserTotalInvestment()
+                });
+            }
+
+            return stockPortfolio;
+        }
+
         /**
          * Getting the stocks and grouping it by sector
          */
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
         {
-            // Get current user stocks 
-            var currentStockList = await GetCurrentUserStocks();
+            var userInvestments = await _investmentTotalService.GetInvestmentTotalByUserId();
 
-            var groupedListBySymbol = currentStockList.GroupBy(x => x.Sector)
+
+            var groupedListBySymbol = userInvestments.GroupBy(x => x.Sector)
                 .Select(y => new StockPortfolioViewModel
                 {
-                    TotalInvestment = y.Sum(x => x.InvestmentAmount),
-                    Sector = _sectorRepository.GetSectorNameById(currentStockList.First(x => x.Sector == y.Key).Sector),
+                    TotalInvestment = y.Sum(x => x.InvestedAmount),
+                    Sector = _sectorRepository.GetSectorNameById(userInvestments.First(x => x.Sector == y.Key).Sector),
                     AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
                 }).ToList();
-            
-            return  groupedListBySymbol;
+
+            return groupedListBySymbol;
         }
 
         /**
@@ -182,7 +192,7 @@ namespace Diversify_Server.Services
             {
                 await _investmentTotalService.EditExistingInvestment(model.Symbol, investmentAmount);
             }
-            
+
 
             await _stockRepository.AddStock(newStock);
         }
@@ -190,17 +200,28 @@ namespace Diversify_Server.Services
         /**
          * Sell the user owned stock by the company symbol and the amount 
          */
-        public async Task SellStock(string symbol, decimal amount)
+        public async Task SellStock(string symbol, decimal amount, DateTime dateSold)
         {
-            if (await _investmentTotalService.CheckRemainderInvestment(symbol, amount))
+            // Make changes to the total amount 
+            await _investmentTotalService.EditExistingInvestment(symbol, amount);
+
+            // Find the stock information from the database 
+            var stockInformation = await _stockRepository.GetCompanyBySymbol(symbol);
+
+            // Add a new new stock with the transaction amount 
+            var newStockTransaction = new Stock
             {
-                // Add a bool statement to check 
-                await _investmentTotalService.EditExistingInvestment(symbol, amount);
-            }
-            else
-            {
-                throw new Exception("The entered amount is larger than the current invested amount");
-            }
+                Name = stockInformation.Name,
+                Symbol = stockInformation.Symbol,
+                DividendYield = stockInformation.DividendYield,
+                ExDividendDate = stockInformation.ExDividendDate,
+                Status = 2,
+                User = _identityService.GetCurrentLoggedInUser(),
+                InvestmentAmount = amount,
+                SoldDate = dateSold,
+                Sector = stockInformation.Sector
+            };
+            await _stockRepository.AddStock(newStockTransaction);
         }
     }
 }

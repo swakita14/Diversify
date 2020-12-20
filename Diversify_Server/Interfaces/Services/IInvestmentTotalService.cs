@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Interfaces.Services
 {
@@ -10,8 +12,14 @@ namespace Diversify_Server.Interfaces.Services
 
         Task AddNewInvestment(string companySymbol, decimal initialInvestment, int sectorId);
 
+        Task<List<InvestmentTotal>> GetInvestmentTotalByUserId();
+
         Task EditExistingInvestment(string companySymbol, decimal editInvestmentAmount);
 
         Task<bool> CheckRemainderInvestment(string companySymbol, decimal editInvestmentAmount);
+
+        Task<IEnumerable<InvestmentTotal>> GetInvestedTotalBySector(int sectorId);
+
+        Task<decimal> GetUserTotalInvestment();
     }
 }

@@ -6,7 +6,7 @@
 
 
 
-<label>Stock Purchase</label>
+<label>Stock Purchased</label>
 <SfGrid DataSource="@_ownedStocks" AllowPaging="true" AllowSorting="true">
     <GridPageSettings PageSize="5"></GridPageSettings>
     <GridColumns>
@@ -41,6 +41,6 @@
         protected override async Task OnInitializedAsync()
         {
             _ownedStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
-            _soldStocks = await StockPortfolioService.GetCurrentUserStockTransaction();
+            _soldStocks = await StockPortfolioService.GetCurrentUserStockTransactionSold();
         }
 }
