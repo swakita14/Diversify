@@ -21,8 +21,8 @@
     <Folder Include="Areas\Identity\Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Update="electron.manifest.json">
+    <!-- <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </Content> -->
   </ItemGroup>
 </Project>
