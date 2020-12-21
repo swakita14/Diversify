@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ElectronNET.API;
 
 namespace Diversify_Server
 {
@@ -22,6 +23,9 @@ namespace Diversify_Server
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseElectron(args);
+                    webBuilder.UseEnvironment("Development");
+
                     webBuilder.UseStartup<Startup>();
                 });
     }
