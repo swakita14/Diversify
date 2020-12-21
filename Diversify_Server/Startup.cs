@@ -125,18 +125,18 @@ namespace Diversify_Server
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            if (HybridSupport.IsElectronActive)
-            {
-                CreateWindow();
-            }
+            // if (HybridSupport.IsElectronActive)
+            // {
+            //     CreateWindow();
+            // }
         }
 
-        private async void CreateWindow()
-        {
-            var window = await Electron.WindowManager.CreateWindowAsync();
-            window.OnClosed += () => {
-                Electron.App.Quit();
-            };
-        }
+        // private async void CreateWindow()
+        // {
+        //     var window = await Electron.WindowManager.CreateWindowAsync();
+        //     window.OnClosed += () => {
+        //         Electron.App.Quit();
+        //     };
+        // }
     }
 }
