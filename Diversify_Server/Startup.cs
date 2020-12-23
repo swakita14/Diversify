@@ -14,9 +14,6 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
-using ElectronNET.API;
-using ElectronNET.API.Entities;
-using System.Runtime.InteropServices;
 
 namespace Diversify_Server
 {
@@ -124,19 +121,7 @@ namespace Diversify_Server
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            // if (HybridSupport.IsElectronActive)
-            // {
-            //     CreateWindow();
-            // }
         }
 
-        // private async void CreateWindow()
-        // {
-        //     var window = await Electron.WindowManager.CreateWindowAsync();
-        //     window.OnClosed += () => {
-        //         Electron.App.Quit();
-        //     };
-        // }
     }
 }
