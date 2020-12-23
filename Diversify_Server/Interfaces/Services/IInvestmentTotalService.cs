@@ -18,8 +18,6 @@ namespace Diversify_Server.Interfaces.Services
 
         Task<bool> CheckRemainderInvestment(string companySymbol, decimal editInvestmentAmount);
 
-        Task<IEnumerable<InvestmentTotal>> GetInvestedTotalBySector(int sectorId);
-
         Task<decimal> GetUserTotalInvestment();
     }
 }

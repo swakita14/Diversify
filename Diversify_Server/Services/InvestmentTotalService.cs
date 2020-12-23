@@ -42,21 +42,6 @@ namespace Diversify_Server.Services
         }
 
         /**
-         * Gets the invested total with the sector Id
-         */
-        public async Task<IEnumerable<InvestmentTotal>> GetInvestedTotalBySector(int sectorId)
-        {
-            var currentUserInvestments =
-                await GetInvestmentTotalByUserId();
-
-            var investmentTotalBySector = currentUserInvestments.Where(x => x.Sector == sectorId);
-
-            return investmentTotalBySector;
-
-        }
-
-
-        /**
          * Adds a new investment using the company name
          */
         public async Task AddNewInvestment(string companySymbol, decimal initialInvestment, int sectorId)

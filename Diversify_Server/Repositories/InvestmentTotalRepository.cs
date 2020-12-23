@@ -20,15 +20,6 @@ namespace Diversify_Server.Repositories
         }
 
         /**
-         * Get company total by the symbol
-         */
-        public async Task<InvestmentTotal> GetTotalByCompanySymbol(string companySymbol)
-        {
-            return await _context.InvestmentTotals.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
-        }
-
-
-        /**
          * Adding new investment total if not existing 
          */
         public async Task AddNewTotal(InvestmentTotal newInvestmentTotal)

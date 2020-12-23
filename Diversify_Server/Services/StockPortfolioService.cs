@@ -143,24 +143,6 @@ namespace Diversify_Server.Services
         }
 
         /**
-         * Gets the total amount invested and the estimated yearly income 
-         */
-        public async Task<InvestmentTotalViewModel> GetUserInvestmentTotal()
-        {
-            var currentUserStock = await GetCurrentUserStocks();
-
-            InvestmentTotalViewModel totalViewModel = new InvestmentTotalViewModel();
-
-            foreach (var stock in currentUserStock)
-            {
-                totalViewModel.InvestmentTotal += stock.InvestmentAmount;
-                totalViewModel.EstimatedYearlyIncome = (stock.DividendYield * stock.InvestmentAmount);
-            }
-
-            return totalViewModel;
-        }
-
-        /**
          * Adds new stock with the model, amount, and the time that the stock was purchased 
          */
         public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime)
