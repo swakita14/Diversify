@@ -18,8 +18,6 @@ namespace Diversify_Server.Interfaces.Services
 
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector();
 
-        Task<InvestmentTotalViewModel> GetUserInvestmentTotal();
-
         Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold();
 
         Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime);

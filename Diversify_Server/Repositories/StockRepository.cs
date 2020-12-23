@@ -81,31 +81,6 @@ namespace Diversify_Server.Repositories
         }
 
         /**
-         * Retrieve stocks by sector 
-         */
-        public async Task<List<Stock>> GetStockBySector(int sectorId)
-        {
-            return await _context.Stock.Where(x => x.Sector == sectorId).ToListAsync();
-        }
-
-        /**
-         * Retrieve any stocks information that have been purchased by the user
-         */
-        public async Task<List<Stock>> GetStockPurchasedByUserId(string userId)
-        {
-            return await _context.Stock.Where(x => x.User == userId).ToListAsync();
-        }
-
-
-        /**
-         * Returns the total count of stocks users have in
-         */
-        public int GetTotalCountStockByUserId(string userId)
-        {
-            return _context.Stock.Count(x => x.User == userId);
-        }
-
-        /**
          * Retrieves only the stocks that the user currently owns 
          */
         public async Task<List<Stock>> GetCurrentStockByUserId(string userId)
