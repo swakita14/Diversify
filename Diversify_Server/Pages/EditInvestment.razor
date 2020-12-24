@@ -1,0 +1,59 @@
+﻿@page "/editinvestment/{Symbol}"
+
+@inject IStockPortfolioService StockPortfolioService
+@inject IInvestmentTotalService InvestmentTotalService
+
+<div class="jumbotron">
+    <h4><b>Information for @Symbol</b></h4>
+    <hr class="my-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md">
+                <h5><b>Total Invested</b></h5>
+                <p>@_investmentTotal</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <h5><b>Most Recent Information</b></h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <label for="purchase-date">Purchase Date</label>
+                <p id="purchase-date">@_existing.PurchaseDate</p>
+            </div>
+            <div class="col-md">
+                <label for="investement-amount">Investment Amount</label>
+                <p id="investement-amount">@_existing.InvestmentAmount</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                <_EditInvestment ExistingStock="_existing"></_EditInvestment>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+
+
+
+
+@code {
+
+    [Parameter]
+    public string Symbol { get; set; }
+
+    private Stock _existing = new Stock();
+    private decimal _investmentTotal;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _existing = await StockPortfolioService.GetCompanyInformationByStockSymbol(Symbol);
+        _investmentTotal = await InvestmentTotalService.GetInvestedTotalByCompanySymbol(Symbol);
+    }
+
+
+
+}

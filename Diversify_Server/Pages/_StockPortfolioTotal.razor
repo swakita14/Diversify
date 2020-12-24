@@ -16,8 +16,8 @@
             <GridColumn Width="120" TextAlign="TextAlign.Center">
                 <Template>
                     @{
-                        var portfolioViewModel = (context as StockPortfolioViewModel);
-                        <div><_SellStock StockPortfolio="portfolioViewModel"/></div>
+                        var stock = (context as StockPortfolioViewModel);
+                        <div><a href="/editinvestment/@stock.Symbol">Manage</a></div>
                     }
                 </Template>
             </GridColumn>
@@ -41,4 +41,5 @@
 
     [Parameter]
     public bool SwitchView { get; set; }
+
 }

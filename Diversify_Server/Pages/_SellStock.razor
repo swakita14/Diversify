@@ -1,6 +1,6 @@
-﻿@inject IStockPortfolioService StockPortfolioService
+﻿@using System.Diagnostics
+@inject IStockPortfolioService StockPortfolioService
 @inject IInvestmentTotalService InvestmentTotalService
-
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#addStockModal">
     <span class="oi oi-dollar" aria-hidden="true"></span>
@@ -11,12 +11,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Amount Sold for @StockPortfolio.Symbol</h5>
+                <h5 class="modal-title" id="ModalLabel">Amount Sold for @_stock.Symbol</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(StockPortfolio.Symbol, _stock.InvestmentAmount)">
+            <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(_stock.Symbol, _stock.InvestmentAmount)">
                 <div class="modal-body">
 
                     <label for="sold-amount">Amount Sold</label>
@@ -46,6 +46,17 @@
     private Stock _stock = new Stock();
     private bool _success = false;
     private bool _error = false;
+
+    protected override void OnParametersSet()
+    {
+
+        _stock.Symbol = StockPortfolio.Symbol;
+
+        Debug.Write(_stock);
+
+
+
+    }
 
     /**
      * Method to sell the stock
