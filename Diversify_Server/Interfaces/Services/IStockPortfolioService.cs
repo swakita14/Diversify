@@ -14,6 +14,8 @@ namespace Diversify_Server.Interfaces.Services
          */
         Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction();
 
+        Task<Stock> GetCompanyInformationByStockSymbol(string symbol);
+
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany();
 
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector();

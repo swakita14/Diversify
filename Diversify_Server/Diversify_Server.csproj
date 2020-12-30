@@ -19,9 +19,11 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Data\" />
   </ItemGroup>
+
   <ItemGroup>
-    <!-- <Content Update="electron.manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content> -->
+    <None Include="Pages\Shared\_Layout.cshtml" />
+    <None Include="Pages\Shared\_LoginPartial.cshtml" />
+    <None Include="Pages\Shared\_ValidationScriptsPartial.cshtml" />
   </ItemGroup>
+
 </Project>

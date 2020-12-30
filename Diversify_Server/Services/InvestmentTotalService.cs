@@ -78,7 +78,7 @@ namespace Diversify_Server.Services
 
             var existingCompanyStock = existingUserStocks.FirstOrDefault(x => x.Symbol == companyName);
 
-            existingCompanyStock.InvestedAmount -= editInvestmentAmount;
+            existingCompanyStock.InvestedAmount += editInvestmentAmount;
 
             await _investmentTotalRepository.EditInvestmentAmount(existingCompanyStock);
         }

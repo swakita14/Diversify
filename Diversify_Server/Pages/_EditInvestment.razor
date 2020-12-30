@@ -1,0 +1,49 @@
+﻿
+@inject IInvestmentTotalService InvestmentTotalService
+@inject IStockPortfolioService StockPortfolioService
+
+
+<EditForm Model="@ExistingStock" OnValidSubmit="() => SellStockAsync(ExistingStock.Symbol,_editAmount)">
+    <h5><b>Manage Stock</b></h5>
+    <label for="sold-amount">Amount Sold</label>
+    <InputNumber @bind-Value=_editAmount class="form-control col-sm-3" id="sold-amount" />
+    <br>
+    @if (_success)
+    {
+        <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
+    }
+    @if (_error)
+    {
+        <span class="oi oi-circle-x" aria-hidden="true">Something went wrong..</span>
+    }
+    <button type="submit" class="btn btn-primary">Sell Stock</button>
+</EditForm>
+
+
+
+@code {
+
+    [Parameter]
+    public Stock ExistingStock { get; set; }
+
+    private decimal _editAmount = 0;
+
+    private bool _success = false;
+    private bool _error = false;
+
+    public async Task SellStockAsync(string companySymbol, decimal amount)
+    {
+        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
+        {
+            await StockPortfolioService.SellStock(companySymbol, -amount, DateTime.Now);
+            _error = false;
+            _success = true;
+        }
+        else
+        {
+            _error = true;
+        }
+        StateHasChanged();
+    }
+
+}
