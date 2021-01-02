@@ -180,6 +180,7 @@ namespace Diversify_Server.Services
             await _stockRepository.AddStock(newStock);
         }
 
+
         /**
          * Sell the user owned stock by the company symbol and the amount 
          */

@@ -5,7 +5,7 @@
 
 
 <SfGrid DataSource="@_results.Articles" AllowPaging="true" AllowSorting="true" ShowColumnChooser="true">
-    <GridPageSettings PageSize="10"></GridPageSettings>
+    <GridPageSettings PageSize="@PageSize"></GridPageSettings>
     <GridColumns>
         <GridColumn Field=@nameof(Article.UrlToImage) HeaderText="" Width="80" TextAlign="TextAlign.Center">
             <Template>
@@ -48,6 +48,9 @@
 
     [Parameter]
     public string CompanyName { get; set; }
+
+    [Parameter]
+    public int  PageSize { get; set; }
 
     private NewsSearchResult _results = new NewsSearchResult();
 
