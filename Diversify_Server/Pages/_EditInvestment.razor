@@ -41,9 +41,12 @@
         if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
         {
             await StockPortfolioService.SellStock(companySymbol, -amount, DateTime.Now);
-            NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
+
             _error = false;
             _success = true;
+
+            NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
+
         }
         else
         {

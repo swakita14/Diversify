@@ -1,5 +1,6 @@
 ﻿
 @inject IStockPortfolioService StockPortfolioService
+@inject NavigationManager NavigationManager
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#addStockModal">
@@ -62,10 +63,10 @@
 
         // glyphicon
         _success = true;
+
+        //Force reload of the page to the portfolio
+        NavigationManager.NavigateTo($"portfolio", true);
     }
-
-
-
 
 
 }
