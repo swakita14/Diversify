@@ -44,5 +44,115 @@ namespace Diversify_ServerTests
             results.Should().Be(100);
         }
 
+        [Test]
+        public async Task GetInvestmentTotalByUserId_GivenId_ReturnsInvestmentTotalList()
+        {
+            // Arrange 
+            var investmentTotal = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+                new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(investmentTotal));
+
+            // Act
+            var result = await _sut.GetInvestmentTotalByUserId();
+
+            // Assert
+            result.Count.Should().Be(2);
+        }
+
+        [Test]
+        public async Task GetUserTotalInvestment_GivenId_ReturnsTotalInvestment()
+        {
+            // Arrange 
+            var investmentTotal = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+                new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(investmentTotal));
+
+            // Act
+            var result = await _sut.GetUserTotalInvestment();
+
+            // Assert
+            result.Should().Be(300);
+        }
+
+        [Test]
+        public async Task CheckExistingInvestment_GivenSymbolOfExisting_ReturnsTrue()
+        {
+            // Arragne 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
+
+            // Act 
+            var results = await _sut.CheckExistingInvestment("AAPL");
+
+            // Assert
+            Assert.AreEqual(results, true);
+        }
+
+        [Test]
+        public async Task CheckExistingInvestment_GivenSymbolOfNonExisting_ReturnsFalse()
+        {
+            // Arragne 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
+
+            // Act 
+            var results = await _sut.CheckExistingInvestment("IBM");
+
+            // Assert
+            Assert.AreEqual(results, false);
+        }
+
+        [Test]
+        public async Task CheckRemainderInvestment_GivenLargerThanCurrentInvestment_ReturnsFalse()
+        {
+            // Arragne 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
+
+            // Act
+            var results = await _sut.CheckRemainderInvestment("AAPL", 150);
+
+            // Assert 
+            Assert.AreEqual(results, false);
+        }        
+        
+        [Test]
+        public async Task CheckRemainderInvestment_GivenSmallerThanCurrentInvestment_ReturnsTrue()
+        {
+            // Arragne 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
+
+            // Act
+            var results = await _sut.CheckRemainderInvestment("AAPL", 50);
+
+            // Assert 
+            Assert.AreEqual(results, true);
+        }
+
     }
 }
