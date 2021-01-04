@@ -58,7 +58,8 @@
      */
     public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
     {
-        // Transferring information from api data to db model
+
+    // Transferring information from api data to db model
         await StockPortfolioService.AddStock(model, investmentAmount, purchaseTime);
 
         // glyphicon
