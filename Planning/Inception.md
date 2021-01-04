@@ -12,21 +12,16 @@ __________________________________
 - The RestAPI would be built using the .NET Core Web API
 - External APIs/resources currently consist of the following unless found unfit:
     - Necessary stock information
-        - Alpha Vantage (First option)
-        - Financial Modeling Prep  
-        - Yahoo Finance (Hosted on RapidAPI)
+        - Alpha Vantage 
     - Stock News
         - Stock News API
     - Graphs 
         - Syncfusion 
 - Authentication will enabled on the RestAPI
+- Stock information as well as the user information should be updated in the background using Hangfire
 
 **Considerations / Planning Functionality**:
-- How to call the external API effectively without hitting the hard quota
-- For the live deployment, which cloud provider to use
-- Will ignore scalability until application fully deployed
-- How to secure the RestAPI (third-party?)
-- Leveraging each Blazor hosting model features
-- Database schema design for stock 
-- Authentication: how and where do I do it 
+- Reusing the components with minimal effort between the three hosting models
+- Finding the right scheduling time to execute Hangfire
+- Design changes of the overall applications 
 
