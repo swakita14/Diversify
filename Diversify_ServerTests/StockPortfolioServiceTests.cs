@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models.Database;
+using Diversify_Server.Models.ViewModels;
 using Diversify_Server.Services;
 using FluentAssertions;
 using Moq;
@@ -73,7 +74,8 @@ namespace Diversify_ServerTests
                 Sector = 1,
                 PurchaseDate = DateTime.Now,
                 DividendYield = 0,
-                ExDividendDate = DateTime.Now
+                ExDividendDate = DateTime.Now,
+                Status = 1
             };
 
             _stockRepository.Setup(x => x.GetCompanyBySymbol(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
@@ -85,5 +87,34 @@ namespace Diversify_ServerTests
             Assert.AreEqual(results.InvestmentAmount, 100);
             Assert.AreEqual(results.StockId, 1);
         }
+
+        [Test]
+        public async Task GetCurrentUserStockTransactionSold_GivenUserId_ShouldReturnSoldStockList()
+        {
+            // Arrange 
+            var userStockSoldList = new List<Stock>
+            {
+                new Stock
+                {
+                    StockId = 1, InvestmentAmount = 100, Symbol = "AAPL", PurchaseDate = DateTime.Now,
+                    DividendYield = 0, ExDividendDate = DateTime.Now, Status = 2
+                },
+                new Stock
+                {
+                    StockId = 2, InvestmentAmount = 100, Symbol = "IBM", PurchaseDate = DateTime.Now,
+                    DividendYield = 0, ExDividendDate = DateTime.Now, Status = 2
+                },
+            };
+
+            _stockRepository.Setup(x => x.GetStockSoldByUserId(It.IsAny<string>()))
+                .Returns(Task.FromResult(userStockSoldList));
+
+            // Act 
+            var results = await _sut.GetCurrentUserStockTransactionSold();
+
+            // Assert 
+            results.Count.Should().Be(2);
+        }
+
     }
 }
