@@ -62,7 +62,7 @@
     protected override async Task OnParametersSetAsync()
     {
         _results = await Client.GetCompanyOverviewAsync(CompanySymbol);
-        StateHasChanged();
+        //StateHasChanged();
     }
 
     public static string TruncateAtWord(string input, int length)
