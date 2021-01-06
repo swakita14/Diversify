@@ -9,6 +9,7 @@ using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
+using Hangfire;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
@@ -89,6 +90,10 @@ namespace Diversify_Server
 
             // Adding Syncfusion for Blazor
             services.AddSyncfusionBlazor();
+
+            // Adding Hangfire 
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["ConnectionStrings:HangfireConnection"]));
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,6 +113,8 @@ namespace Diversify_Server
                 app.UseHsts();
             }
 
+            app.UseHangfireDashboard();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -121,6 +128,7 @@ namespace Diversify_Server
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
         }
 
     }
