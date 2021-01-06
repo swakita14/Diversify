@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
+using DiversifyHangFire.Interface;
+using DiversifyHangFire.Services;
 
 namespace Diversify_Server
 {
@@ -94,6 +96,9 @@ namespace Diversify_Server
             // Adding Hangfire 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration["ConnectionStrings:HangfireConnection"]));
             services.AddHangfireServer();
+
+            // Adding Hangfire Service 
+            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
