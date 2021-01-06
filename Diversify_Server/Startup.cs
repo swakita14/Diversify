@@ -113,11 +113,13 @@ namespace Diversify_Server
                 app.UseHsts();
             }
 
+            // Adding Hangfire
             app.UseHangfireDashboard();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Adding Identity 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
