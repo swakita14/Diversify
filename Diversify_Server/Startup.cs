@@ -1,5 +1,7 @@
 using System;
 using Diversify_Server.Data;
+using Diversify_Server.HangFire.Interfaces;
+using Diversify_Server.HangFire.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,8 +17,6 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
-using DiversifyHangFire.Interface;
-using DiversifyHangFire.Services;
 
 namespace Diversify_Server
 {
@@ -78,6 +78,12 @@ namespace Diversify_Server
             services.AddHttpClient<ICompanyOverviewService,CompanyOverviewService>(client =>
             {
                 client.BaseAddress = new Uri(stockSearchUri);
+            });            
+            
+            // Registering for HangFire
+            services.AddHttpClient<IOverviewUpdateService,OverviewUpdateService>(client =>
+            {
+                client.BaseAddress = new Uri(stockSearchUri);
             });
 
             // Registering services that do not need httpclient
@@ -89,6 +95,7 @@ namespace Diversify_Server
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
+            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
 
             // Adding Syncfusion for Blazor
             services.AddSyncfusionBlazor();
@@ -96,9 +103,6 @@ namespace Diversify_Server
             // Adding Hangfire 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration["ConnectionStrings:HangfireConnection"]));
             services.AddHangfireServer();
-
-            // Adding Hangfire Service 
-            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -128,6 +132,9 @@ namespace Diversify_Server
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // For Testing purposes first
+            RecurringJob.AddOrUpdate<IOverviewUpdateService>(x => x.UpdateCompanyOverview(), Cron.Minutely);
 
             app.UseEndpoints(endpoints =>
             {
