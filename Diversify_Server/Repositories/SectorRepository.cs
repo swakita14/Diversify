@@ -18,7 +18,7 @@ namespace Diversify_Server.Repositories
          */
         public Sector GetSectorIdByName(string sectorName)
         {
-            Sector sector = _context.Sector.FirstOrDefault(x => x.SectorName == sectorName);
+            Sector sector = _context.Sectors.FirstOrDefault(x => x.SectorName == sectorName);
 
             if (sector is null)
             {
@@ -37,7 +37,7 @@ namespace Diversify_Server.Repositories
          */
         public string GetSectorNameById(int sectorId)
         {
-            return _context.Sector.Find(sectorId).SectorName;
+            return _context.Sectors.Find(sectorId).SectorName;
         }
     }
 }

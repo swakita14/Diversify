@@ -86,6 +86,7 @@ namespace Diversify_Server
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
 
             // Adding Syncfusion for Blazor
             services.AddSyncfusionBlazor();

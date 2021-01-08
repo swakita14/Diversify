@@ -14,10 +14,12 @@ namespace Diversify_Server.Repositories
     public class StockRepository : IStockRepository
     {
         private readonly DiversifyContext _context;
+        private readonly ICompanyRepository _companyRepository;
 
-        public StockRepository(DiversifyContext context)
+        public StockRepository(DiversifyContext context, ICompanyRepository companyRepository)
         {
             _context = context;
+            _companyRepository = companyRepository;
         }
 
         /**
@@ -69,7 +71,7 @@ namespace Diversify_Server.Repositories
          */
         public int GetCompanyCountBySectorId(int sectorId)
         {
-            return _context.Stocks.Count(x => x.Sector == sectorId);
+            return _context.Stocks;
         }
 
         /**
@@ -90,7 +92,7 @@ namespace Diversify_Server.Repositories
 
         public async Task<Stock> GetCompanyBySymbol(string companySymbol)
         {
-            return await _context.Stocks.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
+            return await _context.Stocks.FirstOrDefaultAsync(x => x.Company == );
         }
 
 
