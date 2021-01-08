@@ -4,6 +4,7 @@ using System;
 using System.Net.Http;
 using Diversify_Server.HangFire.Interfaces;
 using Diversify_Server.Interfaces.Repositories;
+using System.Linq;
 
 namespace Diversify_Server.HangFire.Services 
 {
@@ -22,6 +23,11 @@ namespace Diversify_Server.HangFire.Services
         public void UpdateCompanyOverview()
         {
             Console.WriteLine("This task has been executed");
+        }
+
+        public void GetAllCompanySymbols()
+        {
+            Console.WriteLine("Hello World");
         }
     }
 }

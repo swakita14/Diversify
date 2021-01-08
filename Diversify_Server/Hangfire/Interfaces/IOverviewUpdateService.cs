@@ -3,5 +3,7 @@
     public interface IOverviewUpdateService
     {
         void UpdateCompanyOverview();
+
+        void GetAllCompanySymbols();
     }
 }
