@@ -1,6 +1,5 @@
 ﻿
 @inject IStockSearchService Client
-@inject NavigationManager NavigationManager
 
 
 <SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true" >
@@ -12,7 +11,7 @@
             <Template>
                 @{
                     var company = (context as SearchModel);
-                    <div><a href="#" @onclick="@(() => Navigate(company))">View</a></div>
+                    <div><a href="/overview/@company.Symbol">View</a></div>
                 }
             </Template>
         </GridColumn>
@@ -32,11 +31,4 @@
         _results = await Client.GetStockAsync(CompanyName);
     }
 
-    /**
-     * Navigation method
-     */
-    public void Navigate(SearchModel company)
-    {
-        NavigationManager.NavigateTo($"/overview/{company.Symbol}");
-    }
 }

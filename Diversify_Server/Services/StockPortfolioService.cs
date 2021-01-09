@@ -148,6 +148,14 @@ namespace Diversify_Server.Services
          */
         public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime)
         {
+            // Adding fix for companies with no dividends 
+            DateTime companyExDividendDate = new DateTime();
+
+            if (model.DividendDate!="None")
+            {
+                companyExDividendDate = Convert.ToDateTime(model.ExDividendDate);
+            }
+
             Stock newStock = new Stock()
             {
                 Name = model.Name,
@@ -158,7 +166,7 @@ namespace Diversify_Server.Services
                 User = _identityService.GetCurrentLoggedInUser(),
                 Exchange = model.Exchange,
                 EPS = Convert.ToDecimal(model.EPS),
-                ExDividendDate = Convert.ToDateTime(model.ExDividendDate),
+                ExDividendDate = companyExDividendDate,
                 PayoutRatio = Convert.ToDecimal(model.PayoutRatio),
                 PERatio = Convert.ToDecimal(model.PERatio),
                 ProfitMargin = Convert.ToDecimal(model.ProfitMargin),
