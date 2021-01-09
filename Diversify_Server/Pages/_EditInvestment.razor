@@ -1,6 +1,6 @@
 ﻿
 @inject IInvestmentTotalService InvestmentTotalService
-@inject IStockPortfolioService StockPortfolioService
+@inject IStockService StockService
 @inject NavigationManager NavigationManager
 
 
@@ -42,7 +42,7 @@
     {
         if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
         {
-            await StockPortfolioService.SellStock(companySymbol, -amount, DateTime.Now);
+            await StockService.SellStock(companySymbol, -amount, DateTime.Now);
 
             _error = false;
             _success = true;

@@ -19,21 +19,6 @@ namespace Diversify_Server.Services
         }
 
         /**
-         * Check if there is an existing company
-         */
-        public async Task<bool> CheckExistingCompany(string symbol)
-        {
-            bool existing = false;
-
-            if (await _companyRepository.GetCompanyBySymbol(symbol) == null)
-            {
-                return existing = true;
-            }
-
-            return existing;
-        }
-
-        /**
          * Add new company using repository
          */
         public async Task AddNewCompany(Company newCompany)

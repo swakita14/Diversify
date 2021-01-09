@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
+using Diversify_Server.Models;
 using Diversify_Server.Models.Database;
+using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diversify_Server.Repositories
@@ -50,5 +52,37 @@ namespace Diversify_Server.Repositories
 
             return existing;
         }
+
+        /**
+         * Check if the specific company information is stored in the database
+         * Returns true if exist, returns false if otherwise
+         */
+        public async Task<bool> CheckExistingCompany(string symbol)
+        {
+            var existing = await GetCompanyBySymbol(symbol);
+
+            if (existing is null) return false;
+
+            return true;
+        }
+
+        public async Task AddNewCompanyFromViewModel(CompanyOverviewModel company, int sectorId)
+        {
+            Company newCompany = new Company
+            {
+                Name = company.Name,
+                Symbol = company.Symbol,
+                DividendYield = decimal.Parse(company.DividendYield),
+                ExDividendDate = DateTime.Parse(company.ExDividendDate),
+                EPS = decimal.Parse(company.EPS),
+                Exchange = company.Exchange,
+                PayoutRatio = decimal.Parse(company.PayoutRatio),
+                Sector = sectorId,
+                PERatio = decimal.Parse(company.PERatio)
+            };
+
+            await AddCompany(newCompany);
+        }
+
     }
 }

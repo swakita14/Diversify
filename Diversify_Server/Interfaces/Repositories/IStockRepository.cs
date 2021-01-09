@@ -10,13 +10,6 @@ namespace Diversify_Server.Interfaces.Repositories
         Task SellStock(Stock currentStock);
         Task DeleteStock(Stock stock);
         Task Edit(Stock currentStock);
-
-        Task<Stock> GetCompanyBySymbol(string companySymbol);
-
-        int GetCompanyCountBySectorId(int sectorId);
-
-        decimal GetTotalDividendBySector(int sectorId);
-
         Task<List<Stock>> GetCurrentStockByUserId(string userId);
         Task<List<Stock>> GetStockSoldByUserId(string userId);
     }

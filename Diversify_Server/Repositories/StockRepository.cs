@@ -66,21 +66,6 @@ namespace Diversify_Server.Repositories
             await _context.SaveChangesAsync();
         }
 
-        /**
-         * Gets the total amount of stocks with the sector id 
-         */
-        public int GetCompanyCountBySectorId(int sectorId)
-        {
-            return _context.Stocks;
-        }
-
-        /**
-         * Gets the Total amount of Dividend by sector id
-         */
-        public decimal GetTotalDividendBySector(int sectorId)
-        {
-            return _context.Stocks.Where(x => x.Sector == sectorId).Sum(x => x.DividendYield);
-        }
 
         /**
          * Retrieves only the stocks that the user currently owns 
@@ -90,12 +75,6 @@ namespace Diversify_Server.Repositories
             return await _context.Stocks.Where(x => x.User == userId && x.Status == 1).ToListAsync();
         }
 
-        //public async Task<Stock> GetCompanyBySymbol(string companySymbol)
-        //{
-        //    var existing = await _companyRepository.GetCompanyBySymbol(companySymbol);
-
-        //    return await _context.Stocks.FirstOrDefaultAsync(x => x.Company == existing.CompanyId);
-        //}
 
 
         /**

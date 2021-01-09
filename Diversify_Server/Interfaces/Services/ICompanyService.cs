@@ -5,8 +5,9 @@ namespace Diversify_Server.Interfaces.Services
 {
     public interface ICompanyService
     {
-        Task<bool> CheckExistingCompany(string symbol);
 
         Task AddNewCompany(Company newCompany);
+
+        Task<Company> GetCompanyInformationByStockSymbol(string symbol);
     }
 }
