@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Interfaces.Repositories
 {
-    interface ICompanyRepository
+    public interface ICompanyRepository
     {
+        Task AddCompany(Company newCompany);
+
+        Company GetCompanyByCompanyId(int companyId);
+
+        Task<Company> GetCompanyBySymbol(string symbol);
+
     }
 }

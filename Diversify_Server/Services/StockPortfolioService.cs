@@ -17,13 +17,15 @@ namespace Diversify_Server.Services
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
         private readonly IInvestmentTotalService _investmentTotalService;
+        private readonly ICompanyRepository _companyRepository;
 
-        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, IInvestmentTotalService investmentTotalService)
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, IInvestmentTotalService investmentTotalService, ICompanyRepository companyRepository)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
             _identityService = identityService;
             _investmentTotalService = investmentTotalService;
+            _companyRepository = companyRepository;
         }
 
         /**
@@ -40,13 +42,13 @@ namespace Diversify_Server.Services
             {
                 transactionList.Add(new StockTransactionViewModel
                 {
-                    CompanyName = transactions.Name,
-                    DividendYield = transactions.DividendYield,
+                    CompanyName = _companyRepository.GetCompanyByCompanyId(transactions.Company).Name,
+                    DividendYield = _companyRepository.GetCompanyByCompanyId(transactions.Company).DividendYield,
                     PurchaseDate = transactions.PurchaseDate,
-                    Symbol = transactions.Symbol,
+                    Symbol = _companyRepository.GetCompanyByCompanyId(transactions.Company).Symbol,
                     PurchasePrice = transactions.InvestmentAmount,
                     StockId = transactions.StockId,
-                    Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
+                    Sector = _sectorRepository.GetSectorNameById(_companyRepository.GetCompanyByCompanyId(transactions.Company).Sector)
                 });
 
             }
@@ -77,13 +79,13 @@ namespace Diversify_Server.Services
             {
                 transactionList.Add(new StockTransactionViewModel
                 {
-                    CompanyName = transactions.Name,
-                    DividendYield = transactions.DividendYield,
+                    CompanyName = _companyRepository.GetCompanyByCompanyId(transactions.Company).Name,
+                    DividendYield = _companyRepository.GetCompanyByCompanyId(transactions.Company).DividendYield,
                     SoldDate = transactions.SoldDate,
-                    Symbol = transactions.Symbol,
+                    Symbol = _companyRepository.GetCompanyByCompanyId(transactions.Company).Symbol,
                     SoldPrice = transactions.InvestmentAmount,
                     StockId = transactions.StockId,
-                    Sector = _sectorRepository.GetSectorNameById(transactions.Sector)
+                    Sector = _sectorRepository.GetSectorNameById(_companyRepository.GetCompanyByCompanyId(transactions.Company).Sector)
                 });
 
             }
@@ -111,11 +113,11 @@ namespace Diversify_Server.Services
                 // create new object to pass back 
                 stockPortfolio.Add(new StockPortfolioViewModel
                 {
-                    CompanyName = existingStock.Name,
+                    CompanyName = _companyRepository.GetCompanyByCompanyId(existingStock.Company).Name,
                     Symbol = stock.Symbol,
-                    DividendYield = existingStock.DividendYield,
+                    DividendYield = _companyRepository.GetCompanyByCompanyId(existingStock.Company).DividendYield,
                     TotalInvestment = await _investmentTotalService.GetInvestedTotalByCompanySymbol(stock.Symbol),
-                    ExDividendDate = existingStock.ExDividendDate,
+                    ExDividendDate = _companyRepository.GetCompanyByCompanyId(existingStock.Company).ExDividendDate,
                     Sector = _sectorRepository.GetSectorNameById(stock.Sector),
                     InvestedPercentage = await _investmentTotalService.GetInvestedTotalByCompanySymbol(stock.Symbol) / await _investmentTotalService.GetUserTotalInvestment()
                 });
