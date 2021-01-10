@@ -57,15 +57,6 @@ namespace Diversify_Server.Services
         }
 
         /**
-         * Return company information of user owned stock
-         */
-        public async Task<Company> GetCompanyInformationByStockSymbol(string symbol)
-        {
-            return await _companyRepository.GetCompanyBySymbol(symbol);
-        }
-
-
-        /**
          * Retrieve stocks that have been sold 
          */
         public async Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold()
