@@ -26,6 +26,16 @@ namespace Diversify_Server.Services
             await _companyRepository.AddCompany(newCompany);
         }
 
+        public Company GetCompanyByCompanyId(int companyId)
+        {
+            return  _companyRepository.GetCompanyByCompanyId(companyId);
+        }
+        
+        public async Task<Company> GetCompanyByCompanyIdAsync(int companyId)
+        {
+            return  await _companyRepository.GetCompanyByCompanyIdAsync(companyId);
+        }
+
     }
 
 }

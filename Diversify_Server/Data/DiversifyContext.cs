@@ -14,7 +14,6 @@ namespace Diversify_Server.Data
         public DbSet<Sector> Sectors { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<InvestmentTotal> InvestmentTotals { get; set; }
-
         public DbSet<Company> Companies { get; set; }
 
         /**

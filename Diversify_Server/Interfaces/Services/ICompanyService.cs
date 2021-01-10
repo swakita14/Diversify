@@ -5,9 +5,9 @@ namespace Diversify_Server.Interfaces.Services
 {
     public interface ICompanyService
     {
-
         Task AddNewCompany(Company newCompany);
 
-        Task<Company> GetCompanyInformationByStockSymbol(string symbol);
+        Company GetCompanyByCompanyId(int companyId);
+        Task<Company> GetCompanyByCompanyIdAsync(int companyId);
     }
 }

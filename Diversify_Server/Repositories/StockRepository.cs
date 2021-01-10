@@ -85,5 +85,16 @@ namespace Diversify_Server.Repositories
             return await _context.Stocks.Where(x => x.User == userId && x.Status == 2).ToListAsync();
         }
 
+        /**
+         * Gets stock with the company symbol
+         */
+        public async Task<Stock> GetStockByCompanySymbol(string symbol)
+        {
+            var companyInformation = await _context.Companies.FirstOrDefaultAsync(x => x.Symbol == symbol);
+
+            return await _context.Stocks.FirstOrDefaultAsync(x => x.Company == companyInformation.CompanyId);
+        }
+
+
     }
 }

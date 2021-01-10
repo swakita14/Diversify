@@ -12,5 +12,6 @@ namespace Diversify_Server.Interfaces.Repositories
         Task Edit(Stock currentStock);
         Task<List<Stock>> GetCurrentStockByUserId(string userId);
         Task<List<Stock>> GetStockSoldByUserId(string userId);
+        Task<Stock> GetStockByCompanySymbol(string symbol);
     }
 }

@@ -46,5 +46,15 @@ namespace Diversify_Server.Services
 
             return true;
         }
+
+        public async Task<decimal> GetInvestmentTotalWithCompanySymbol(string symbol)
+        {
+            var existing =
+                await _investmentTotalRepository.GetInvestedTotalByCompanySymbol(symbol,
+                    _identityService.GetCurrentLoggedInUser());
+
+            return existing;
+        }
+
     }
 }

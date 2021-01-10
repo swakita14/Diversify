@@ -133,13 +133,12 @@ namespace Diversify_Server.Services
         {
             var userInvestments = await _investmentTotalRepository.GetInvestmentTotalByUserId(_identityService.GetCurrentLoggedInUser());
 
-
             var groupedListBySymbol = userInvestments.GroupBy(x => x.Sector)
                 .Select(y => new StockPortfolioViewModel
                 {
                     TotalInvestment = y.Sum(x => x.InvestedAmount),
                     Sector = _sectorRepository.GetSectorNameById(userInvestments.First(x => x.Sector == y.Key).Sector),
-                    AverageDividend = decimal.Round(((_stockRepository.GetTotalDividendBySector(y.Key) / _stockRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
+                    AverageDividend = decimal.Round((( _companyRepository.GetTotalDividendBySector(y.Key) / _companyRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
                 }).ToList();
 
             return groupedListBySymbol;

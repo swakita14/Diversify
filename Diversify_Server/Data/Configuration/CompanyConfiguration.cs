@@ -8,7 +8,7 @@ namespace Diversify_Server.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.ToTable("Sector");
+            builder.ToTable("Company");
 
             // Change as needed for primary key
             builder.HasKey(x => x.CompanyId);

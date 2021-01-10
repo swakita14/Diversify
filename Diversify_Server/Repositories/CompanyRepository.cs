@@ -48,8 +48,6 @@ namespace Diversify_Server.Repositories
         { 
             var existing = await _context.Companies.FirstOrDefaultAsync(x => x.Symbol == symbol);
 
-            if (existing == null) throw new ArgumentException($"Count not find the company with symbol: {symbol}");
-
             return existing;
         }
 
@@ -83,6 +81,26 @@ namespace Diversify_Server.Repositories
 
             await AddCompany(newCompany);
         }
+
+
+        public int GetCompanyCountBySectorId(int sectorId)
+        {
+            return _context.Companies.Count(x => x.Sector == sectorId);
+        }
+
+        public  decimal GetTotalDividendBySector(int sectorId)
+        {
+            var existing =  _context.Companies.Where(x => x.Sector == sectorId).Sum(x => x.DividendYield);
+
+            return existing;
+        }
+
+        public async Task<Company> GetCompanyByCompanyIdAsync(int companyId)
+        {
+            return await _context.Companies.FindAsync(companyId);
+        }
+
+
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Diversify_Server.Models;
+using Diversify_Server.Models.Database;
 
 namespace Diversify_Server.Interfaces.Services
 {
@@ -11,5 +12,7 @@ namespace Diversify_Server.Interfaces.Services
         Task AddStockAsync(CompanyOverviewModel model, decimal investmentAmount ,DateTime purchaseTime);
 
         Task SellStock(string symbol, decimal amount, DateTime dateSold);
+
+        Task<Stock> GetStockWithCompanySymbol(string symbol);
     }
 }

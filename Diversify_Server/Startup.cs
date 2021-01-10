@@ -81,6 +81,7 @@ namespace Diversify_Server
             services.AddScoped<IStockPortfolioService, StockPortfolioService>();
             services.AddScoped<IInvestmentTotalService, InvestmentTotalService>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();

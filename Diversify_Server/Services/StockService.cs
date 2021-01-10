@@ -114,5 +114,16 @@ namespace Diversify_Server.Services
 
             await _stockRepository.AddStock(newStockTransaction);
         }
+
+        /**
+         * Get Stock with the specific company symbol
+         */
+        public async Task<Stock> GetStockWithCompanySymbol(string symbol)
+        {
+            var existing = await _stockRepository.GetStockByCompanySymbol(symbol);
+
+            return existing;
+        }
+
     }
 }
