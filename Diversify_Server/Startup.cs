@@ -63,7 +63,7 @@ namespace Diversify_Server
             services.AddHttpClient();
 
             // Registering httpclient service for stock searching
-            services.AddHttpClient<IStockSearchService,StockService>(client =>
+            services.AddHttpClient<IStockService,StockService>(client =>
             {
                 client.BaseAddress = new Uri(stockSearchUri);
             });
@@ -90,6 +90,7 @@ namespace Diversify_Server
             services.AddScoped<IStockPortfolioService, StockPortfolioService>();
             services.AddScoped<IInvestmentTotalService, InvestmentTotalService>();
             services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             // Registering repositories 
             services.AddScoped<IStockRepository, StockRepository>();

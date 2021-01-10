@@ -2,6 +2,8 @@
 
 @inject IStockPortfolioService StockPortfolioService
 @inject IInvestmentTotalService InvestmentTotalService
+@inject ICompanyService CompanyService 
+@inject IStockService StockService
 
 
 
@@ -36,7 +38,7 @@
             </div>
         </div>
         <div class="col-md">
-            <_EditInvestment ExistingStock="_existing"></_EditInvestment>
+            <_EditInvestment CompanySymbol="@Symbol"></_EditInvestment>
         </div>
     </div>
 
@@ -61,8 +63,8 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        _existing = await StockPortfolioService.GetCompanyInformationByStockSymbol(Symbol);
-        _investmentTotal = await InvestmentTotalService.GetInvestedTotalByCompanySymbol(Symbol);
+        _existing = await StockService.GetStockWithCompanySymbol(Symbol);
+        _investmentTotal = await InvestmentTotalService.GetInvestmentTotalWithCompanySymbol(Symbol);
 
         _soldStockTransactionViewModel = await StockPortfolioService.GetCurrentUserStockTransactionSold();
 

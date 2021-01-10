@@ -1,5 +1,5 @@
 ﻿
-@inject IStockPortfolioService StockPortfolioService
+@inject IStockService StockService
 @inject NavigationManager NavigationManager
 
 <!-- Button trigger modal -->
@@ -59,8 +59,8 @@
     public async Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseTime)
     {
 
-    // Transferring information from api data to db model
-        await StockPortfolioService.AddStock(model, investmentAmount, purchaseTime);
+        // Transferring information from api data to db model
+        await StockService.AddStockAsync(model, investmentAmount, purchaseTime);
 
         // glyphicon
         _success = true;

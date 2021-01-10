@@ -14,10 +14,12 @@ namespace Diversify_Server.Repositories
     public class StockRepository : IStockRepository
     {
         private readonly DiversifyContext _context;
+        private readonly ICompanyRepository _companyRepository;
 
-        public StockRepository(DiversifyContext context)
+        public StockRepository(DiversifyContext context, ICompanyRepository companyRepository)
         {
             _context = context;
+            _companyRepository = companyRepository;
         }
 
         /**
@@ -25,7 +27,7 @@ namespace Diversify_Server.Repositories
          */
         public async Task AddStock(Stock stock)
         {
-            await _context.Stock.AddAsync(stock);
+            await _context.Stocks.AddAsync(stock);
             await _context.SaveChangesAsync();
         }
 
@@ -34,7 +36,7 @@ namespace Diversify_Server.Repositories
          */
         public async Task SellStock(Stock currentStock)
         {
-            var existing = await _context.Stock.FindAsync(currentStock.StockId);
+            var existing = await _context.Stocks.FindAsync(currentStock.StockId);
 
             existing.Status = 2;
             _context.Entry(existing).State = EntityState.Modified;
@@ -47,11 +49,11 @@ namespace Diversify_Server.Repositories
          */
         public async Task DeleteStock(Stock currentStock)
         {
-            var existing = await _context.Stock.FindAsync(currentStock.StockId);
+            var existing = await _context.Stocks.FindAsync(currentStock.StockId);
 
             if (existing == null) throw new ArgumentException($"Count not find the Stock with ID {currentStock.StockId}");
 
-            _context.Stock.Remove(currentStock);
+            _context.Stocks.Remove(currentStock);
             await _context.SaveChangesAsync();
         }
 
@@ -64,34 +66,15 @@ namespace Diversify_Server.Repositories
             await _context.SaveChangesAsync();
         }
 
-        /**
-         * Gets the total amount of stocks with the sector id 
-         */
-        public int GetCompanyCountBySectorId(int sectorId)
-        {
-            return _context.Stock.Count(x => x.Sector == sectorId);
-        }
-
-        /**
-         * Gets the Total amount of Dividend by sector id
-         */
-        public decimal GetTotalDividendBySector(int sectorId)
-        {
-            return _context.Stock.Where(x => x.Sector == sectorId).Sum(x => x.DividendYield);
-        }
 
         /**
          * Retrieves only the stocks that the user currently owns 
          */
         public async Task<List<Stock>> GetCurrentStockByUserId(string userId)
         {
-            return await _context.Stock.Where(x => x.User == userId && x.Status == 1).ToListAsync();
+            return await _context.Stocks.Where(x => x.User == userId && x.Status == 1).ToListAsync();
         }
 
-        public async Task<Stock> GetCompanyBySymbol(string companySymbol)
-        {
-            return await _context.Stock.FirstOrDefaultAsync(x => x.Symbol == companySymbol);
-        }
 
 
         /**
@@ -99,8 +82,19 @@ namespace Diversify_Server.Repositories
          */
         public async Task<List<Stock>> GetStockSoldByUserId(string userId)
         {
-            return await _context.Stock.Where(x => x.User == userId && x.Status == 2).ToListAsync();
+            return await _context.Stocks.Where(x => x.User == userId && x.Status == 2).ToListAsync();
         }
+
+        /**
+         * Gets stock with the company symbol
+         */
+        public async Task<Stock> GetStockByCompanySymbol(string symbol)
+        {
+            var companyInformation = await _context.Companies.FirstOrDefaultAsync(x => x.Symbol == symbol);
+
+            return await _context.Stocks.FirstOrDefaultAsync(x => x.Company == companyInformation.CompanyId);
+        }
+
 
     }
 }

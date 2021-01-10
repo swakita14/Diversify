@@ -14,17 +14,11 @@ namespace Diversify_Server.Interfaces.Services
          */
         Task<List<StockTransactionViewModel>> GetCurrentUserStockTransaction();
 
-        Task<Stock> GetCompanyInformationByStockSymbol(string symbol);
-
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupByCompany();
 
         Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector();
 
         Task<List<StockTransactionViewModel>> GetCurrentUserStockTransactionSold();
-
-        Task AddStock(CompanyOverviewModel model, decimal investmentAmount, DateTime purchaseDateTime);
-
-        Task SellStock(string symbol, decimal amount, DateTime dateSold);
 
     }
 }

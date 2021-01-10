@@ -1,13 +1,14 @@
 ﻿
 @inject IInvestmentTotalService InvestmentTotalService
-@inject IStockPortfolioService StockPortfolioService
+@inject IStockService StockService
 @inject NavigationManager NavigationManager
+@inject ICompanyService CompanyService  
 
 
 <div class="card" style="width: 20rem;">
     <div class="card-body">
-        <h5 class="card-title">Manage @ExistingStock.Symbol</h5>
-        <EditForm Model="@ExistingStock" OnValidSubmit="() => SellStockAsync(ExistingStock.Symbol,_editAmount)">
+        <h5 class="card-title">Manage @CompanySymbol</h5>
+        <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(CompanySymbol,_editAmount)">
             <h6 class="card-subtitle mb-2 text-muted">Amount Sold</h6>
             <InputNumber @bind-Value=_editAmount class="form-control col-sm-3" id="sold-amount" />
             <br>
@@ -30,19 +31,23 @@
 
 @code {
 
+
     [Parameter]
-    public Stock ExistingStock { get; set; }
+    public string CompanySymbol { get; set; }
+
+    private Stock _stock = new Stock();
 
     private decimal _editAmount = 0;
 
     private bool _success = false;
     private bool _error = false;
 
+
     public async Task SellStockAsync(string companySymbol, decimal amount)
     {
         if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
         {
-            await StockPortfolioService.SellStock(companySymbol, -amount, DateTime.Now);
+            await StockService.SellStock(companySymbol, -amount, DateTime.Now);
 
             _error = false;
             _success = true;
