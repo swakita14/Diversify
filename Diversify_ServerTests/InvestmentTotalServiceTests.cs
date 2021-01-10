@@ -7,6 +7,7 @@ using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Diversify_ServerTests
@@ -27,43 +28,6 @@ namespace Diversify_ServerTests
         }
 
         [Test]
-        public async Task GetInvestedTotalByCompanySymbol_GivenSymbol_ReturnsTotal()
-        {
-            // Arragne 
-            var userStocks = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
-
-            // Act
-            var results = await _sut.GetInvestedTotalByCompanySymbol("AAPL");
-
-            // Assert 
-            results.Should().Be(100);
-        }
-
-        [Test]
-        public async Task GetInvestmentTotalByUserId_GivenId_ReturnsInvestmentTotalList()
-        {
-            // Arrange 
-            var investmentTotal = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-                new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(investmentTotal));
-
-            // Act
-            var result = await _sut.GetInvestmentTotalByUserId();
-
-            // Assert
-            result.Count.Should().Be(2);
-        }
-
-        [Test]
         public async Task GetUserTotalInvestment_GivenId_ReturnsTotalInvestment()
         {
             // Arrange 
@@ -73,49 +37,13 @@ namespace Diversify_ServerTests
                 new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
             };
 
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(investmentTotal));
+            _investmentTotalRepositoryMock.Setup(x => x.GetInvestmentTotalByUserId(It.IsAny<string>())).Returns(Task.FromResult(investmentTotal));
 
             // Act
             var result = await _sut.GetUserTotalInvestment();
 
             // Assert
             result.Should().Be(300);
-        }
-
-        [Test]
-        public async Task CheckExistingInvestment_GivenSymbolOfExisting_ReturnsTrue()
-        {
-            // Arragne 
-            var userStocks = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
-
-            // Act 
-            var results = await _sut.CheckExistingInvestment("AAPL");
-
-            // Assert
-            Assert.AreEqual(results, true);
-        }
-
-        [Test]
-        public async Task CheckExistingInvestment_GivenSymbolOfNonExisting_ReturnsFalse()
-        {
-            // Arragne 
-            var userStocks = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
-
-            // Act 
-            var results = await _sut.CheckExistingInvestment("IBM");
-
-            // Assert
-            Assert.AreEqual(results, false);
         }
 
         [Test]
@@ -127,8 +55,7 @@ namespace Diversify_ServerTests
                 new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
             };
 
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
-
+            _investmentTotalRepositoryMock.Setup(x => x.GetInvestedTotalByCompanySymbol("AAPL", It.IsAny<string>())).Returns(Task.FromResult(userStocks.Sum(x => x.InvestedAmount)));
             // Act
             var results = await _sut.CheckRemainderInvestment("AAPL", 150);
 
@@ -145,13 +72,52 @@ namespace Diversify_ServerTests
                 new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
             };
 
-            _investmentTotalRepositoryMock.Setup(x => x.GetAllInvestmentTotalsByUserId(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
+            _investmentTotalRepositoryMock.Setup(x => x.GetInvestedTotalByCompanySymbol("AAPL",It.IsAny<string>())).Returns(Task.FromResult(userStocks.Sum(x => x.InvestedAmount)));
 
             // Act
             var results = await _sut.CheckRemainderInvestment("AAPL", 50);
 
             // Assert 
             Assert.AreEqual(results, true);
+        }
+
+        [Test]
+        public async Task GetUserTotalInvestment_ShouldReturnTotalInvestmentAmount()
+        {
+            // Arragne 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+                new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetInvestmentTotalByUserId(It.IsAny<string>()))
+                .Returns(Task.FromResult(userStocks));
+
+            // Act 
+            var results = await _sut.GetUserTotalInvestment();
+
+            // Assert 
+            Assert.AreEqual(results, 300);
+        }
+
+        [Test]
+        public async Task GetInvestmentTotalWithCompanySymbol_GivenCompanySymbol_ShouldReturnCompanyInvestedAmount()
+        {
+            //Arrange 
+            var userStocks = new List<InvestmentTotal>
+            {
+                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
+            };
+
+            _investmentTotalRepositoryMock.Setup(x => x.GetInvestedTotalByCompanySymbol("AAPL", It.IsAny<string>()))
+                .Returns(Task.FromResult(userStocks.Sum(x => x.InvestedAmount)));
+
+            // Act 
+            var results = await _sut.GetInvestmentTotalWithCompanySymbol("AAPL");
+
+            // Assert 
+            Assert.AreEqual(results, 100);
         }
 
     }
