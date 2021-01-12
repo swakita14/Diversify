@@ -60,6 +60,11 @@ namespace Diversify_Server.Data.Configuration
                 .HasColumnName("PayoutRatio")
                 .HasColumnType("decimal");
 
+            builder.Property(x => x.DateUpdated)
+                .HasColumnName("DateUpdated")
+                .HasColumnType("date")
+                .IsRequired();
+
 
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Threading.Tasks;
 
 namespace Diversify_Server.Models.Database
@@ -19,5 +20,7 @@ namespace Diversify_Server.Models.Database
         public decimal? PERatio { get; set; }
         public decimal? PayoutRatio { get; set; }
         public int Sector { get; set; }
+
+        public DateTime DateUpdated { get; set; }
     }
 }

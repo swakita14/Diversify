@@ -76,7 +76,8 @@ namespace Diversify_Server.Repositories
                 Exchange = company.Exchange,
                 PayoutRatio = decimal.Parse(company.PayoutRatio),
                 Sector = sectorId,
-                PERatio = decimal.Parse(company.PERatio)
+                PERatio = decimal.Parse(company.PERatio),
+                DateUpdated = DateTime.Now
             };
 
             await AddCompany(newCompany);

@@ -1,6 +1,6 @@
 using System;
 using Diversify_Server.Data;
-using Diversify_Server.HangFire.Interfaces;
+using Diversify_Server.HangFire.Repositories;
 using Diversify_Server.HangFire.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
+using Diversify_Server.HangFire.Interfaces.Repositories;
+using Diversify_Server.HangFire.Interfaces.Services;
 
 namespace Diversify_Server
 {
@@ -96,6 +98,10 @@ namespace Diversify_Server
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
+            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
+
+            // HangFire DI here until separate project needed
+            services.AddScoped<ICompanyInformationRepository, CompanyInformationRepository>();
             services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
 
             // Adding Syncfusion for Blazor
