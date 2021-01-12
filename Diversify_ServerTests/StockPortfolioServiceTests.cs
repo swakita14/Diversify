@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
@@ -19,7 +21,8 @@ namespace Diversify_ServerTests
         private readonly Mock<IStockRepository> _stockRepository;
         private readonly Mock<ISectorRepository> _sectorRepository;
         private readonly Mock<IIdentityService> _identityService;
-        private readonly Mock<IInvestmentTotalService> _investmentTotalService;
+        private readonly Mock<ICompanyRepository> _companyRepository;
+        private readonly Mock<IInvestmentTotalRepository> _investmentTotalRepository;
 
         private readonly StockPortfolioService _sut;
 
@@ -28,9 +31,10 @@ namespace Diversify_ServerTests
             _stockRepository = new Mock<IStockRepository>();
             _sectorRepository = new Mock<ISectorRepository>();
             _identityService = new Mock<IIdentityService>();
-            _investmentTotalService = new Mock<IInvestmentTotalService>();
+            _companyRepository = new Mock<ICompanyRepository>();
+            _investmentTotalRepository = new Mock<IInvestmentTotalRepository>();
 
-            _sut = new StockPortfolioService(_stockRepository.Object, _sectorRepository.Object, _identityService.Object, _investmentTotalService.Object);
+            _sut = new StockPortfolioService(_stockRepository.Object, _sectorRepository.Object, _identityService.Object, _investmentTotalRepository.Object, _companyRepository.Object);
         }
 
         [Test]
@@ -41,16 +45,24 @@ namespace Diversify_ServerTests
             {
                 new Stock
                 {
-                    StockId = 1, InvestmentAmount = 100, Symbol = "AAPL", Sector = 1, PurchaseDate = DateTime.Now,
-                    DividendYield = 0, ExDividendDate = DateTime.Now
-                },               
+                    StockId = 1, InvestmentAmount = 100, Company = 1, PurchaseDate = DateTime.Now, Status = 2
+                },
                 new Stock
                 {
-                    StockId = 2, InvestmentAmount = 100, Symbol = "IBM", Sector = 1, PurchaseDate = DateTime.Now,
-                    DividendYield = 0, ExDividendDate = DateTime.Now
+                    StockId = 2, InvestmentAmount = 100, Company = 1, PurchaseDate = DateTime.Now, Status = 2
                 }
-                
             };
+
+            var company = new Company
+            {
+                CompanyId = 1,
+                Symbol = "AAPL",
+                DividendYield = .5M,
+                Sector = 1
+            };
+
+            _companyRepository.Setup(x => x.GetCompanyByCompanyId(It.IsAny<int>()))
+                .Returns(company);
 
             _stockRepository.Setup(x => x.GetCurrentStockByUserId(It.IsAny<string>()))
                 .Returns(Task.FromResult(userStocks));
@@ -62,31 +74,6 @@ namespace Diversify_ServerTests
             results.Count.Should().Be(2);
         }
 
-        [Test]
-        public async Task GetCompanyInformationByStockSymbol_GivenSymbol_ShouldReturnCompanyInformation()
-        {
-            // Arrange 
-            var userStocks = new Stock
-            {
-                StockId = 1,
-                InvestmentAmount = 100,
-                Symbol = "AAPL",
-                Sector = 1,
-                PurchaseDate = DateTime.Now,
-                DividendYield = 0,
-                ExDividendDate = DateTime.Now,
-                Status = 1
-            };
-
-            _stockRepository.Setup(x => x.GetCompanyBySymbol(It.IsAny<string>())).Returns(Task.FromResult(userStocks));
-
-            // Act 
-            var results = await _sut.GetCompanyInformationByStockSymbol("AAPL");
-
-            // Assert 
-            Assert.AreEqual(results.InvestmentAmount, 100);
-            Assert.AreEqual(results.StockId, 1);
-        }
 
         [Test]
         public async Task GetCurrentUserStockTransactionSold_GivenUserId_ShouldReturnSoldStockList()
@@ -96,18 +83,24 @@ namespace Diversify_ServerTests
             {
                 new Stock
                 {
-                    StockId = 1, InvestmentAmount = 100, Symbol = "AAPL", PurchaseDate = DateTime.Now,
-                    DividendYield = 0, ExDividendDate = DateTime.Now, Status = 2
+                    StockId = 1, InvestmentAmount = 100, Company = 1, PurchaseDate = DateTime.Now, Status = 2, User = "John"
                 },
                 new Stock
                 {
-                    StockId = 2, InvestmentAmount = 100, Symbol = "IBM", PurchaseDate = DateTime.Now,
-                    DividendYield = 0, ExDividendDate = DateTime.Now, Status = 2
-                },
+                    StockId = 1, InvestmentAmount = 100, Company = 1, PurchaseDate = DateTime.Now, Status = 2, User = "John"
+                }
+            };
+
+            var company = new Company
+            {
+                CompanyId = 1, Symbol = "AAPL", DividendYield = .5M, Sector = 1
             };
 
             _stockRepository.Setup(x => x.GetStockSoldByUserId(It.IsAny<string>()))
                 .Returns(Task.FromResult(userStockSoldList));
+
+            _companyRepository.Setup(x => x.GetCompanyByCompanyId(It.IsAny<int>()))
+                .Returns(company);
 
             // Act 
             var results = await _sut.GetCurrentUserStockTransactionSold();
