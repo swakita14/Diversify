@@ -9,6 +9,7 @@ using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models.Database;
 using Diversify_Server.Models.ViewModels;
 using Diversify_Server.Services;
+using DiversifyCL.Models.Database;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
