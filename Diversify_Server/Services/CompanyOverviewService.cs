@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Models;
+using DiversifyCL.Interfaces.Services;
+using DiversifyCL.Models;
 using Microsoft.Extensions.Configuration;
 
 namespace Diversify_Server.Services

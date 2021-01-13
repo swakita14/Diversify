@@ -6,6 +6,8 @@ using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Models;
 using Diversify_Server.Models.Database;
+using DiversifyCL.Models;
+using DiversifyCL.Models.Database;
 using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
 using Microsoft.EntityFrameworkCore;
 

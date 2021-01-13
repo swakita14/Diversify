@@ -1,7 +1,5 @@
 using System;
 using Diversify_Server.Data;
-using Diversify_Server.HangFire.Repositories;
-using Diversify_Server.HangFire.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -11,14 +9,12 @@ using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Repositories;
 using Diversify_Server.Services;
-using Hangfire;
+using DiversifyCL.Interfaces.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
-using Diversify_Server.HangFire.Interfaces.Repositories;
-using Diversify_Server.HangFire.Interfaces.Services;
 
 namespace Diversify_Server
 {
@@ -80,12 +76,6 @@ namespace Diversify_Server
             services.AddHttpClient<ICompanyOverviewService,CompanyOverviewService>(client =>
             {
                 client.BaseAddress = new Uri(stockSearchUri);
-            });            
-            
-            // Registering for HangFire
-            services.AddHttpClient<IOverviewUpdateService,OverviewUpdateService>(client =>
-            {
-                client.BaseAddress = new Uri(stockSearchUri);
             });
 
             // Registering services that do not need httpclient
@@ -98,18 +88,10 @@ namespace Diversify_Server
             services.AddScoped<IStockRepository, StockRepository>();
             services.AddScoped<ISectorRepository, SectorRepository>();
             services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
-            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
-
-            // HangFire DI here until separate project needed
-            services.AddScoped<ICompanyInformationRepository, CompanyInformationRepository>();
-            services.AddScoped<IOverviewUpdateService, OverviewUpdateService>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
 
             // Adding Syncfusion for Blazor
             services.AddSyncfusionBlazor();
-
-            // Adding Hangfire 
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration["ConnectionStrings:HangfireConnection"]));
-            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -129,9 +111,6 @@ namespace Diversify_Server
                 app.UseHsts();
             }
 
-            // Adding Hangfire
-            app.UseHangfireDashboard();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -139,9 +118,6 @@ namespace Diversify_Server
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-
-            // For Testing purposes first
-            RecurringJob.AddOrUpdate<IOverviewUpdateService>(x => x.UpdateCompanyOverview(), Cron.Minutely);
 
             app.UseEndpoints(endpoints =>
             {

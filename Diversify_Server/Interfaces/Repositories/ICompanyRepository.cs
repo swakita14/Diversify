@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
-using Diversify_Server.Models;
-using Diversify_Server.Models.Database;
+using DiversifyCL.Models;
+using DiversifyCL.Models.Database;
 
 namespace Diversify_Server.Interfaces.Repositories
 {

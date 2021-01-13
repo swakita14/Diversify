@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Diversify_Server.Models.Database;
+using DiversifyCL.Models.Database;
 
 namespace Diversify_Server.Interfaces.Services
 {

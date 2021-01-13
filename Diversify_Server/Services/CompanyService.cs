@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Models.Database;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Internal.Account;
+using DiversifyCL.Models.Database;
 
 namespace Diversify_Server.Services
 {
