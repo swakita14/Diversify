@@ -111,6 +111,7 @@ namespace Diversify_Server
                 app.UseHsts();
             }
 
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
