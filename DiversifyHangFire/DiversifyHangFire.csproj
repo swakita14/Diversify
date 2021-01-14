@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>50c90d6c-f70e-4fba-8d97-ede79d0bd768</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\Diversify_Server</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
