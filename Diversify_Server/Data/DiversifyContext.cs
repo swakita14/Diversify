@@ -1,6 +1,5 @@
 ﻿using Diversify_Server.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Diversify_Server.Models.Database;
 using DiversifyCL.Data;
 using DiversifyCL.Models.Database;
 

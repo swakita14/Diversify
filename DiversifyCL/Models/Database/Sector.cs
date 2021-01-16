@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Diversify_Server.Models.Database
+namespace DiversifyCL.Models.Database
 {
     public class Sector
     {

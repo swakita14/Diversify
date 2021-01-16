@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
-using Diversify_Server.Models.Database;
+using DiversifyCL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace Diversify_Server.Repositories

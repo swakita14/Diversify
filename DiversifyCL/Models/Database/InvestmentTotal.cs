@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Diversify_Server.Models.Database
+namespace DiversifyCL.Models.Database
 {
     public class InvestmentTotal
     {

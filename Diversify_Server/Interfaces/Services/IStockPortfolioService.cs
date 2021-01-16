@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Diversify_Server.Models;
-using Diversify_Server.Models.Database;
 using Diversify_Server.Models.ViewModels;
 
 namespace Diversify_Server.Interfaces.Services

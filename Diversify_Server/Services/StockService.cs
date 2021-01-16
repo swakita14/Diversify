@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
 using Diversify_Server.Models;
-using Diversify_Server.Models.Database;
 using DiversifyCL.Models;
+using DiversifyCL.Models.Database;
 using Microsoft.Extensions.Configuration;
 
 namespace Diversify_Server.Services

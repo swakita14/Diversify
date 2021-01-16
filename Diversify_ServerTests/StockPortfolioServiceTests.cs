@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Models.Database;
-using Diversify_Server.Models.ViewModels;
 using Diversify_Server.Services;
 using DiversifyCL.Models.Database;
 using FluentAssertions;

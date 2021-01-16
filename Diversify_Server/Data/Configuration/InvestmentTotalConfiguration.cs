@@ -1,4 +1,4 @@
-﻿using Diversify_Server.Models.Database;
+﻿using DiversifyCL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

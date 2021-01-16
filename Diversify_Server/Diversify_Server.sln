@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiversifyHangFire", "..\Div
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiversifyCL", "..\DiversifyCL\DiversifyCL.csproj", "{95B0CD0C-9FAB-4B53-87D4-8FAA5EE37F1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversifyWASM", "..\DiversifyWASM\DiversifyWASM.csproj", "{907EF4C1-98CD-4D24-A540-1F240019A432}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversifyWebAssembly", "..\DiversifyWebAssembly\DiversifyWebAssembly.csproj", "{0CFAC8B9-474A-4487-B22B-06C0B894D6EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{95B0CD0C-9FAB-4B53-87D4-8FAA5EE37F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95B0CD0C-9FAB-4B53-87D4-8FAA5EE37F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95B0CD0C-9FAB-4B53-87D4-8FAA5EE37F1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{907EF4C1-98CD-4D24-A540-1F240019A432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{907EF4C1-98CD-4D24-A540-1F240019A432}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{907EF4C1-98CD-4D24-A540-1F240019A432}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{907EF4C1-98CD-4D24-A540-1F240019A432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CFAC8B9-474A-4487-B22B-06C0B894D6EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CFAC8B9-474A-4487-B22B-06C0B894D6EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CFAC8B9-474A-4487-B22B-06C0B894D6EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CFAC8B9-474A-4487-B22B-06C0B894D6EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

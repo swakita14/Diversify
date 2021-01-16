@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Diversify_Server.Interfaces.Repositories;
 using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Models.Database;
-
 namespace Diversify_Server.Services
 {
     public class InvestmentTotalService : IInvestmentTotalService

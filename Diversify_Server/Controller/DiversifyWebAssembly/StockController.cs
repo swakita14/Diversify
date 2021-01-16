@@ -19,5 +19,8 @@ namespace Diversify_Server.Controller.DiversifyWebAssembly
         {
             _stockService = stockService;
         }
+
+        //[HttpPost]
+        //public 
     }
 }

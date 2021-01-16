@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Diversify_Server.Data;
 using Diversify_Server.Interfaces.Repositories;
-using Diversify_Server.Models.Database;
+using DiversifyCL.Models.Database;
 
 namespace Diversify_Server.Repositories
 {
