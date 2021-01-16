@@ -1,14 +1,14 @@
-﻿using Diversify_Server.Interfaces.Repositories;
-using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Models.Database;
-using Diversify_Server.Repositories;
-using Diversify_Server.Services;
+﻿
+using DiversifyCL.Interfaces.Repositories;
+using DiversifyCL.Interfaces.Services;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiversifyCL.Models.Database;
+using DiversifyCL.Services;
 
 namespace Diversify_ServerTests
 {

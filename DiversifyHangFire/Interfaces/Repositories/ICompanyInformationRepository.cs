@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using DiversifyCL.Models;
 using DiversifyCL.Models.Database;
+using DiversifyCL.Models.ViewModels;
 
 namespace DiversifyHangFire.Interfaces.Repositories
 {

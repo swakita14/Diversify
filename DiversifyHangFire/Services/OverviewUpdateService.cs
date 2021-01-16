@@ -1,7 +1,7 @@
 ﻿
 using System;
 using DiversifyCL.Interfaces.Services;
-using DiversifyCL.Models;
+using DiversifyCL.Models.ViewModels;
 using DiversifyHangFire.Interfaces.Repositories;
 using DiversifyHangFire.Interfaces.Services;
 

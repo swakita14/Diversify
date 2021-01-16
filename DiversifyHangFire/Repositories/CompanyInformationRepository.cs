@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DiversifyCL.Interfaces.Services;
-using DiversifyCL.Models;
 using DiversifyCL.Models.Database;
+using DiversifyCL.Models.ViewModels;
 using DiversifyHangFire.Data;
 using DiversifyHangFire.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;

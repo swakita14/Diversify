@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Diversify_Server.Interfaces.Repositories;
-using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Services;
+using DiversifyCL.Interfaces.Repositories;
+using DiversifyCL.Interfaces.Services;
 using DiversifyCL.Models.Database;
+using DiversifyCL.Services;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;

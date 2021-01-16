@@ -1,20 +1,19 @@
 using System;
-using Diversify_Server.Data;
+using DiversifyCL.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Diversify_Server.Interfaces.Services;
-using Diversify_Server.Interfaces.Repositories;
-using Diversify_Server.Repositories;
-using Diversify_Server.Services;
 using DiversifyCL.Interfaces.Services;
+using DiversifyCL.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Syncfusion.Blazor;
+using DiversifyCL.Interfaces.Repositories;
+using DiversifyCL.Repositories;
 
 namespace Diversify_Server
 {

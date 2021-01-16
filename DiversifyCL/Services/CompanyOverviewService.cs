@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using DiversifyCL.Interfaces.Services;
-using DiversifyCL.Models;
+using DiversifyCL.Models.ViewModels;
 using Microsoft.Extensions.Configuration;
 
 namespace DiversifyCL.Services

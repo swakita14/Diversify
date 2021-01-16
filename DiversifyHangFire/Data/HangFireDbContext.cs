@@ -1,4 +1,4 @@
-﻿using DiversifyCL.Data;
+﻿using DiversifyCL.Data.Configuration;
 using DiversifyCL.Models.Database;
 using Microsoft.EntityFrameworkCore;
 

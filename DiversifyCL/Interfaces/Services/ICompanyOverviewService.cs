@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DiversifyCL.Models;
+using DiversifyCL.Models.ViewModels;
 
 namespace DiversifyCL.Interfaces.Services
 {
