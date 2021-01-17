@@ -1,3 +1,4 @@
+using System;
 using DiversifyWebAssembly.Server.Data;
 using DiversifyWebAssembly.Server.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -13,6 +14,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using DiversifyCL.Data;
+using DiversifyCL.Interfaces.Repositories;
+using DiversifyCL.Interfaces.Services;
+using DiversifyCL.Repositories;
+using DiversifyCL.Services;
+using Syncfusion.Blazor;
 
 namespace DiversifyWebAssembly.Server
 {
@@ -29,21 +36,66 @@ namespace DiversifyWebAssembly.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            // Registering dbcontext
+            services.AddDbContext<DiversifyContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            // Adding for application user
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Authentication 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            // Initializing API Config as string
+            string stockSearchUri = Configuration["StockApi:BaseUri"];
+            string newsUri = Configuration["NewsApi:BaseUri"];
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            // Adding httpclient 
+            services.AddHttpClient();
+
+            // Registering httpclient service for stock searching
+            services.AddHttpClient<IStockService, StockService>(client =>
+            {
+                client.BaseAddress = new Uri(stockSearchUri);
+            });
+
+            // Registering httpclient service for company news searching
+            services.AddHttpClient<ICompanyNewsService, CompanyNewsService>(client =>
+            {
+                client.BaseAddress = new Uri(newsUri);
+            });
+
+            // Registering httpclient service for company overview 
+            services.AddHttpClient<ICompanyOverviewService, CompanyOverviewService>(client =>
+            {
+                client.BaseAddress = new Uri(stockSearchUri);
+            });
+
+            // Registering services that do not need httpclient
+            services.AddScoped<IStockPortfolioService, StockPortfolioService>();
+            services.AddScoped<IInvestmentTotalService, InvestmentTotalService>();
+            services.AddScoped<IIdentityService, IdentityService>();
+            services.AddScoped<ICompanyService, CompanyService>();
+
+            // Registering repositories 
+            services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<ISectorRepository, SectorRepository>();
+            services.AddScoped<IInvestmentTotalRepository, InvestmentTotalRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+            // Adding Syncfusion for Blazor
+            services.AddSyncfusionBlazor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
