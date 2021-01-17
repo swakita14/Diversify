@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Syncfusion.Blazor;
 
 namespace DiversifyWebAssembly.Client
 {
@@ -26,6 +27,7 @@ namespace DiversifyWebAssembly.Client
 
             builder.Services.AddApiAuthorization();
 
+            builder.Services.AddSyncfusionBlazor();
             await builder.Build().RunAsync();
         }
     }

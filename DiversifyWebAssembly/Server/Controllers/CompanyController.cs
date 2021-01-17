@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DiversifyCL.Interfaces.Services;
 
 namespace DiversifyWebAssembly.Server.Controllers
 {
@@ -11,5 +12,10 @@ namespace DiversifyWebAssembly.Server.Controllers
     [ApiController]
     public class CompanyController : ControllerBase
     {
+        private readonly ICompanyService _companyService;
+        public CompanyController(ICompanyService companyService)
+        {
+            _companyService = companyService;
+        }
     }
 }
