@@ -13,9 +13,21 @@ namespace DiversifyWebAssembly.Server.Controllers
     public class CompanyController : ControllerBase
     {
         private readonly ICompanyService _companyService;
-        public CompanyController(ICompanyService companyService)
+        private readonly ICompanyOverviewService _companyOverviewService;
+
+        public CompanyController(ICompanyService companyService, ICompanyOverviewService companyOverviewService)
         {
             _companyService = companyService;
+            _companyOverviewService = companyOverviewService;
+        }
+
+        [Route("/symbol/{companySymbol}")]
+        [HttpGet]
+        public async Task<IActionResult> GetCompanyOverview(string companySymbol)
+        {
+            var overview = await _companyOverviewService.GetCompanyOverviewAsync(companySymbol);
+
+            return Ok(overview);
         }
     }
 }

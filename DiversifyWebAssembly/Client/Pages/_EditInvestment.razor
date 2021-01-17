@@ -1,0 +1,36 @@
+@inject HttpClient HttpClient
+@inject NavigationManager NavigationManager
+
+@code {
+    [Parameter]
+    public string CompanySymbol { get; set; }
+
+    private Stock _stock = new Stock();
+
+    private decimal _editAmount = 0;
+
+    private bool _success = false;
+    private bool _error = false;
+
+        public async Task SellStockAsync(string companySymbol, decimal amount)
+    {
+        @* if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
+        {
+            await StockService.SellStock(companySymbol, -amount, DateTime.Now);
+
+            _error = false;
+            _success = true;
+
+            NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
+
+        }
+          else
+        {
+            _error = true;
+        } *@
+
+        
+
+        StateHasChanged();
+    }
+}
