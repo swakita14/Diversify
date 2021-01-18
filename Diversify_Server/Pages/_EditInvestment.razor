@@ -45,15 +45,13 @@
 
     public async Task SellStockAsync(string companySymbol, decimal amount)
     {
-        if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
-        {
-            await StockService.SellStock(companySymbol, -amount, DateTime.Now);
 
+        if(await StockService.SellStock(companySymbol, -amount, DateTime.Now))
+        {
             _error = false;
             _success = true;
 
             NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
-
         }
         else
         {

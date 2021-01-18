@@ -8,6 +8,8 @@ namespace DiversifyCL.Interfaces.Repositories
     { 
         Task<List<InvestmentTotal>> GetAllInvestmentTotalsByUserId(string userId);
 
+        Task<bool> CheckRemainderInvestment(string companySymbol, decimal editInvestmentAmount, string userId);
+
         Task AddNewTotal(InvestmentTotal newInvestmentTotal);
 
         Task EditInvestmentAmount(InvestmentTotal existingInvestmentTotal);

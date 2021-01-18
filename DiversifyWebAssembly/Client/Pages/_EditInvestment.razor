@@ -1,6 +1,24 @@
 @inject HttpClient HttpClient
 @inject NavigationManager NavigationManager
 
+<div class="card" style="width: 20rem;">
+    <div class="card-body">
+        <h5 class="card-title">Manage @CompanySymbol</h5>
+        <EditForm Model="@_stock" OnValidSubmit="() => SellStockAsync(CompanySymbol,_editAmount)">
+            <h6 class="card-subtitle mb-2 text-muted">Amount Sold</h6>
+            <InputNumber @bind-Value=_editAmount class="form-control col-sm-3" id="sold-amount" />
+            <br>
+            <p>
+                @if (_success)
+                {
+                    <span class="oi oi-check" aria-hidden="true">Stocks Sold!</span>
+                }
+            </p>
+            <button type="submit" class="btn btn-primary">Sell Stock</button>
+        </EditForm>
+    </div>
+</div>
+
 @code {
     [Parameter]
     public string CompanySymbol { get; set; }
@@ -10,26 +28,19 @@
     private decimal _editAmount = 0;
 
     private bool _success = false;
-    private bool _error = false;
-
-        public async Task SellStockAsync(string companySymbol, decimal amount)
+    
+    public async Task SellStockAsync(string companySymbol, decimal amount)
     {
-        @* if (await InvestmentTotalService.CheckRemainderInvestment(companySymbol, amount) && amount > 0)
+        var existing = new SellStockViewModel
         {
-            await StockService.SellStock(companySymbol, -amount, DateTime.Now);
+            Amount = amount,
+            CompanySymbol = companySymbol
+        };
 
-            _error = false;
-            _success = true;
+        await HttpClient.PostAsJsonAsync("api/stock/sellstock", existing);
+        NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
 
-            NavigationManager.NavigateTo($"editinvestment/{companySymbol}", true);
-
-        }
-          else
-        {
-            _error = true;
-        } *@
-
-        
+        _success = true;
 
         StateHasChanged();
     }

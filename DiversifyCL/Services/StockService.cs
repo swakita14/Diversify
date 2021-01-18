@@ -95,9 +95,15 @@ namespace DiversifyCL.Services
         /**
          * Sell (Add) new stock from component
          */
-        public async Task SellStock(string symbol, decimal amount, DateTime dateSold)
+        public async Task<bool> SellStock(string symbol, decimal amount, DateTime dateSold)
         {
-            // Make changes to the total amount 
+            if (await _investmentTotalRepository.CheckRemainderInvestment(symbol, amount,
+                _identityService.GetCurrentLoggedInUser()) && amount > 0)
+            {
+                throw new Exception("Cannot deduct more than current asset");
+            }
+
+            // Make changes to the total amount
             await _investmentTotalRepository.EditExistingInvestment(symbol, amount, _identityService.GetCurrentLoggedInUser());
 
             // Find the stock information from the database 
@@ -114,6 +120,9 @@ namespace DiversifyCL.Services
             };
 
             await _stockRepository.AddStock(newStockTransaction);
+
+            // operation successful
+            return true;
         }
 
         /**

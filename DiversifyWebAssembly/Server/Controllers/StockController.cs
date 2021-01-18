@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DiversifyCL.Interfaces.Services;
 using DiversifyCL.Models.ViewModels;
@@ -11,9 +12,11 @@ namespace DiversifyWebAssembly.Server.Controllers
     public class StockController : ControllerBase
     {
         private readonly IStockService _stockService;
-        public StockController(IStockService  stockService)
+        private readonly IIdentityService _identityService;
+        public StockController(IStockService  stockService, IIdentityService identityService)
         {
             _stockService = stockService;
+            _identityService = identityService;
         }
 
         [HttpPost]
@@ -33,6 +36,14 @@ namespace DiversifyWebAssembly.Server.Controllers
             };
 
             await _stockService.AddStockAsync(model, newStock.InvestmentAmount, newStock.PurchaseDateTime);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SellStock([FromBody] SellStockViewModel existing)
+        {
+            await _stockService.SellStock(existing.CompanySymbol, existing.Amount, DateTime.Now);
 
             return Ok();
         }

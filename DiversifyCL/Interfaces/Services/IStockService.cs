@@ -12,7 +12,7 @@ namespace DiversifyCL.Interfaces.Services
 
         Task AddStockAsync(CompanyOverviewModel model, decimal investmentAmount ,DateTime purchaseTime);
 
-        Task SellStock(string symbol, decimal amount, DateTime dateSold);
+        Task<bool> SellStock(string symbol, decimal amount, DateTime dateSold);
 
         Task<Stock> GetStockWithCompanySymbol(string symbol);
     }
