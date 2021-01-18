@@ -47,5 +47,15 @@ namespace DiversifyWebAssembly.Server.Controllers
 
             return Ok();
         }
+
+        [Route("/search/{companySymbol}")]
+        [HttpGet]
+        public async Task<IActionResult> GetStock(string companyName)
+        {
+            var searchResult = await _stockService.GetStockAsync(companyName);
+
+            return Ok(searchResult);
+        }
+
     }
 }

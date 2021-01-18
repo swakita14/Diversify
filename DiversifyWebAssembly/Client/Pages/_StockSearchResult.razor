@@ -1,5 +1,32 @@
-﻿<h3>_StockSearchResult</h3>
+﻿
+@inject HttpClient HttpClient
+
+<SfGrid DataSource="@_results.BestMatches" AllowPaging="true" AllowSorting="true">
+    <GridPageSettings PageSize="10"></GridPageSettings>
+    <GridColumns>
+        <GridColumn Field=@nameof(SearchModel.Symbol) HeaderText="Symbol" Width="120" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn Field=@nameof(SearchModel.Name) HeaderText="Company Name" Width="150" TextAlign="TextAlign.Center"></GridColumn>
+        <GridColumn HeaderText="Link" Width="120">
+            <Template>
+                @{
+                    var company = (context as SearchModel);
+                    <div><a href="/overview/@company.Symbol">View</a></div>
+                }
+            </Template>
+        </GridColumn>
+
+    </GridColumns>
+</SfGrid>
 
 @code {
+    [Parameter]
+    public string CompanyName { get; set; }
+
+    private SearchModelList _results = new SearchModelList();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _results = await HttpClient.GetFromJsonAsync<SearchModelList>($"api/stock/search/{CompanyName}");
+    }
 
 }
