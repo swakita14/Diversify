@@ -30,20 +30,7 @@ namespace DiversifyCL.Services
             return currentUserInvestmentTotals.Sum(x => x.InvestedAmount);
         }
 
-        /**
-         * If the edit investment amount is larger than the current investment, will return false, else true
-         */
-        public async Task<bool> CheckRemainderInvestment(string companySymbol, decimal editInvestmentAmount)
-        {
-            var currentInvestment = await _investmentTotalRepository.GetInvestedTotalByCompanySymbol(companySymbol, _identityService.GetCurrentLoggedInUser());
 
-            if (currentInvestment < editInvestmentAmount)
-            {
-                return false;
-            }
-
-            return true;
-        }
 
         public async Task<decimal> GetInvestmentTotalWithCompanySymbol(string symbol)
         {

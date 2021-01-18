@@ -1,0 +1,76 @@
+@page "/portfolio"
+
+@inject HttpClient HttpClient
+
+@attribute [Authorize]
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <_StockPortfolioChart PortfolioCompanyList="@_portfolioListCompany" Title="@_title" XName="@_xName"></_StockPortfolioChart>
+        </div>
+        <div class="col-4">
+            @if (_showTotal)
+            {
+                <_InvestmentTotal PortfolioViewModels="@_totalInvestment"></_InvestmentTotal>
+            }
+
+        </div>
+    </div>
+</div>
+<div class="container">
+    <_StockPortfolioTotal PortfolioList="@_portfolioListCompany" SwitchView="@_switchView"></_StockPortfolioTotal>
+    <br />
+    <button type="button" class="btn btn-outline-info" @onclick="@(async () => await SwitchView())">Switch View</button>
+</div>
+
+
+@code {
+
+    private IEnumerable<StockPortfolioViewModel> _portfolioListCompany = new List<StockPortfolioViewModel>();
+
+    private IEnumerable<StockPortfolioViewModel> _totalInvestment = new List<StockPortfolioViewModel>();
+
+    private bool _showTotal = false;
+    private bool _switchView = false;
+    private string _xName = "Symbol";
+    private string _title = "Company Diversity";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Foreach item in the list, if the date is past then update 
+
+        // Getting list of the items for the portfolio
+        @* _portfolioListCompany = await StockPortfolioService.StockPortfolioGroupByCompany(); *@
+        _portfolioListCompany = await HttpClient.GetFromJsonAsync<IEnumerable<StockPortfolioViewModel>>("/api/portfolio/by/company");
+
+        _totalInvestment = await HttpClient.GetFromJsonAsync<IEnumerable<StockPortfolioViewModel>>("/api/portfolio/by/company");
+    }
+
+    private async Task SwitchView()
+    {
+        if (!_switchView)
+        {
+            _portfolioListCompany = await HttpClient.GetFromJsonAsync<IEnumerable<StockPortfolioViewModel>>("/api/portfolio/by/sector");
+            _xName = "Sector";
+            _title = "Sector Diversity";
+            _switchView = true;
+        }
+        else
+        {
+            _portfolioListCompany = await HttpClient.GetFromJsonAsync<IEnumerable<StockPortfolioViewModel>>("/api/portfolio/by/company");
+            _xName = "Symbol";
+            _title = "Company Diversity";
+            _switchView = false;
+        }
+        StateHasChanged();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        _showTotal = true;
+    }
+
+
+}

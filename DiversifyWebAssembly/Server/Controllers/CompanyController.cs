@@ -14,11 +14,13 @@ namespace DiversifyWebAssembly.Server.Controllers
     {
         private readonly ICompanyService _companyService;
         private readonly ICompanyOverviewService _companyOverviewService;
+        private readonly ICompanyNewsService _companyNewsService;
 
-        public CompanyController(ICompanyService companyService, ICompanyOverviewService companyOverviewService)
+        public CompanyController(ICompanyService companyService, ICompanyOverviewService companyOverviewService, ICompanyNewsService companyNewsService)
         {
             _companyService = companyService;
             _companyOverviewService = companyOverviewService;
+            _companyNewsService = companyNewsService;
         }
 
         [Route("/symbol/{companySymbol}")]
@@ -28,6 +30,15 @@ namespace DiversifyWebAssembly.Server.Controllers
             var overview = await _companyOverviewService.GetCompanyOverviewAsync(companySymbol);
 
             return Ok(overview);
+        }
+
+        [Route("/news/{companySymbol}")]
+        [HttpGet]
+        public async Task<IActionResult> GetCompanyNews(string companySymbol)
+        {
+            var news = await _companyNewsService.GetCompanyNewsAsync(companySymbol);
+
+            return Ok(news);
         }
     }
 }

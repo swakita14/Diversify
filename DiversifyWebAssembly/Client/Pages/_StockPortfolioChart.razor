@@ -1,0 +1,24 @@
+﻿<SfAccumulationChart Title="@Title">
+    <AccumulationChartSeriesCollection>
+        <AccumulationChartSeries DataSource="@PortfolioCompanyList" XName="@XName" YName="TotalInvestment"
+                                 Name="Symbol">
+        </AccumulationChartSeries>
+    </AccumulationChartSeriesCollection>
+    <AccumulationChartLegendSettings Visible="true"></AccumulationChartLegendSettings>
+    <AccumulationChartTooltipSettings Enable="true" Format="${point.x} : <b>$${point.y}</b>"></AccumulationChartTooltipSettings>
+
+</SfAccumulationChart>
+
+@code {
+
+    [Parameter]
+    public string XName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public IEnumerable<StockPortfolioViewModel> PortfolioCompanyList { get; set; }
+
+
+}

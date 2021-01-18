@@ -1,4 +1,6 @@
-﻿@page "/news"
+@page "/search"
+
+<link href="" />
 
 <EditForm Model="@_searchModel">
     <div class="row">
@@ -12,14 +14,14 @@
 </EditForm>
 <br />
 
-<_NewsResult CompanyName="@_searchModel.CompanyName" PageSize="10"></_NewsResult>
+<_StockSearchResult CompanyName="@_searchModel.CompanyName"></_StockSearchResult>
+
 
 
 
 @code {
 
     private StockNewsSearchModel _searchModel;
-
 
     /**
      * Creates new model for the search
@@ -31,3 +33,5 @@
 
 
 }
+
+

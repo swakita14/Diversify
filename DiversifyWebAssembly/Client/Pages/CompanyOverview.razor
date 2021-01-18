@@ -1,0 +1,15 @@
+﻿@page "/overview/{Symbol}"
+
+@attribute [Authorize]
+
+<_CompanyOverviewResult CompanySymbol="@Symbol"></_CompanyOverviewResult>
+
+<_NewsResult CompanyName="@Symbol" PageSize="5"></_NewsResult>
+
+
+
+
+@code {
+    [Parameter]
+    public string Symbol { get; set; }
+}

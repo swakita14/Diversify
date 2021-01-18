@@ -1,0 +1,82 @@
+﻿@page "/editinvestment/{Symbol}"
+
+@inject HttpClient HttpClient
+
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <div class="card" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Current Investment</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Symbol</h6>
+                    <p class="card-text">@string.Format("{0:C}", _investmentTotal)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="card" style="width: 20rem;">
+                <div class="card-body">
+                    <h5 class="card-title">Most Recent Transaction</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Purchases</h6>
+                    <p class="card-text">@_existing.PurchaseDate.ToShortDateString(): @string.Format("{0:C}", _existing.InvestmentAmount)</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Sold</h6>
+                    @if (_soldStock)
+                    {
+
+                        <p class="card-text">@_mostRecentSold.SoldDate.ToShortDateString(): @string.Format("{0:C}", _mostRecentSold.SoldPrice)</p>
+                    }
+                    else
+                    {
+                        <p class="card-text">None sold yet</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md">
+            <_EditInvestment CompanySymbol="@Symbol"></_EditInvestment>
+        </div>
+    </div>
+
+</div>
+<br />
+
+
+
+
+
+@code {
+
+    [Parameter]
+    public string Symbol { get; set; }
+
+    private Stock _existing = new Stock();
+    private StockTransactionViewModel _mostRecentSold = new StockTransactionViewModel();
+    private decimal _investmentTotal;
+    private List<StockTransactionViewModel> _soldStockTransactionViewModel = new List<StockTransactionViewModel>();
+
+    private bool _soldStock = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //_existing = await StockService.GetStockWithCompanySymbol(Symbol);
+        _existing = await HttpClient.GetFromJsonAsync<Stock>($"/api/stock/detail/{Symbol}");
+        _investmentTotal = await HttpClient.GetFromJsonAsync<decimal>($"api/investment/total{Symbol}");
+        
+        _soldStockTransactionViewModel = await HttpClient.GetFromJsonAsync<List<StockTransactionViewModel>>("api/portfolio/transaction/sold")
+        //_investmentTotal = await InvestmentTotalService.GetInvestmentTotalWithCompanySymbol(Symbol);
+
+        //_soldStockTransactionViewModel = await StockPortfolioService.GetCurrentUserStockTransactionSold();
+
+        _mostRecentSold = _soldStockTransactionViewModel.Where(x => x.Symbol == Symbol).OrderBy(x => x.SoldDate).FirstOrDefault();
+
+        if (_mostRecentSold != null)
+        {
+            _soldStock = true;
+        }
+
+        StateHasChanged();
+    }
+
+
+
+}

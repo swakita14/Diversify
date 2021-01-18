@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DiversifyCL.Interfaces.Services;
 
 namespace DiversifyWebAssembly.Server.Controllers
 {
@@ -11,5 +8,20 @@ namespace DiversifyWebAssembly.Server.Controllers
     [ApiController]
     public class InvestmentTotalController : ControllerBase
     {
+        private readonly IInvestmentTotalService _investmentTotalService;
+
+        public InvestmentTotalController(IInvestmentTotalService investmentTotalService)
+        {
+            _investmentTotalService = investmentTotalService;
+        }
+
+        [Route("/total/{companyName}")]
+        [HttpGet]
+        public async Task<IActionResult> GetInvestmentTotalBySymbol(string companyName)
+        {
+            var investmentTotals = await _investmentTotalService.GetInvestmentTotalWithCompanySymbol(companyName);
+
+            return Ok(investmentTotals);
+        }
     }
 }
