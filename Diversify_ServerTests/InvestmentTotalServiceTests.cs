@@ -47,41 +47,6 @@ namespace Diversify_ServerTests
         }
 
         [Test]
-        public async Task CheckRemainderInvestment_GivenLargerThanCurrentInvestment_ReturnsFalse()
-        {
-            // Arragne 
-            var userStocks = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetInvestedTotalByCompanySymbol("AAPL", It.IsAny<string>())).Returns(Task.FromResult(userStocks.Sum(x => x.InvestedAmount)));
-            // Act
-            var results = await _sut.CheckRemainderInvestment("AAPL", 150);
-
-            // Assert 
-            Assert.AreEqual(results, false);
-        }        
-        
-        [Test]
-        public async Task CheckRemainderInvestment_GivenSmallerThanCurrentInvestment_ReturnsTrue()
-        {
-            // Arragne 
-            var userStocks = new List<InvestmentTotal>
-            {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-            };
-
-            _investmentTotalRepositoryMock.Setup(x => x.GetInvestedTotalByCompanySymbol("AAPL",It.IsAny<string>())).Returns(Task.FromResult(userStocks.Sum(x => x.InvestedAmount)));
-
-            // Act
-            var results = await _sut.CheckRemainderInvestment("AAPL", 50);
-
-            // Assert 
-            Assert.AreEqual(results, true);
-        }
-
-        [Test]
         public async Task GetUserTotalInvestment_ShouldReturnTotalInvestmentAmount()
         {
             // Arragne 

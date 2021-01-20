@@ -61,8 +61,8 @@
         //_existing = await StockService.GetStockWithCompanySymbol(Symbol);
         _existing = await HttpClient.GetFromJsonAsync<Stock>($"/api/stock/detail/{Symbol}");
         _investmentTotal = await HttpClient.GetFromJsonAsync<decimal>($"api/investment/total{Symbol}");
-        
-        _soldStockTransactionViewModel = await HttpClient.GetFromJsonAsync<List<StockTransactionViewModel>>("api/portfolio/transaction/sold")
+
+        _soldStockTransactionViewModel = await HttpClient.GetFromJsonAsync<List<StockTransactionViewModel>>("api/portfolio/transaction/sold");
         //_investmentTotal = await InvestmentTotalService.GetInvestmentTotalWithCompanySymbol(Symbol);
 
         //_soldStockTransactionViewModel = await StockPortfolioService.GetCurrentUserStockTransactionSold();
