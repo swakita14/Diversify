@@ -65,18 +65,12 @@ namespace DiversifyCL.Repositories
 
         public async Task AddNewCompanyFromViewModel(CompanyOverviewModel company, int sectorId)
         {
-            var dividends = 0m;
-
-            if (company.DividendYield != "None")
-            {
-                dividends = decimal.Parse(company.DividendYield);
-            }
 
             Company newCompany = new Company
             {
                 Name = company.Name,
                 Symbol = company.Symbol,
-                DividendYield = dividends,
+                DividendYield = decimal.Parse(company.DividendYield),
                 ExDividendDate = DateTime.Parse(company.ExDividendDate),
                 EPS = decimal.Parse(company.EPS),
                 Exchange = company.Exchange,
