@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Diversify_Server\Diversify_Server.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>
