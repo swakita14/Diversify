@@ -4,17 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using DiversifyCL.Interfaces.Repositories;
 using DiversifyCL.Interfaces.Services;
+using DiversifyCL.Repositories;
 
 namespace DiversifyCL.Services
 {
     public class InvestmentTotalService : IInvestmentTotalService
     {
-        private readonly IInvestmentTotalRepository _investmentTotalRepository;
+        private readonly IInvestmentTrendRepository _investmentTrendRepository;
         private readonly IIdentityService _identityService;
 
-        public InvestmentTotalService(IInvestmentTotalRepository investmentTotalRepository, IIdentityService identityService)
+        public InvestmentTotalService(IInvestmentTrendRepository investmentTrendRepository, IIdentityService identityService)
         {
-            _investmentTotalRepository = investmentTotalRepository;
+            _investmentTrendRepository = investmentTrendRepository;
             _identityService = identityService;
         }
 

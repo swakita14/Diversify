@@ -16,12 +16,12 @@ namespace DiversifyCL.Services
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IStockRepository _stockRepository;
-        private readonly IInvestmentTotalRepository _investmentTotalRepository;
+        private readonly InvestmentTrendRepository _investmentTotalRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
 
-        public StockService(HttpClient client, IConfiguration configuration, IStockRepository stockRepository, IInvestmentTotalRepository investmentTotalRepository, ICompanyRepository companyRepository, ISectorRepository sectorRepository, IIdentityService identityService)
+        public StockService(HttpClient client, IConfiguration configuration, IStockRepository stockRepository, InvestmentTrendRepository investmentTotalRepository, ICompanyRepository companyRepository, ISectorRepository sectorRepository, IIdentityService identityService)
         {
             _client = client;
             _configuration = configuration;

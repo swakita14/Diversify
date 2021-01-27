@@ -16,13 +16,13 @@ namespace Diversify_ServerTests
     public class InvestmentTotalServiceTests
     {
         private readonly Mock<IIdentityService> _identityServiceMock;
-        private readonly Mock<IInvestmentTotalRepository> _investmentTotalRepositoryMock;
+        private readonly Mock<InvestmentTrendRepository> _investmentTotalRepositoryMock;
         private readonly InvestmentTotalService _sut;
 
         public InvestmentTotalServiceTests()
         {
             _identityServiceMock = new Mock<IIdentityService>();
-            _investmentTotalRepositoryMock = new Mock<IInvestmentTotalRepository>();
+            _investmentTotalRepositoryMock = new Mock<InvestmentTrendRepository>();
 
             _sut = new InvestmentTotalService(_investmentTotalRepositoryMock.Object, _identityServiceMock.Object);
         }
@@ -50,10 +50,10 @@ namespace Diversify_ServerTests
         public async Task GetUserTotalInvestment_ShouldReturnTotalInvestmentAmount()
         {
             // Arragne 
-            var userStocks = new List<InvestmentTotal>
+            var userStocks = new List<InvestmentTrend>
             {
-                new InvestmentTotal { InvestmentTotalId = 1, Symbol = "AAPL", InvestedAmount = 100},
-                new InvestmentTotal { InvestmentTotalId = 2, Symbol = "IBM", InvestedAmount = 200},
+                new InvestmentTrend { InvestmentTrendsId = 1, Company = 1, InvestmentAmount = 100},
+                new InvestmentTrend { InvestmentTrendsId = 2, Company = 2, InvestmentAmount = 200},
             };
 
             _investmentTotalRepositoryMock.Setup(x => x.GetInvestmentTotalByUserId(It.IsAny<string>()))

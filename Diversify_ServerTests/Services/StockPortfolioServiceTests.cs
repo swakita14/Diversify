@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using DiversifyCL.Interfaces.Repositories;
 using DiversifyCL.Interfaces.Services;
 using DiversifyCL.Models.Database;
+using DiversifyCL.Repositories;
 using DiversifyCL.Services;
 using FluentAssertions;
 using Moq;
@@ -18,7 +19,7 @@ namespace Diversify_ServerTests
         private readonly Mock<ISectorRepository> _sectorRepository;
         private readonly Mock<IIdentityService> _identityService;
         private readonly Mock<ICompanyRepository> _companyRepository;
-        private readonly Mock<IInvestmentTotalRepository> _investmentTotalRepository;
+        private readonly Mock<IInvestmentTrendRepository> _investmentTotalRepository;
 
         private readonly StockPortfolioService _sut;
 
@@ -28,7 +29,7 @@ namespace Diversify_ServerTests
             _sectorRepository = new Mock<ISectorRepository>();
             _identityService = new Mock<IIdentityService>();
             _companyRepository = new Mock<ICompanyRepository>();
-            _investmentTotalRepository = new Mock<IInvestmentTotalRepository>();
+            _investmentTotalRepository = new Mock<IInvestmentTrendRepository>();
 
             _sut = new StockPortfolioService(_stockRepository.Object, _sectorRepository.Object, _identityService.Object, _investmentTotalRepository.Object, _companyRepository.Object);
         }

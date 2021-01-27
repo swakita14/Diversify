@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DiversifyCL.Repositories
 {
-    public class InvestmentTotalRepository : IInvestmentTotalRepository
+    public class InvestmentTotalRepository : Interfaces.Repositories.InvestmentTrendRepository
     {
         private readonly DiversifyContext _context;
 

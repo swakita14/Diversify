@@ -14,10 +14,10 @@ namespace DiversifyCL.Services
         private readonly IStockRepository _stockRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
-        private readonly IInvestmentTotalRepository _investmentTotalRepository;
+        private readonly InvestmentTrendRepository _investmentTotalRepository;
         private readonly ICompanyRepository _companyRepository;
 
-        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, IInvestmentTotalRepository investmentTotalRepository, ICompanyRepository companyRepository)
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, InvestmentTrendRepository investmentTotalRepository, ICompanyRepository companyRepository)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
