@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DiversifyCL\DiversifyCL.csproj" />
     <ProjectReference Include="..\Client\DiversifyWebAssembly.Client.csproj" />
-    <ProjectReference Include="..\Shared\DiversifyWebAssembly.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

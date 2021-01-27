@@ -15,6 +15,7 @@ namespace DiversifyCL.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<InvestmentTotal> InvestmentTotals { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<InvestmentTrend> InvestmentTrends { get; set; }
 
         /**
          * Model Builder
@@ -28,6 +29,8 @@ namespace DiversifyCL.Data
             modelBuilder.ApplyConfiguration(new InvestmentTotalConfiguration());
 
             modelBuilder.ApplyConfiguration(new CompanyConfiguration());
+
+            modelBuilder.ApplyConfiguration(new InvestmentTrendConfiguration());
         }
     }
 }
