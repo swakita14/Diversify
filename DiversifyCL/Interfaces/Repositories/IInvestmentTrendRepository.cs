@@ -14,7 +14,7 @@ namespace DiversifyCL.Interfaces.Repositories
 
         Task<bool> CheckExistingInvestment(int companyId, string userId);
 
-        Task AddNewInvestment(int companyId, decimal initialInvestment, int sectorId, string userId);
+        Task AddNewInvestment(int companyId, decimal initialInvestment, string userId);
 
         Task<List<InvestmentTrend>> GetAllInvestmentByUserId(string userId);
 

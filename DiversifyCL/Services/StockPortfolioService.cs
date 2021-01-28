@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using DiversifyCL.Interfaces.Repositories;
 using DiversifyCL.Interfaces.Services;
+using DiversifyCL.Models.Database;
 using DiversifyCL.Models.ViewModels;
 
 namespace DiversifyCL.Services
@@ -120,17 +121,42 @@ namespace DiversifyCL.Services
          */
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
         {
-            var userInvestments = await _investmentTrendRepository.GetAllInvestmentByUserId(_identityService.GetCurrentLoggedInUser());
+            var userInvestments = await GroupBySector(await _investmentTrendRepository.GetAllInvestmentByUserId(_identityService.GetCurrentLoggedInUser()));
 
-            var groupedListBySymbol = userInvestments.GroupBy(x => x.)
+            var groupedListBySymbol = userInvestments.GroupBy(x => x.Sector)
                 .Select(y => new StockPortfolioViewModel
                 {
-                    TotalInvestment = y.Sum(x => x.InvestmentAmount),
+                    TotalInvestment = y.Sum(x => x.InvestedAmount),
                     Sector = _sectorRepository.GetSectorNameById(userInvestments.First(x => x.Sector == y.Key).Sector),
                     AverageDividend = decimal.Round((( _companyRepository.GetTotalDividendBySector(y.Key) / _companyRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
                 }).ToList();
 
             return groupedListBySymbol;
+        }
+
+        /**
+         *  Map the database model with the GroupBySector ViewModel
+         */
+        public async Task<List<GroupBySectorViewModel>> GroupBySector(List<InvestmentTrend> investments)
+        {
+            // init list 
+            var groupBySectorList = new List<GroupBySectorViewModel>();
+
+            // add to viewmodel
+            foreach (var investment in investments)
+            {
+                var company = await _companyRepository.GetCompanyByCompanyIdAsync(investment.Company);
+
+                groupBySectorList.Add(new GroupBySectorViewModel
+                {
+                    InvestedAmount = investment.InvestmentAmount,
+                    Sector = company.Sector,
+                    Symbol = company.Symbol
+                });
+            }
+
+            // return view model list 
+            return groupBySectorList;
         }
     }
 }

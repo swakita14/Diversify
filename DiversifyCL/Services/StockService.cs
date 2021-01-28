@@ -7,6 +7,7 @@ using DiversifyCL.Interfaces.Services;
 using DiversifyCL.Models;
 using DiversifyCL.Models.Database;
 using DiversifyCL.Models.ViewModels;
+using DiversifyCL.Repositories;
 using Microsoft.Extensions.Configuration;
 
 namespace DiversifyCL.Services
@@ -16,12 +17,12 @@ namespace DiversifyCL.Services
         private readonly HttpClient _client;
         private readonly IConfiguration _configuration;
         private readonly IStockRepository _stockRepository;
-        private readonly InvestmentTrendRepository _investmentTotalRepository;
+        private readonly IInvestmentTrendRepository _investmentTotalRepository;
         private readonly ICompanyRepository _companyRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
 
-        public StockService(HttpClient client, IConfiguration configuration, IStockRepository stockRepository, InvestmentTrendRepository investmentTotalRepository, ICompanyRepository companyRepository, ISectorRepository sectorRepository, IIdentityService identityService)
+        public StockService(HttpClient client, IConfiguration configuration, IStockRepository stockRepository, IInvestmentTrendRepository investmentTotalRepository, ICompanyRepository companyRepository, ISectorRepository sectorRepository, IIdentityService identityService)
         {
             _client = client;
             _configuration = configuration;
@@ -56,15 +57,7 @@ namespace DiversifyCL.Services
             };
 
             // Adding a new investment, if already existing, add to the total 
-            if (!await _investmentTotalRepository.CheckExistingInvestment(model.Symbol, _identityService.GetCurrentLoggedInUser()))
-            {
-                await _investmentTotalRepository.AddNewInvestment(model.Symbol, investmentAmount, _sectorRepository.GetSectorIdByName(model.Sector).SectorId, _identityService.GetCurrentLoggedInUser());
-            }
-            else
-            {
-                await _investmentTotalRepository.EditExistingInvestment(model.Symbol, investmentAmount, _identityService.GetCurrentLoggedInUser());
-            }
-
+            await _investmentTotalRepository.AddNewInvestment(companyId.CompanyId, investmentAmount,_identityService.GetCurrentLoggedInUser());
             await _stockRepository.AddStock(newStock);
         }
 
@@ -97,14 +90,16 @@ namespace DiversifyCL.Services
          */
         public async Task<bool> SellStock(string symbol, decimal amount, DateTime dateSold)
         {
-            if (await _investmentTotalRepository.CheckRemainderInvestment(symbol, amount,
+            var company = await  _companyRepository.GetCompanyBySymbol(symbol);
+
+            if (await _investmentTotalRepository.CheckRemainderInvestment(company.CompanyId, amount,
                 _identityService.GetCurrentLoggedInUser()) && amount > 0)
             {
                 throw new Exception("Cannot deduct more than current asset");
             }
 
             // Make changes to the total amount
-            await _investmentTotalRepository.EditExistingInvestment(symbol, amount, _identityService.GetCurrentLoggedInUser());
+            await _investmentTotalRepository.AddNewInvestment(company.CompanyId, amount, _identityService.GetCurrentLoggedInUser());
 
             // Find the stock information from the database 
             var stockInformation = await _companyRepository.GetCompanyBySymbol(symbol);

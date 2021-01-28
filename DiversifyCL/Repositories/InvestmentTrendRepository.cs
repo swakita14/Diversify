@@ -18,7 +18,7 @@ namespace DiversifyCL.Repositories
             _context = context;
         }
 
-        public async Task AddNewInvestment(int companyId, decimal initialInvestment, int sectorId, string userId)
+        public async Task AddNewInvestment(int companyId, decimal initialInvestment, string userId)
         {
             InvestmentTrend newInvestment = new InvestmentTrend
             {
