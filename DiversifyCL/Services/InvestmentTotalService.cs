@@ -11,11 +11,13 @@ namespace DiversifyCL.Services
     public class InvestmentTotalService : IInvestmentTotalService
     {
         private readonly IInvestmentTrendRepository _investmentTrendRepository;
+        private readonly ICompanyRepository _companyRepository;
         private readonly IIdentityService _identityService;
 
-        public InvestmentTotalService(IInvestmentTrendRepository investmentTrendRepository, IIdentityService identityService)
+        public InvestmentTotalService(IInvestmentTrendRepository investmentTrendRepository, IIdentityService identityService, ICompanyRepository companyRepository)
         {
             _investmentTrendRepository = investmentTrendRepository;
+            _companyRepository = companyRepository;
             _identityService = identityService;
         }
 
@@ -26,17 +28,19 @@ namespace DiversifyCL.Services
         public async Task<decimal> GetUserTotalInvestment()
         {
             var currentUserInvestmentTotals =
-                await _investmentTotalRepository.GetInvestmentTotalByUserId(_identityService.GetCurrentLoggedInUser());
+                await _investmentTrendRepository.GetAllInvestmentByUserId(_identityService.GetCurrentLoggedInUser());
 
-            return currentUserInvestmentTotals.Sum(x => x.InvestedAmount);
+            return currentUserInvestmentTotals.Sum(x => x.InvestmentAmount);
         }
 
 
 
         public async Task<decimal> GetInvestmentTotalWithCompanySymbol(string symbol)
         {
+            var company = await _companyRepository.GetCompanyBySymbol(symbol);
+
             var existing =
-                await _investmentTotalRepository.GetInvestedTotalByCompanySymbol(symbol,
+                await _investmentTrendRepository.GetInvestedTotalByCompany(company.CompanyId,
                     _identityService.GetCurrentLoggedInUser());
 
             return existing;

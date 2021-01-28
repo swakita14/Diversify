@@ -14,15 +14,15 @@ namespace DiversifyCL.Services
         private readonly IStockRepository _stockRepository;
         private readonly ISectorRepository _sectorRepository;
         private readonly IIdentityService _identityService;
-        private readonly InvestmentTrendRepository _investmentTotalRepository;
+        private readonly IInvestmentTrendRepository _investmentTrendRepository;
         private readonly ICompanyRepository _companyRepository;
 
-        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, InvestmentTrendRepository investmentTotalRepository, ICompanyRepository companyRepository)
+        public StockPortfolioService(IStockRepository stockRepository, ISectorRepository sectorRepository, IIdentityService identityService, IInvestmentTrendRepository investmentTrendRepository, ICompanyRepository companyRepository)
         {
             _stockRepository = stockRepository;
             _sectorRepository = sectorRepository;
             _identityService = identityService;
-            _investmentTotalRepository = investmentTotalRepository;
+            _investmentTrendRepository = investmentTrendRepository;
             _companyRepository = companyRepository;
         }
 
@@ -90,25 +90,25 @@ namespace DiversifyCL.Services
         {
             // Get current user stocks 
             var currentStockList =
-                await _investmentTotalRepository.GetInvestmentTotalByUserId(_identityService.GetCurrentLoggedInUser());
+                await _investmentTrendRepository.GetAllInvestmentByUserId(_identityService.GetCurrentLoggedInUser());
 
             var stockPortfolio = new List<StockPortfolioViewModel>();
 
             // loop through each of investment totals 
             foreach (var stock in currentStockList)
             {
-                var company = await _companyRepository.GetCompanyBySymbol(stock.Symbol);
+                var company = await _companyRepository.GetCompanyByCompanyIdAsync(stock.Company);
 
                 // create new object to pass back 
                 stockPortfolio.Add(new StockPortfolioViewModel
                 {
                     CompanyName = company.Name,
-                    Symbol = stock.Symbol,
+                    Symbol = company.Symbol,
                     DividendYield = company.DividendYield,
-                    TotalInvestment = await _investmentTotalRepository.GetInvestedTotalByCompanySymbol(stock.Symbol, _identityService.GetCurrentLoggedInUser()),
+                    TotalInvestment = await _investmentTrendRepository.GetInvestedTotalByCompany(company.CompanyId, _identityService.GetCurrentLoggedInUser()),
                     ExDividendDate = company.ExDividendDate,
-                    Sector = _sectorRepository.GetSectorNameById(stock.Sector),
-                    InvestedPercentage = await _investmentTotalRepository.GetInvestedTotalByCompanySymbol(stock.Symbol, _identityService.GetCurrentLoggedInUser()) / await _investmentTotalRepository.GetUserTotalInvestment(_identityService.GetCurrentLoggedInUser())
+                    Sector = _sectorRepository.GetSectorNameById(company.Sector),
+                    InvestedPercentage = await _investmentTrendRepository.GetInvestedTotalByCompany(company.CompanyId, _identityService.GetCurrentLoggedInUser()) / await _investmentTrendRepository.GetUserTotalInvestment(_identityService.GetCurrentLoggedInUser())
                 });
             }
 
@@ -120,12 +120,12 @@ namespace DiversifyCL.Services
          */
         public async Task<IEnumerable<StockPortfolioViewModel>> StockPortfolioGroupBySector()
         {
-            var userInvestments = await _investmentTotalRepository.GetInvestmentTotalByUserId(_identityService.GetCurrentLoggedInUser());
+            var userInvestments = await _investmentTrendRepository.GetAllInvestmentByUserId(_identityService.GetCurrentLoggedInUser());
 
-            var groupedListBySymbol = userInvestments.GroupBy(x => x.Sector)
+            var groupedListBySymbol = userInvestments.GroupBy(x => x.)
                 .Select(y => new StockPortfolioViewModel
                 {
-                    TotalInvestment = y.Sum(x => x.InvestedAmount),
+                    TotalInvestment = y.Sum(x => x.InvestmentAmount),
                     Sector = _sectorRepository.GetSectorNameById(userInvestments.First(x => x.Sector == y.Key).Sector),
                     AverageDividend = decimal.Round((( _companyRepository.GetTotalDividendBySector(y.Key) / _companyRepository.GetCompanyCountBySectorId(y.Key))), 4, MidpointRounding.AwayFromZero)
                 }).ToList();

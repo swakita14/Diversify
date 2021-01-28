@@ -40,6 +40,7 @@ namespace DiversifyCL.Repositories
         }
 
 
+
         /**
          * Get the company and the company information with the symbol
          */
